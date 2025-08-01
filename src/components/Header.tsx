@@ -49,9 +49,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         <NavLink 
           to="/" 
-          className="text-xl font-serif font-medium tracking-tight transition-opacity hover:opacity-80"
+          className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-tight transition-opacity hover:opacity-80"
         >
-          Orangery Ventures
+          Rummy
         </NavLink>
         
         <div className="hidden md:flex items-center space-x-8">
@@ -93,30 +93,46 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <NavLink 
             to="/" 
             className={({ isActive }) => cn(
-              "hover:text-orangery-500 transition-colors",
-              isActive && "text-orangery-500 font-semibold"
+              "hover:text-primary transition-colors",
+              isActive && "text-primary font-semibold"
             )}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Home
           </NavLink>
           <button 
-            className="text-left hover:text-orangery-500 transition-colors"
+            className="text-left hover:text-primary transition-colors"
             onClick={() => {
-              scrollToSection('thesis');
+              scrollToSection('services');
               setIsMobileMenuOpen(false);
             }}
           >
-            Thesis
+            Services
           </button>
           <button 
-            className="text-left hover:text-orangery-500 transition-colors"
+            className="text-left hover:text-primary transition-colors"
             onClick={() => {
-              scrollToSection('investment');
+              scrollToSection('about');
               setIsMobileMenuOpen(false);
             }}
           >
-            Investment
+            About
+          </button>
+          <NavLink 
+            to="/team"
+            className="text-left hover:text-primary transition-colors"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Team
+          </NavLink>
+          <button 
+            className="text-left hover:text-primary transition-colors"
+            onClick={() => {
+              scrollToSection('contact');
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Contact
           </button>
         </nav>
       </div>
@@ -131,22 +147,28 @@ interface NavLinksProps {
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
     <button 
-      className="text-sm font-medium hover:text-orangery-500 transition-colors"
-      onClick={() => scrollToSection('home')}
+      className="text-sm font-medium hover:text-primary transition-colors"
+      onClick={() => scrollToSection('services')}
     >
-      Home
+      Services
     </button>
     <button 
-      className="text-sm font-medium hover:text-orangery-500 transition-colors"
-      onClick={() => scrollToSection('thesis')}
+      className="text-sm font-medium hover:text-primary transition-colors"
+      onClick={() => scrollToSection('about')}
     >
-      Thesis
+      About
     </button>
-    <button 
-      className="text-sm font-medium hover:text-orangery-500 transition-colors"
-      onClick={() => scrollToSection('investment')}
+    <NavLink 
+      to="/team"
+      className="text-sm font-medium hover:text-primary transition-colors"
     >
-      Investment
+      Team
+    </NavLink>
+    <button 
+      className="text-sm font-medium hover:text-primary transition-colors"
+      onClick={() => scrollToSection('contact')}
+    >
+      Contact
     </button>
   </>
 );
