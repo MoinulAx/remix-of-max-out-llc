@@ -15,15 +15,15 @@ const About: React.FC<AboutProps> = ({ className }) => {
           <FadeIn className="md:col-span-5">
             <div className="flex flex-col space-y-6">
               <div>
-                <span className="text-sm md:text-base font-medium text-primary mb-2 inline-block">About Rummy</span>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Crafting Digital Excellence Since 2020</h2>
+                <span className="text-sm md:text-base font-medium text-primary mb-2 inline-block">About RummSpace</span>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Creative Studio Since 2020</h2>
               </div>
               
               <p className="text-lg text-muted-foreground">
-                I'm a passionate digital creator with a mission to help businesses succeed online through innovative technology solutions.
+                RummSpace is a creative studio specializing in photography, videography, and web development. We combine artistic vision with technical expertise to deliver exceptional digital experiences.
               </p>
               <p className="text-lg text-muted-foreground">
-                With expertise spanning web development, mobile apps, UI/UX design, and digital marketing, I provide end-to-end solutions that drive real business growth.
+                From capturing stunning visuals to building powerful web applications, we bring your ideas to life with precision, creativity, and professional excellence.
               </p>
             </div>
           </FadeIn>

@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           to="/" 
           className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-tight transition-opacity hover:opacity-80"
         >
-          Rummy
+          RummSpace
         </NavLink>
         
         <div className="hidden md:flex items-center space-x-8">
@@ -148,16 +148,22 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
     <button 
       className="text-sm font-medium hover:text-primary transition-colors"
-      onClick={() => scrollToSection('services')}
-    >
-      Services
-    </button>
-    <button 
-      className="text-sm font-medium hover:text-primary transition-colors"
       onClick={() => scrollToSection('about')}
     >
       About
     </button>
+    <NavLink 
+      to="/photography"
+      className="text-sm font-medium hover:text-primary transition-colors"
+    >
+      Photography
+    </NavLink>
+    <NavLink 
+      to="/web-development"
+      className="text-sm font-medium hover:text-primary transition-colors"
+    >
+      Web Dev
+    </NavLink>
     <NavLink 
       to="/team"
       className="text-sm font-medium hover:text-primary transition-colors"

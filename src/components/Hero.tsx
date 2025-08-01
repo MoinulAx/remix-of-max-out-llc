@@ -22,17 +22,17 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
         <div className="max-w-3xl mx-auto text-center">
           <FadeIn delay={200}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight mb-6">
-              Rummy
+              RummSpace
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-6"></div>
           </FadeIn>
           
           <FadeIn delay={300}>
             <p className="text-xl md:text-2xl text-white/95 mb-6 font-medium">
-              Digital Solutions That Drive Results
+              Photography & Web Development Studio
             </p>
             <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-              From web development to digital marketing, I create comprehensive solutions that help businesses thrive in the digital landscape.
+              Professional photography services and modern web development solutions that capture your vision and elevate your digital presence.
             </p>
             <button className="bg-white text-primary px-8 py-4 font-bold text-lg hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]">
               View My Work
