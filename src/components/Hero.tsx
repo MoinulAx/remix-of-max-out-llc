@@ -29,14 +29,19 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
           
           <FadeIn delay={300}>
             <p className="text-xl md:text-2xl text-white/95 mb-6 font-medium">
-              Photography & Web Development Studio
+              Media. Web. Vision by Rummy.
             </p>
             <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-              Professional photography services and modern web development solutions that capture your vision and elevate your digital presence.
+              Professional photography, videography, and web development services for modern creators and businesses
             </p>
-            <button className="bg-white text-primary px-8 py-4 font-bold text-lg hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]">
-              View My Work
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-white text-primary px-8 py-4 font-bold text-lg hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]">
+                View Portfolio
+              </button>
+              <button className="bg-transparent border-2 border-white text-white px-8 py-4 font-bold text-lg hover:bg-white hover:text-primary transition-colors">
+                Book Now
+              </button>
+            </div>
           </FadeIn>
         </div>
       </div>

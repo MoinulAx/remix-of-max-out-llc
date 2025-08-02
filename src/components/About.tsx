@@ -15,16 +15,38 @@ const About: React.FC<AboutProps> = ({ className }) => {
           <FadeIn className="md:col-span-5">
             <div className="flex flex-col space-y-6">
               <div>
-                <span className="text-sm md:text-base font-medium text-primary mb-2 inline-block">About RummSpace</span>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Creative Studio Since 2020</h2>
+                <span className="text-sm md:text-base font-medium text-primary mb-2 inline-block">About Me</span>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Rummy - Creative Professional</h2>
               </div>
               
               <p className="text-lg text-muted-foreground">
-                RummSpace is a creative studio specializing in photography, videography, and web development. We combine artistic vision with technical expertise to deliver exceptional digital experiences.
+                I'm Rummy, a passionate creator with expertise in photography, videography, and web development. I started RummSpace to combine my love for visual storytelling with modern digital solutions.
               </p>
               <p className="text-lg text-muted-foreground">
-                From capturing stunning visuals to building powerful web applications, we bring your ideas to life with precision, creativity, and professional excellence.
+                My approach blends artistic vision with technical precision, whether I'm capturing the perfect shot or building a responsive website. I believe every project tells a story, and I'm here to help tell yours.
               </p>
+              
+              <div className="pt-6">
+                <h3 className="text-xl font-bold mb-4">What Makes My Work Unique:</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-center">
+                    <div className="w-2 h-2 bg-primary mr-4 flex-shrink-0"></div>
+                    <span className="text-muted-foreground">Professional-grade equipment (Canon R5, Sony A7IV, Fujifilm X-T5)</span>
+                  </li>
+                  <li className="flex items-center">
+                    <div className="w-2 h-2 bg-primary mr-4 flex-shrink-0"></div>
+                    <span className="text-muted-foreground">Modern web technologies (React, Node.js, Next.js)</span>
+                  </li>
+                  <li className="flex items-center">
+                    <div className="w-2 h-2 bg-primary mr-4 flex-shrink-0"></div>
+                    <span className="text-muted-foreground">Creative editing expertise (Lightroom, Photoshop, Final Cut Pro)</span>
+                  </li>
+                  <li className="flex items-center">
+                    <div className="w-2 h-2 bg-primary mr-4 flex-shrink-0"></div>
+                    <span className="text-muted-foreground">Focus on storytelling and authentic moments</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </FadeIn>
           

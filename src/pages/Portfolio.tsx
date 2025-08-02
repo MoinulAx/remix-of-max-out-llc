@@ -1,0 +1,159 @@
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+import FadeIn from '@/components/animations/FadeIn';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Card, CardContent } from '@/components/ui/card';
+
+const Portfolio = () => {
+  const [activeTab, setActiveTab] = useState('photography');
+
+  const photographyWork = [
+    {
+      title: "Portrait Session",
+      category: "Portraits",
+      image: "/lovable-uploads/34a58283-8b82-48f9-88f4-2c88b069921d.png",
+      description: "Professional headshots and portrait photography"
+    },
+    {
+      title: "Event Coverage",
+      category: "Events",
+      image: "/lovable-uploads/af28398b-9e23-4e2b-9de1-bda457e09fd8.png",
+      description: "Complete event documentation and highlights"
+    },
+    {
+      title: "Product Shoot",
+      category: "Product",
+      image: "/lovable-uploads/dabbf929-5dd0-4794-a011-fe43bf4b3418.png",
+      description: "High-quality product photography for brands"
+    }
+  ];
+
+  const webProjects = [
+    {
+      title: "E-commerce Platform",
+      category: "E-commerce",
+      image: "/lovable-uploads/47f9a1d0-4458-400a-8fc0-79adf093cf18.png",
+      description: "Modern online store with full payment integration"
+    },
+    {
+      title: "Portfolio Website",
+      category: "Portfolio",
+      image: "/lovable-uploads/a0278ce1-b82d-4ed6-a186-14a9503ef65c.png",
+      description: "Responsive portfolio site for creative professionals"
+    }
+  ];
+
+  const tabs = [
+    { id: 'photography', label: 'Photography' },
+    { id: 'videography', label: 'Videography' },
+    { id: 'web', label: 'Web Projects' }
+  ];
+
+  return (
+    <main className="relative">
+      <Header />
+      
+      <section className="pt-24 pb-20 md:py-32">
+        <div className="container mx-auto px-4 md:px-6">
+          <FadeIn className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+              Portfolio
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+              Explore my work across photography, videography, and web development
+            </p>
+          </FadeIn>
+
+          {/* Tab Navigation */}
+          <FadeIn delay={100} className="flex justify-center mb-12">
+            <div className="flex bg-card shadow-[var(--shadow-card)] p-1">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    "px-6 py-3 font-semibold transition-all duration-300",
+                    activeTab === tab.id
+                      ? "bg-primary text-primary-foreground shadow-[var(--shadow-sharp)]"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </FadeIn>
+
+          {/* Photography Tab */}
+          {activeTab === 'photography' && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {photographyWork.map((item, index) => (
+                <FadeIn key={item.title} delay={200 + (index * 100)}>
+                  <Card className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
+                    <div className="aspect-square overflow-hidden">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
+                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground">{item.description}</p>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              ))}
+            </div>
+          )}
+
+          {/* Videography Tab */}
+          {activeTab === 'videography' && (
+            <div className="text-center py-20">
+              <FadeIn>
+                <h3 className="text-2xl font-bold mb-4">Videography Portfolio</h3>
+                <p className="text-muted-foreground mb-8">Coming soon - showcasing video production work</p>
+                <button className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]">
+                  Contact for Video Services
+                </button>
+              </FadeIn>
+            </div>
+          )}
+
+          {/* Web Projects Tab */}
+          {activeTab === 'web' && (
+            <div className="grid md:grid-cols-2 gap-8">
+              {webProjects.map((item, index) => (
+                <FadeIn key={item.title} delay={200 + (index * 100)}>
+                  <Card className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
+                    <div className="aspect-video overflow-hidden">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
+                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground mb-4">{item.description}</p>
+                      <button className="text-primary font-semibold hover:underline">
+                        View Project →
+                      </button>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
+};
+
+export default Portfolio;

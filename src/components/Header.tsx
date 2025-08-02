@@ -100,15 +100,20 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           >
             Home
           </NavLink>
-          <button 
+          <NavLink 
+            to="/portfolio"
             className="text-left hover:text-primary transition-colors"
-            onClick={() => {
-              scrollToSection('services');
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Portfolio
+          </NavLink>
+          <NavLink 
+            to="/services"
+            className="text-left hover:text-primary transition-colors"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Services
-          </button>
+          </NavLink>
           <button 
             className="text-left hover:text-primary transition-colors"
             onClick={() => {
@@ -146,24 +151,24 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
+    <NavLink 
+      to="/portfolio"
+      className="text-sm font-medium hover:text-primary transition-colors"
+    >
+      Portfolio
+    </NavLink>
+    <NavLink 
+      to="/services"
+      className="text-sm font-medium hover:text-primary transition-colors"
+    >
+      Services
+    </NavLink>
     <button 
       className="text-sm font-medium hover:text-primary transition-colors"
       onClick={() => scrollToSection('about')}
     >
       About
     </button>
-    <NavLink 
-      to="/photography"
-      className="text-sm font-medium hover:text-primary transition-colors"
-    >
-      Photography
-    </NavLink>
-    <NavLink 
-      to="/web-development"
-      className="text-sm font-medium hover:text-primary transition-colors"
-    >
-      Web Dev
-    </NavLink>
     <NavLink 
       to="/team"
       className="text-sm font-medium hover:text-primary transition-colors"
