@@ -114,15 +114,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           >
             Services
           </NavLink>
-          <button 
+          <NavLink 
+            to="/about"
             className="text-left hover:text-primary transition-colors"
-            onClick={() => {
-              scrollToSection('about');
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             About
-          </button>
+          </NavLink>
           <NavLink 
             to="/team"
             className="text-left hover:text-primary transition-colors"
@@ -130,15 +128,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           >
             Team
           </NavLink>
-          <button 
+          <NavLink 
+            to="/contact"
             className="text-left hover:text-primary transition-colors"
-            onClick={() => {
-              scrollToSection('contact');
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Contact
-          </button>
+          </NavLink>
         </nav>
       </div>
     </header>
@@ -152,6 +148,12 @@ interface NavLinksProps {
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
     <NavLink 
+      to="/about"
+      className="text-sm font-medium hover:text-primary transition-colors"
+    >
+      About
+    </NavLink>
+    <NavLink 
       to="/portfolio"
       className="text-sm font-medium hover:text-primary transition-colors"
     >
@@ -163,24 +165,18 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     >
       Services
     </NavLink>
-    <button 
-      className="text-sm font-medium hover:text-primary transition-colors"
-      onClick={() => scrollToSection('about')}
-    >
-      About
-    </button>
     <NavLink 
       to="/team"
       className="text-sm font-medium hover:text-primary transition-colors"
     >
       Team
     </NavLink>
-    <button 
+    <NavLink 
+      to="/contact"
       className="text-sm font-medium hover:text-primary transition-colors"
-      onClick={() => scrollToSection('contact')}
     >
       Contact
-    </button>
+    </NavLink>
   </>
 );
 
