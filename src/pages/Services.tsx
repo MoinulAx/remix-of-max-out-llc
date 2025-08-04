@@ -173,19 +173,19 @@ const Services = () => {
           {/* CTA Section */}
           <FadeIn delay={600} className="text-center mt-20">
             <div className="bg-card shadow-[var(--shadow-card)] p-8 md:p-12 max-w-4xl mx-auto">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">Ready to Get Started?</h3>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">Transform Your Vision Into Reality</h3>
               <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-                Let's discuss your project and create something amazing together. Contact me for a free consultation.
+                From concept to completion, I deliver exceptional results that exceed expectations. Let's bring your ideas to life with professional creativity and technical expertise.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 
                   onClick={() => openQuoteModal('Consultation')}
                   className="bg-white text-primary px-8 py-3 font-semibold hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]"
                 >
-                  Book Consultation
+                  Get Free Quote
                 </button>
                 <button className="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white hover:text-primary transition-colors">
-                  View Portfolio
+                  See My Work
                 </button>
               </div>
             </div>
