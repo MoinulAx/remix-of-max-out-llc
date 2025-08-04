@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BackgroundImage from '@/components/BackgroundImage';
+import QuoteModal from '@/components/QuoteModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Services = () => {
+  const [quoteModal, setQuoteModal] = useState({ isOpen: false, serviceType: '' });
   const photographyServices = [
     {
       title: "Portrait Photography",
@@ -60,17 +63,25 @@ const Services = () => {
     }
   ];
 
+  const openQuoteModal = (serviceType: string) => {
+    setQuoteModal({ isOpen: true, serviceType });
+  };
+
+  const closeQuoteModal = () => {
+    setQuoteModal({ isOpen: false, serviceType: '' });
+  };
+
   return (
     <main className="relative">
       <Header />
       
-      <section className="pt-24 pb-20 md:py-32">
+      <BackgroundImage className="pt-24 pb-20 md:py-32" overlayOpacity={0.7}>
         <div className="container mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-white">
               Services
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
               Professional photography and web development services tailored to your needs
             </p>
           </FadeIn>
@@ -78,8 +89,8 @@ const Services = () => {
           {/* Photography Services */}
           <FadeIn delay={100} className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Photography Services</h2>
-              <div className="w-24 h-1 bg-primary mx-auto"></div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Photography Services</h2>
+              <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -102,7 +113,10 @@ const Services = () => {
                       <div className="pt-4 border-t border-border">
                         <div className="flex justify-between items-center">
                           <span className="text-lg font-bold text-primary">{service.startingPrice}</span>
-                          <button className="bg-primary text-primary-foreground px-6 py-2 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]">
+                          <button 
+                            onClick={() => openQuoteModal(service.title)}
+                            className="bg-primary text-primary-foreground px-6 py-2 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]"
+                          >
                             Request Quote
                           </button>
                         </div>
@@ -117,8 +131,8 @@ const Services = () => {
           {/* Web & Branding Services */}
           <FadeIn delay={300}>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Web & Branding</h2>
-              <div className="w-24 h-1 bg-primary mx-auto"></div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Web & Branding</h2>
+              <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -141,7 +155,10 @@ const Services = () => {
                       <div className="pt-4 border-t border-border">
                         <div className="flex justify-between items-center">
                           <span className="text-lg font-bold text-primary">{service.startingPrice}</span>
-                          <button className="bg-primary text-primary-foreground px-6 py-2 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]">
+                          <button 
+                            onClick={() => openQuoteModal(service.title)}
+                            className="bg-primary text-primary-foreground px-6 py-2 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]"
+                          >
                             Request Quote
                           </button>
                         </div>
@@ -156,22 +173,31 @@ const Services = () => {
           {/* CTA Section */}
           <FadeIn delay={600} className="text-center mt-20">
             <div className="bg-card shadow-[var(--shadow-card)] p-8 md:p-12 max-w-4xl mx-auto">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to Get Started?</h3>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">Ready to Get Started?</h3>
+              <p className="text-white/90 mb-6 max-w-2xl mx-auto">
                 Let's discuss your project and create something amazing together. Contact me for a free consultation.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]">
+                <button 
+                  onClick={() => openQuoteModal('Consultation')}
+                  className="bg-white text-primary px-8 py-3 font-semibold hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]"
+                >
                   Book Consultation
                 </button>
-                <button className="border-2 border-primary text-primary px-8 py-3 font-semibold hover:bg-primary hover:text-primary-foreground transition-colors">
+                <button className="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white hover:text-primary transition-colors">
                   View Portfolio
                 </button>
               </div>
             </div>
           </FadeIn>
         </div>
-      </section>
+      </BackgroundImage>
+
+      <QuoteModal 
+        isOpen={quoteModal.isOpen}
+        onClose={closeQuoteModal}
+        serviceType={quoteModal.serviceType}
+      />
 
       <Footer />
     </main>
