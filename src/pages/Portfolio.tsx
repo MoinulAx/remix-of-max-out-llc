@@ -55,13 +55,13 @@ const Portfolio = () => {
     <main className="relative">
       <Header />
       
-      <BackgroundImage className="pt-24 pb-20 md:py-32" overlayOpacity={0.7}>
+      <div className="pt-24 pb-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-white">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
               Portfolio
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
               Explore my work across photography, videography, and web development
             </p>
           </FadeIn>
@@ -150,7 +150,7 @@ const Portfolio = () => {
             </div>
           )}
         </div>
-      </BackgroundImage>
+      </div>
 
       <Footer />
     </main>

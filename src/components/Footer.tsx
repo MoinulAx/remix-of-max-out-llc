@@ -28,79 +28,80 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
   };
 
   return (
-    <BackgroundImage className={cn('py-20 md:py-32', className)} overlayOpacity={0.8}>
+    <footer className={cn('py-8 bg-background border-t', className)}>
       <div className="container mx-auto px-4 md:px-6">
-        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <Link to="/" className="text-xl font-serif font-medium tracking-tight text-white">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center space-x-8">
+            <Link to="/" className="text-lg font-medium tracking-tight">
               RummSpace
             </Link>
+            <div className="hidden md:flex space-x-6">
+              <button
+                onClick={() => scrollToSection('home')} 
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Home
+              </button>
+              <Link 
+                to="/services"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Services
+              </Link>
+              <Link 
+                to="/portfolio"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Portfolio
+              </Link>
+            </div>
           </div>
           
-          <div className="flex space-x-6 mb-4 md:mb-0">
-            <button
-              onClick={() => scrollToSection('home')} 
-              className="text-sm text-white/80 hover:text-white transition-colors"
-            >
-              Home
-            </button>
-            <Link 
-              to="/services"
-              className="text-sm text-white/80 hover:text-white transition-colors"
-            >
-              Services
-            </Link>
-            <Link 
-              to="/portfolio"
-              className="text-sm text-white/80 hover:text-white transition-colors"
-            >
-              Portfolio
-            </Link>
-          </div>
-          
-          <div className="flex space-x-4 mb-4 md:mb-0">
-            <a 
-              href="https://instagram.com/rummspace" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white/80 hover:text-white transition-colors"
-              aria-label="Instagram"
-            >
-              📷
-            </a>
-            <a 
-              href="https://linkedin.com/in/rummy" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white/80 hover:text-white transition-colors"
-              aria-label="LinkedIn"
-            >
-              💼
-            </a>
-            <a 
-              href="https://twitter.com/rummspace" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white/80 hover:text-white transition-colors"
-              aria-label="Twitter"
-            >
-              🐦
-            </a>
-            <a 
-              href="mailto:hello@rummspace.com"
-              className="text-white/80 hover:text-white transition-colors"
-              aria-label="Email"
-            >
-              📧
-            </a>
-          </div>
-          
-          <div className="text-sm text-white/60">
-            &copy; {new Date().getFullYear()} RummSpace. All rights reserved.
+          <div className="flex items-center space-x-6">
+            <div className="flex space-x-4">
+              <a 
+                href="https://instagram.com/rummspace" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Instagram"
+              >
+                📷
+              </a>
+              <a 
+                href="https://linkedin.com/in/rummy" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="LinkedIn"
+              >
+                💼
+              </a>
+              <a 
+                href="https://twitter.com/rummspace" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Twitter"
+              >
+                🐦
+              </a>
+              <a 
+                href="mailto:hello@rummspace.com"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Email"
+              >
+                📧
+              </a>
+            </div>
+            
+            <div className="text-sm text-muted-foreground">
+              &copy; {new Date().getFullYear()} RummSpace
+            </div>
           </div>
         </div>
       </div>
-    </BackgroundImage>
+    </footer>
   );
 };
 

@@ -74,13 +74,13 @@ const About = () => {
       <Header />
       
       {/* Hero Section */}
-      <BackgroundImage className="pt-24 pb-20 md:py-32" overlayOpacity={0.7}>
+      <div className="pt-24 pb-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-white">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
               About RummSpace
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
               Where creativity meets technology to bring your vision to life
             </p>
           </FadeIn>
@@ -251,7 +251,7 @@ const About = () => {
             </FadeIn>
           )}
         </div>
-      </BackgroundImage>
+      </div>
 
       <Footer />
     </main>

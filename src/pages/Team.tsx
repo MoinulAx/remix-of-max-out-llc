@@ -3,8 +3,8 @@ import { cn } from '@/lib/utils';
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import OpenPositions from '@/components/OpenPositions';
 
 const Team = () => {
   const teamMembers = [
@@ -56,13 +56,13 @@ const Team = () => {
     <main className="relative">
       <Header />
       
-      <BackgroundImage className="pt-24 pb-20 md:py-32" overlayOpacity={0.7}>
+      <div className="pt-24 pb-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-white">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
               Meet the Team
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
               A passionate team of creators, developers, and strategists dedicated to bringing your vision to life
             </p>
           </FadeIn>
@@ -106,19 +106,10 @@ const Team = () => {
             ))}
           </div>
 
-          <FadeIn delay={400} className="text-center mt-16">
-            <div className="bg-card/80 backdrop-blur-sm shadow-[var(--shadow-card)] p-8 md:p-12 max-w-4xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Join Our Team</h2>
-              <p className="text-muted-foreground mb-6">
-                We're always looking for talented individuals who share our passion for creating exceptional digital experiences.
-              </p>
-              <button className="bg-primary text-primary-foreground px-8 py-3 font-medium hover:bg-primary/90 transition-colors">
-                View Open Positions
-              </button>
-            </div>
-          </FadeIn>
         </div>
-      </BackgroundImage>
+      </div>
+      
+      <OpenPositions />
 
       <Footer />
     </main>
