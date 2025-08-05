@@ -3,7 +3,10 @@ import { cn } from '@/lib/utils';
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -18,26 +21,52 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { toast } = useToast();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    console.log('Form submitted:', formData);
-    setIsSubmitting(false);
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      service: '',
-      budget: '',
-      message: '',
-      timeline: ''
-    });
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          service: formData.service,
+          budget: formData.budget || null,
+          timeline: formData.timeline || null,
+          message: formData.message
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. I'll get back to you within 24 hours.",
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        budget: '',
+        message: '',
+        timeline: ''
+      });
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -92,13 +121,13 @@ const Contact = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-20 md:py-32 bg-gradient-to-br from-background to-secondary/30">
+      <BackgroundImage className="pt-24 pb-20 md:py-32" overlayOpacity={0.7}>
         <div className="container mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-white">
               Let's Create Together
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
               Ready to bring your vision to life? Get in touch and let's discuss your next project.
             </p>
           </FadeIn>
@@ -183,11 +212,13 @@ const Contact = () => {
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                         >
                           <option value="">Select budget range</option>
-                          <option value="under-1000">Under $1,000</option>
+                          <option value="under-100">Under $100</option>
+                          <option value="100-250">$100 - $250</option>
+                          <option value="250-500">$250 - $500</option>
+                          <option value="500-1000">$500 - $1,000</option>
                           <option value="1000-2500">$1,000 - $2,500</option>
                           <option value="2500-5000">$2,500 - $5,000</option>
-                          <option value="5000-10000">$5,000 - $10,000</option>
-                          <option value="over-10000">$10,000+</option>
+                          <option value="over-5000">$5,000+</option>
                         </select>
                       </div>
                       <div>
@@ -292,7 +323,7 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </section>
+      </BackgroundImage>
 
       <Footer />
     </main>

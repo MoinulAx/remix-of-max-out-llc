@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_submissions: {
+        Row: {
+          budget: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          service: string
+          status: string
+          timeline: string | null
+        }
+        Insert: {
+          budget?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          service: string
+          status?: string
+          timeline?: string | null
+        }
+        Update: {
+          budget?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          service?: string
+          status?: string
+          timeline?: string | null
+        }
+        Relationships: []
+      }
       quote_requests: {
         Row: {
           budget_range: string | null

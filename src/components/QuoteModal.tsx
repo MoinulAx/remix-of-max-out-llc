@@ -127,12 +127,14 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, serviceType = 
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                   >
-                    <option value="">Select budget range</option>
-                    <option value="Under $500">Under $500</option>
-                    <option value="$500 - $1,000">$500 - $1,000</option>
-                    <option value="$1,000 - $2,500">$1,000 - $2,500</option>
-                    <option value="$2,500 - $5,000">$2,500 - $5,000</option>
-                    <option value="$5,000+">$5,000+</option>
+                          <option value="">Select budget range</option>
+                          <option value="Under $100">Under $100</option>
+                          <option value="$100 - $250">$100 - $250</option>
+                          <option value="$250 - $500">$250 - $500</option>
+                          <option value="$500 - $1,000">$500 - $1,000</option>
+                          <option value="$1,000 - $2,500">$1,000 - $2,500</option>
+                          <option value="$2,500 - $5,000">$2,500 - $5,000</option>
+                          <option value="$5,000+">$5,000+</option>
                   </select>
                 </div>
               </div>

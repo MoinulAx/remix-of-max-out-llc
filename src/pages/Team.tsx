@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Team = () => {
@@ -27,6 +28,27 @@ const Team = () => {
       bio: "Digital marketing expert helping brands grow their online presence through data-driven strategies.",
       skills: ["SEO", "Content Marketing", "Analytics", "Social Media"],
       image: "/lovable-uploads/dabbf929-5dd0-4794-a011-fe43bf4b3418.png"
+    },
+    {
+      name: "Elena Rodriguez",
+      role: "Content Creator",
+      bio: "Skilled photographer and videographer with expertise in storytelling through visual media and social content creation.",
+      skills: ["Photography", "Video Editing", "Social Media", "Creative Direction"],
+      image: "/lovable-uploads/47f9a1d0-4458-400a-8fc0-79adf093cf18.png"
+    },
+    {
+      name: "Alex Thompson",
+      role: "Technical Lead",
+      bio: "Backend architect focused on building robust, scalable systems and optimizing performance for high-traffic applications.",
+      skills: ["System Architecture", "Database Design", "DevOps", "Performance Optimization"],
+      image: "/lovable-uploads/a0278ce1-b82d-4ed6-a186-14a9503ef65c.png"
+    },
+    {
+      name: "Maya Patel",
+      role: "Client Relations Manager",
+      bio: "Project coordinator ensuring smooth communication and delivery, dedicated to exceeding client expectations on every project.",
+      skills: ["Project Management", "Client Communication", "Quality Assurance", "Team Coordination"],
+      image: "/lovable-uploads/34a58283-8b82-48f9-88f4-2c88b069921d.png"
     }
   ];
 
@@ -34,13 +56,13 @@ const Team = () => {
     <main className="relative">
       <Header />
       
-      <section className="pt-24 pb-20 md:py-32 bg-gradient-to-br from-background to-secondary/30">
+      <BackgroundImage className="pt-24 pb-20 md:py-32" overlayOpacity={0.7}>
         <div className="container mx-auto px-4 md:px-6">
           <FadeIn className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-white">
               Meet the Team
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
               A passionate team of creators, developers, and strategists dedicated to bringing your vision to life
             </p>
           </FadeIn>
@@ -96,7 +118,7 @@ const Team = () => {
             </div>
           </FadeIn>
         </div>
-      </section>
+      </BackgroundImage>
 
       <Footer />
     </main>

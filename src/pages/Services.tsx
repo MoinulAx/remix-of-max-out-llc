@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackgroundImage from '@/components/BackgroundImage';
 import QuoteModal from '@/components/QuoteModal';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Services = () => {
@@ -173,20 +174,23 @@ const Services = () => {
           {/* CTA Section */}
           <FadeIn delay={600} className="text-center mt-20">
             <div className="bg-card shadow-[var(--shadow-card)] p-8 md:p-12 max-w-4xl mx-auto">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">Transform Your Vision Into Reality</h3>
-              <p className="text-white/90 mb-6 max-w-2xl mx-auto">
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-foreground">Transform Your Vision Into Reality</h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                 From concept to completion, I deliver exceptional results that exceed expectations. Let's bring your ideas to life with professional creativity and technical expertise.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 
                   onClick={() => openQuoteModal('Consultation')}
-                  className="bg-white text-primary px-8 py-3 font-semibold hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]"
+                  className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]"
                 >
                   Get Free Quote
                 </button>
-                <button className="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white hover:text-primary transition-colors">
+                <Link 
+                  to="/portfolio"
+                  className="border-2 border-primary text-primary px-8 py-3 font-semibold hover:bg-primary hover:text-primary-foreground transition-colors text-center"
+                >
                   See My Work
-                </button>
+                </Link>
               </div>
             </div>
           </FadeIn>

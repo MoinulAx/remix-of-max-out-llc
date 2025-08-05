@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import FadeIn from './animations/FadeIn';
+import { Link } from 'react-router-dom';
 
 interface HeroProps {
   className?: string;
@@ -35,12 +36,18 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
               Professional photography, videography, and web development services for modern creators and businesses
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-primary px-8 py-4 font-bold text-lg hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)]">
+              <Link 
+                to="/portfolio"
+                className="bg-white text-primary px-8 py-4 font-bold text-lg hover:bg-white/90 transition-colors shadow-[var(--shadow-sharp)] text-center"
+              >
                 View Portfolio
-              </button>
-              <button className="bg-transparent border-2 border-white text-white px-8 py-4 font-bold text-lg hover:bg-white hover:text-primary transition-colors">
+              </Link>
+              <Link 
+                to="/contact"
+                className="bg-transparent border-2 border-white text-white px-8 py-4 font-bold text-lg hover:bg-white hover:text-primary transition-colors text-center"
+              >
                 Book Now
-              </button>
+              </Link>
             </div>
           </FadeIn>
         </div>

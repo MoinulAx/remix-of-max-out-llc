@@ -58,6 +58,43 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             </Link>
           </div>
           
+          <div className="flex space-x-4 mb-4 md:mb-0">
+            <a 
+              href="https://instagram.com/rummspace" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/80 hover:text-white transition-colors"
+              aria-label="Instagram"
+            >
+              📷
+            </a>
+            <a 
+              href="https://linkedin.com/in/rummy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/80 hover:text-white transition-colors"
+              aria-label="LinkedIn"
+            >
+              💼
+            </a>
+            <a 
+              href="https://twitter.com/rummspace" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/80 hover:text-white transition-colors"
+              aria-label="Twitter"
+            >
+              🐦
+            </a>
+            <a 
+              href="mailto:hello@rummspace.com"
+              className="text-white/80 hover:text-white transition-colors"
+              aria-label="Email"
+            >
+              📧
+            </a>
+          </div>
+          
           <div className="text-sm text-white/60">
             &copy; {new Date().getFullYear()} RummSpace. All rights reserved.
           </div>

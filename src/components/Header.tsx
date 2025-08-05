@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled 
-          ? 'py-3 bg-white/90 backdrop-blur-md border-b border-gray-200/20 shadow-sm'
+          ? 'py-3 bg-white/95 backdrop-blur-md border-b border-gray-200/20 shadow-sm'
           : 'py-5 bg-transparent',
         className
       )}
@@ -49,7 +49,12 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         <NavLink 
           to="/" 
-          className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-tight transition-opacity hover:opacity-80"
+          className={cn(
+            "text-xl font-bold tracking-tight transition-opacity hover:opacity-80",
+            isScrolled 
+              ? "text-foreground"
+              : "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+          )}
         >
           RummSpace
         </NavLink>
@@ -149,31 +154,46 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
     <NavLink 
       to="/about"
-      className="text-sm font-medium hover:text-primary transition-colors"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
     >
       About
     </NavLink>
     <NavLink 
       to="/portfolio"
-      className="text-sm font-medium hover:text-primary transition-colors"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
     >
       Portfolio
     </NavLink>
     <NavLink 
       to="/services"
-      className="text-sm font-medium hover:text-primary transition-colors"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
     >
       Services
     </NavLink>
     <NavLink 
       to="/team"
-      className="text-sm font-medium hover:text-primary transition-colors"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
     >
       Team
     </NavLink>
     <NavLink 
       to="/contact"
-      className="text-sm font-medium hover:text-primary transition-colors"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
     >
       Contact
     </NavLink>
