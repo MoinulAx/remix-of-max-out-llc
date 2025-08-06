@@ -52,9 +52,9 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p>Thank you again for considering RummSpace as your next career destination. We're excited to learn more about you!</p>
           
-          <p>Best regards,<br>
-          The RummSpace Team<br>
-          <a href="mailto:hello@rummspace.com">hello@rummspace.com</a></p>
+           <p>Best regards,<br>
+           The RummSpace Team<br>
+           <a href="mailto:rummspace@gmail.com">rummspace@gmail.com</a></p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="font-size: 12px; color: #666; text-align: center;">
