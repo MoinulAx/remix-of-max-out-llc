@@ -42,9 +42,19 @@ const Contact = () => {
 
       if (error) throw error;
 
+      // Send confirmation email
+      await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          message: formData.message
+        }
+      });
+
       toast({
         title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you within 24 hours.",
+        description: "Thank you for reaching out. Check your email for confirmation - we'll get back to you within 24 hours.",
       });
       
       // Reset form

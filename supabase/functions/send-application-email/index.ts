@@ -25,7 +25,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { name, email, jobTitle }: ApplicationEmailRequest = await req.json();
 
     const emailResponse = await resend.emails.send({
-      from: "RummSpace <onboarding@resend.dev>",
+      from: "RummSpace <rummspace@gmail.com>",
       to: [email],
       subject: `Thank you for applying to ${jobTitle}!`,
       html: `

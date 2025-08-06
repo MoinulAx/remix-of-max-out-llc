@@ -36,9 +36,21 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, serviceType = 
 
       if (error) throw error;
 
+      // Send confirmation email
+      await supabase.functions.invoke('send-quote-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          serviceType: serviceType,
+          budgetRange: formData.budget_range,
+          projectTimeline: formData.project_timeline,
+          message: formData.message
+        }
+      });
+
       toast({
         title: "Quote Request Sent!",
-        description: "We'll get back to you within 24 hours.",
+        description: "Check your email for confirmation - we'll get back to you within 24 hours.",
       });
 
       setFormData({
