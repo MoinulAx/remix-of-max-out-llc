@@ -14,7 +14,182 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          budget: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          service: string
+          status: string
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          budget?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          service: string
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          budget?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          service?: string
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      job_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string
+          email: string
+          id: string
+          job_id: string
+          name: string
+          phone: string | null
+          portfolio_url: string | null
+          resume_url: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          job_id: string
+          name: string
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          job_id?: string
+          name?: string
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          created_at: string
+          department: string
+          description: string
+          id: string
+          is_active: boolean
+          location: string
+          requirements: string[] | null
+          salary_range: string | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          description: string
+          id?: string
+          is_active?: boolean
+          location: string
+          requirements?: string[] | null
+          salary_range?: string | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          requirements?: string[] | null
+          salary_range?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      quote_requests: {
+        Row: {
+          budget_range: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          project_timeline: string | null
+          service_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          project_timeline?: string | null
+          service_type: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          project_timeline?: string | null
+          service_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

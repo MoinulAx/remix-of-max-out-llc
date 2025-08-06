@@ -4,8 +4,6 @@ import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import OpenPositions from '@/components/OpenPositions';
-
 const Team = () => {
   const teamMembers = [
     {
@@ -67,12 +65,12 @@ const Team = () => {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {teamMembers.map((member, index) => (
               <FadeIn key={member.name} delay={100 + (index * 100)}>
-                <Card className="h-full transition-all duration-300 hover:shadow-[var(--shadow-sharp)] hover:-translate-y-1 border-0 shadow-[var(--shadow-card)] bg-card/80 backdrop-blur-sm">
+                <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                   <CardHeader className="text-center pb-4">
-                    <div className="relative w-32 h-32 mx-auto mb-4 overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
+                    <div className="relative w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full bg-gradient-to-br from-primary/20 to-accent/20">
                       <img 
                         src={member.image} 
                         alt={member.name}
@@ -93,7 +91,7 @@ const Team = () => {
                         {member.skills.map((skill, idx) => (
                           <span 
                             key={idx}
-                            className="px-2 py-1 bg-primary/10 text-primary text-xs font-medium"
+                            className="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded"
                           >
                             {skill}
                           </span>
@@ -108,8 +106,6 @@ const Team = () => {
 
         </div>
       </div>
-      
-      <OpenPositions />
 
       <Footer />
     </main>
