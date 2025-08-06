@@ -91,7 +91,7 @@ const Contact = () => {
     },
     {
       title: "Studio Location",
-      value: "Creative District, Downtown",
+      value: "New York City, NY",
       description: "Available for local shoots and consultations",
       icon: "📍"
     }

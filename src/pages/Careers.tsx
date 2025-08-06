@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Briefcase, MapPin, Clock, DollarSign, Users, Building } from 'lucide-react';
+import { Briefcase, MapPin, Clock, DollarSign, Users, Building, Upload } from 'lucide-react';
 
 interface Job {
   id: string;
@@ -36,6 +36,8 @@ const Careers = () => {
     cover_letter: '',
     portfolio_url: ''
   });
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -62,12 +64,58 @@ const Careers = () => {
     setIsDialogOpen(true);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check file type and size
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      
+      if (!allowedTypes.includes(file.type)) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please upload a PDF or Word document.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      if (file.size > maxSize) {
+        toast({
+          title: "File Too Large",
+          description: "Please upload a file smaller than 5MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setResumeFile(file);
+    }
+  };
+
   const handleSubmitApplication = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedJob) return;
+    setIsUploading(true);
 
     try {
+      let resume_url = null;
+
+      // Upload resume if provided
+      if (resumeFile) {
+        const fileExt = resumeFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${formData.name.replace(/\s+/g, '-')}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('resumes')
+          .upload(fileName, resumeFile);
+
+        if (uploadError) throw uploadError;
+        resume_url = fileName;
+      }
+
+      // Insert application
       const { error } = await supabase
         .from('job_applications')
         .insert({
@@ -77,17 +125,33 @@ const Careers = () => {
           phone: formData.phone,
           cover_letter: formData.cover_letter,
           portfolio_url: formData.portfolio_url,
+          resume_url: resume_url,
         });
 
       if (error) throw error;
 
+      // Send confirmation email
+      try {
+        await supabase.functions.invoke('send-application-email', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            jobTitle: selectedJob.title,
+          }
+        });
+      } catch (emailError) {
+        console.error('Error sending confirmation email:', emailError);
+        // Don't fail the application if email fails
+      }
+
       toast({
         title: "Application Submitted!",
-        description: "We'll review your application and get back to you soon.",
+        description: "We'll review your application and get back to you soon. Check your email for confirmation.",
       });
 
       setIsDialogOpen(false);
       setFormData({ name: '', email: '', phone: '', cover_letter: '', portfolio_url: '' });
+      setResumeFile(null);
     } catch (error) {
       console.error('Error submitting application:', error);
       toast({
@@ -95,6 +159,8 @@ const Careers = () => {
         description: "There was an error submitting your application. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -310,6 +376,33 @@ const Careers = () => {
             </div>
 
             <div>
+              <Label htmlFor="resume">Resume (PDF or Word) *</Label>
+              <div className="border border-border rounded p-4 bg-background">
+                <div className="flex items-center gap-3">
+                  <Upload className="h-5 w-5 text-muted-foreground" />
+                  <div className="flex-1">
+                    <input
+                      id="resume"
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                      className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                      required
+                    />
+                  </div>
+                </div>
+                {resumeFile && (
+                  <p className="text-sm text-primary mt-2 flex items-center gap-2">
+                    <span>✓ {resumeFile.name}</span>
+                  </p>
+                )}
+                <p className="text-xs text-muted-foreground mt-2">
+                  Accepted formats: PDF, DOC, DOCX (max 5MB)
+                </p>
+              </div>
+            </div>
+
+            <div>
               <Label htmlFor="cover_letter">Cover Letter *</Label>
               <Textarea
                 id="cover_letter"
@@ -322,10 +415,10 @@ const Careers = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <Button type="submit" className="flex-1">
-                Submit Application
+              <Button type="submit" className="flex-1" disabled={isUploading}>
+                {isUploading ? "Submitting..." : "Submit Application"}
               </Button>
-              <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isUploading}>
                 Cancel
               </Button>
             </div>

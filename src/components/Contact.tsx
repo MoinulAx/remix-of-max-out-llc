@@ -57,7 +57,7 @@ const Contact: React.FC<ContactProps> = ({ className }) => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Location</h3>
-                    <p className="text-muted-foreground">San Francisco, CA</p>
+                    <p className="text-muted-foreground">New York City, NY</p>
                   </div>
                 </div>
               </div>
@@ -119,9 +119,12 @@ const Contact: React.FC<ContactProps> = ({ className }) => {
                   ></textarea>
                 </div>
                 
-                <button className="w-full bg-primary text-primary-foreground py-3 px-6 font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
-                  Send Message
-                </button>
+                 <a 
+                   href="/contact" 
+                   className="w-full bg-primary text-primary-foreground py-3 px-6 font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 block text-center"
+                 >
+                   Get In Touch
+                 </a>
               </CardContent>
             </Card>
           </FadeIn>
