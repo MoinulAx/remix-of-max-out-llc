@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { sendQuoteEmail } from '@/lib/emailjs';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -36,16 +37,15 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, serviceType = 
 
       if (error) throw error;
 
-      // Send confirmation email
-      await supabase.functions.invoke('send-quote-email', {
-        body: {
-          name: formData.name,
-          email: formData.email,
-          serviceType: serviceType,
-          budgetRange: formData.budget_range,
-          projectTimeline: formData.project_timeline,
-          message: formData.message
-        }
+      // Send confirmation email via EmailJS
+      await sendQuoteEmail({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        serviceType: serviceType,
+        budgetRange: formData.budget_range,
+        projectTimeline: formData.project_timeline,
+        message: formData.message
       });
 
       toast({

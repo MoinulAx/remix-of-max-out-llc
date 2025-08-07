@@ -7,6 +7,7 @@ import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { sendContactEmail } from '@/lib/emailjs';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -42,14 +43,15 @@ const Contact = () => {
 
       if (error) throw error;
 
-      // Send confirmation email
-      await supabase.functions.invoke('send-contact-email', {
-        body: {
-          name: formData.name,
-          email: formData.email,
-          service: formData.service,
-          message: formData.message
-        }
+      // Send confirmation email via EmailJS
+      await sendContactEmail({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.service,
+        budget: formData.budget,
+        timeline: formData.timeline,
+        message: formData.message
       });
 
       toast({
