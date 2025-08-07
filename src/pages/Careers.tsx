@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { sendApplicationEmail } from '@/lib/emailjs';
 import { Briefcase, MapPin, Clock, DollarSign, Users, Building, Upload } from 'lucide-react';
 
 interface Job {
@@ -132,12 +133,10 @@ const Careers = () => {
 
       // Send confirmation email
       try {
-        await supabase.functions.invoke('send-application-email', {
-          body: {
-            name: formData.name,
-            email: formData.email,
-            jobTitle: selectedJob.title,
-          }
+        await sendApplicationEmail({
+          name: formData.name,
+          email: formData.email,
+          jobTitle: selectedJob.title,
         });
       } catch (emailError) {
         console.error('Error sending confirmation email:', emailError);
