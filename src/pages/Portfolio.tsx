@@ -12,10 +12,52 @@ const Portfolio = () => {
 
   const photographyWork = [
     {
-      title: "Portrait Session",
-      category: "Portraits",
-      image: images.portraits.professionalPortraitShoot,
-      description: "Professional headshots and portrait photography"
+      title: "Dramatic Feather Portrait",
+      category: "Editorial",
+      image: images.portraits.dramaticFeatherPortrait,
+      description: "Bold editorial portrait with dramatic feather styling"
+    },
+    {
+      title: "Ethereal Beauty",
+      category: "Beauty",
+      image: images.portraits.etherealBlueHeadwrap,
+      description: "Artistic beauty portrait with cosmic makeup"
+    },
+    {
+      title: "Gold Nail Art Portrait",
+      category: "Fashion",
+      image: images.portraits.goldNailArtPortrait,
+      description: "Fashion portrait featuring intricate gold nail art"
+    },
+    {
+      title: "Golden Accents Beauty",
+      category: "Beauty",
+      image: images.portraits.goldenAccentsBeauty,
+      description: "Glamorous beauty shot with golden body art"
+    },
+    {
+      title: "Chain Jewelry Portrait",
+      category: "Jewelry",
+      image: images.portraits.chainJewelryPortrait,
+      description: "Editorial portrait showcasing ornate chain jewelry"
+    },
+    {
+      title: "Candlelight Glamour",
+      category: "Mood",
+      image: images.portraits.candlelightGlamour,
+      description: "Intimate portrait lit by candlelight ambiance"
+    },
+    {
+      title: "Vintage City Scene",
+      category: "Street",
+      image: images.cityscape.vintageCityClockScene,
+      description: "Urban street photography with vintage clock"
+    },
+    {
+      title: "Subway Station Moment",
+      category: "Street",
+      image: images.cityscape.subwayStationMoment,
+      description: "Candid moment captured in subway station"
     },
     {
       title: "Event Coverage",
