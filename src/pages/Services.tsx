@@ -94,7 +94,7 @@ const Services = () => {
               <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {photographyServices.map((service, index) => (
                 <FadeIn key={service.title} delay={200 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
@@ -112,11 +112,11 @@ const Services = () => {
                         ))}
                       </ul>
                       <div className="pt-4 border-t border-border">
-                        <div className="flex justify-between items-center">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                           <span className="text-lg font-bold text-primary">{service.startingPrice}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-6 py-2 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]"
+                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
                           >
                             Request Quote
                           </button>
@@ -136,7 +136,7 @@ const Services = () => {
               <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {webServices.map((service, index) => (
                 <FadeIn key={service.title} delay={400 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
@@ -154,11 +154,11 @@ const Services = () => {
                         ))}
                       </ul>
                       <div className="pt-4 border-t border-border">
-                        <div className="flex justify-between items-center">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                           <span className="text-lg font-bold text-primary">{service.startingPrice}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-6 py-2 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)]"
+                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
                           >
                             Request Quote
                           </button>

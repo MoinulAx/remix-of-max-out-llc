@@ -30,12 +30,12 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
     <footer className={cn('py-8 bg-background border-t', className)}>
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center space-x-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
             <Link to="/" className="text-lg font-medium tracking-tight">
               RummSpace
             </Link>
-            <div className="hidden md:flex space-x-6">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               <button
                 onClick={() => scrollToSection('home')} 
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -54,11 +54,23 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
               >
                 Portfolio
               </Link>
+              <Link 
+                to="/about"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                About
+              </Link>
+              <Link 
+                to="/contact"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Contact
+              </Link>
             </div>
           </div>
           
-          <div className="flex items-center space-x-6">
-            <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <div className="flex space-x-4">
               <a 
                 href="https://instagram.com/rummspace" 
                 target="_blank" 
@@ -103,7 +115,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
               </a>
             </div>
             
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground text-center">
               &copy; {new Date().getFullYear()} RummSpace
             </div>
           </div>

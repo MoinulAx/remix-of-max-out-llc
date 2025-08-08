@@ -87,13 +87,13 @@ const About = () => {
 
           {/* Section Navigation */}
           <FadeIn delay={100} className="flex justify-center mb-16">
-            <div className="flex flex-wrap justify-center bg-card shadow-[var(--shadow-card)] p-1 gap-1">
+            <div className="flex flex-wrap justify-center bg-card shadow-[var(--shadow-card)] p-1 gap-1 mx-4">
               {sections.map((section) => (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
                   className={cn(
-                    "px-4 py-2 text-sm font-semibold transition-all duration-300",
+                    "px-3 py-2 text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap",
                     activeSection === section.id
                       ? "bg-primary text-primary-foreground shadow-[var(--shadow-sharp)]"
                       : "text-muted-foreground hover:text-foreground"
@@ -123,7 +123,7 @@ const About = () => {
                     </p>
                   </div>
                 </div>
-                <div className="relative h-96 overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
+                <div className="relative h-64 md:h-96 overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
                   <img 
                     src="/lovable-uploads/34a58283-8b82-48f9-88f4-2c88b069921d.png" 
                     alt="Rummy at work"

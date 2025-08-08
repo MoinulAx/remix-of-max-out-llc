@@ -67,14 +67,14 @@ const Portfolio = () => {
           </FadeIn>
 
           {/* Tab Navigation */}
-          <FadeIn delay={100} className="flex justify-center mb-12">
-            <div className="flex bg-card shadow-[var(--shadow-card)] p-1">
+          <FadeIn delay={100} className="flex justify-center mb-12 px-4">
+            <div className="flex flex-wrap justify-center bg-card shadow-[var(--shadow-card)] p-1 gap-1">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "px-6 py-3 font-semibold transition-all duration-300",
+                    "px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-300 whitespace-nowrap",
                     activeTab === tab.id
                       ? "bg-primary text-primary-foreground shadow-[var(--shadow-sharp)]"
                       : "text-muted-foreground hover:text-foreground"
