@@ -9,10 +9,10 @@ const Download = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <BackgroundImage className="min-h-screen flex items-center justify-center">
+      <BackgroundImage overlayOpacity={0.6} className="min-h-screen flex items-center justify-center">
         <div className="container mx-auto px-4 text-center">
           <FadeIn direction="up" delay={200}>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-6">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-primary-foreground mb-6">
               Download the App
             </h1>
           </FadeIn>
@@ -27,10 +27,10 @@ const Download = () => {
           
           <FadeIn direction="up" delay={600}>
             <div className="max-w-3xl mx-auto space-y-6">
-              <p className="text-xl md:text-2xl text-white/90 font-light leading-relaxed">
+              <p className="text-xl md:text-2xl text-primary-foreground/90 font-light leading-relaxed">
                 We're crafting an exceptional mobile experience
               </p>
-              <p className="text-lg text-white/70 leading-relaxed">
+              <p className="text-lg text-primary-foreground/80 leading-relaxed">
                 Stay tuned for the launch of our mobile application that will bring 
                 all of our services directly to your fingertips.
               </p>
