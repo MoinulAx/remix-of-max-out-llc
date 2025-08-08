@@ -10,68 +10,7 @@ import { images } from '@/assets/images';
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('photography');
 
-  const photographyWork = [
-    {
-      title: "Dramatic Feather Portrait",
-      category: "Editorial",
-      image: images.portraits.dramaticFeatherPortrait,
-      description: "Bold editorial portrait with dramatic feather styling"
-    },
-    {
-      title: "Ethereal Beauty",
-      category: "Beauty",
-      image: images.portraits.etherealBlueHeadwrap,
-      description: "Artistic beauty portrait with cosmic makeup"
-    },
-    {
-      title: "Gold Nail Art Portrait",
-      category: "Fashion",
-      image: images.portraits.goldNailArtPortrait,
-      description: "Fashion portrait featuring intricate gold nail art"
-    },
-    {
-      title: "Golden Accents Beauty",
-      category: "Beauty",
-      image: images.portraits.goldenAccentsBeauty,
-      description: "Glamorous beauty shot with golden body art"
-    },
-    {
-      title: "Chain Jewelry Portrait",
-      category: "Jewelry",
-      image: images.portraits.chainJewelryPortrait,
-      description: "Editorial portrait showcasing ornate chain jewelry"
-    },
-    {
-      title: "Candlelight Glamour",
-      category: "Mood",
-      image: images.portraits.candlelightGlamour,
-      description: "Intimate portrait lit by candlelight ambiance"
-    },
-    {
-      title: "Vintage City Scene",
-      category: "Street",
-      image: images.cityscape.vintageCityClockScene,
-      description: "Urban street photography with vintage clock"
-    },
-    {
-      title: "Subway Station Moment",
-      category: "Street",
-      image: images.cityscape.subwayStationMoment,
-      description: "Candid moment captured in subway station"
-    },
-    {
-      title: "Event Coverage",
-      category: "Events",
-      image: images.events.corporateEventPhotography,
-      description: "Complete event documentation and highlights"
-    },
-    {
-      title: "Product Shoot",
-      category: "Product",
-      image: images.products.commercialProductPhotography,
-      description: "High-quality product photography for brands"
-    }
-  ];
+  const photographyWork: Array<any> = []; // moved to albums structure
 
   const webProjects = [
     {
@@ -92,6 +31,64 @@ const Portfolio = () => {
     { id: 'photography', label: 'Photography' },
     { id: 'videography', label: 'Videography' },
     { id: 'web', label: 'Web Projects' }
+  ];
+
+  // Albums grouped by person/series
+  const albums = [
+    {
+      id: 'aqua-headwrap',
+      name: 'Aqua Headwrap Series',
+      person: 'Model — Blue Headwrap',
+      cover: images.portraits.etherealBlueHeadwrap,
+      photos: [
+        '/lovable-uploads/dd63bc8c-851a-451c-8330-82b1b31829b2.png',
+        '/lovable-uploads/23433dc1-77c1-4a75-9af7-472f398955e1.png',
+        '/lovable-uploads/a7d5a05f-c4e1-4c2d-a78f-cf155f1f6f2d.png',
+        '/lovable-uploads/f7afd1ed-fa8c-4e1b-af72-7dcfa398c9cd.png',
+        '/lovable-uploads/ad08e91d-3ee2-44f6-af1d-069b15d2c318.png',
+        '/lovable-uploads/7e6cf1cd-a5e2-41be-a479-484862aa56f2.png',
+        images.portraits.etherealBlueHeadwrap
+      ]
+    },
+    {
+      id: 'feather-editorial',
+      name: 'Feather Editorial Series',
+      person: 'Model — Feather Styling',
+      cover: images.portraits.dramaticFeatherPortrait,
+      photos: [
+        images.portraits.dramaticFeatherPortrait,
+        images.portraits.boldFeatherEditorial,
+        images.portraits.duplicateFeatherShoot
+      ]
+    },
+    {
+      id: 'gold-nail-art',
+      name: 'Gold Nail Art',
+      person: 'Model — Fashion',
+      cover: images.portraits.goldNailArtPortrait,
+      photos: [images.portraits.goldNailArtPortrait]
+    },
+    {
+      id: 'pink-beauty',
+      name: 'Pink Backdrop Beauty',
+      person: 'Model — Beauty',
+      cover: '/lovable-uploads/373096af-ca0a-4bfb-9ca8-15f70d6a3bc1.png',
+      photos: ['/lovable-uploads/373096af-ca0a-4bfb-9ca8-15f70d6a3bc1.png']
+    },
+    {
+      id: 'city-street',
+      name: 'City & Street',
+      person: 'New York',
+      cover: images.cityscape.vintageCityClockScene,
+      photos: [images.cityscape.vintageCityClockScene, images.cityscape.subwayStationMoment]
+    },
+    {
+      id: 'client-work',
+      name: 'Client Work',
+      person: 'Events & Products',
+      cover: images.events.corporateEventPhotography,
+      photos: [images.events.corporateEventPhotography, images.products.commercialProductPhotography]
+    }
   ];
 
   return (
@@ -131,23 +128,27 @@ const Portfolio = () => {
 
           {/* Photography Tab */}
           {activeTab === 'photography' && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {photographyWork.map((item, index) => (
-                <FadeIn key={item.title} delay={200 + (index * 100)}>
-                  <Card className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                    <div className="aspect-square overflow-hidden">
-                      <img 
-                        src={item.image} 
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
-                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground">{item.description}</p>
-                    </CardContent>
-                  </Card>
+            <div className="space-y-12">
+              {albums.map((album, aIndex) => (
+                <FadeIn key={album.id} delay={200 + aIndex * 100}>
+                  <div className="mb-4">
+                    <h3 className="text-2xl font-bold mb-1">{album.name}</h3>
+                    <p className="text-muted-foreground">{album.person}</p>
+                  </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {album.photos.map((src, index) => (
+                      <Card key={index} className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
+                        <div className="aspect-square overflow-hidden">
+                          <img 
+                            src={src} 
+                            alt={`${album.name} photo ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
                 </FadeIn>
               ))}
             </div>

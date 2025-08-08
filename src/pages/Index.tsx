@@ -6,6 +6,7 @@ import About from '@/components/About';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
+import { images } from '@/assets/images';
 
 const Index = () => {
   useEffect(() => {
@@ -40,6 +41,19 @@ const Index = () => {
     <main className="relative">
       <Header />
       <Hero />
+
+      {/* Second picture on the main page - Time picture */}
+      <section aria-label="Featured city clock" className="relative">
+        <div className="w-full h-[40vh] md:h-[60vh] overflow-hidden">
+          <img 
+            src={images.cityscape.vintageCityClockScene} 
+            alt="Vintage city clock street scene" 
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
+        </div>
+      </section>
+
       <About />
 
       <section className="py-16 md:py-24">

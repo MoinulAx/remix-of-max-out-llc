@@ -13,8 +13,8 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
     <section className={cn('relative min-h-screen flex items-center overflow-hidden', className)}>
       <div className="absolute inset-0 -z-10">
         <img 
-          src={images.backgrounds.luxuryOrangeryInterior} 
-          alt="Orangery" 
+          src={images.cityscape.subwayStationMoment} 
+          alt="Subway station motion blur" 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/30"></div>
