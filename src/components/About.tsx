@@ -2,6 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import FadeIn from './animations/FadeIn';
+import { images } from '@/assets/images';
 
 interface AboutProps {
   className?: string;
@@ -53,7 +54,7 @@ const About: React.FC<AboutProps> = ({ className }) => {
           <FadeIn delay={150} className="md:col-span-7">
             <div className="relative h-[500px] lg:h-[600px] w-full rounded-lg overflow-hidden">
               <img 
-                src="/lovable-uploads/47f9a1d0-4458-400a-8fc0-79adf093cf18.png"
+                src={images.about.interior}
                 alt="Interior with palm trees and ornate architecture"
                 className="w-full h-full object-cover"
               />

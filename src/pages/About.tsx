@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { images } from '@/assets/images';
 
 const About = () => {
   const [activeSection, setActiveSection] = useState('story');
@@ -125,7 +126,7 @@ const About = () => {
                 </div>
                 <div className="relative h-64 md:h-96 overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
                   <img 
-                    src="/lovable-uploads/34a58283-8b82-48f9-88f4-2c88b069921d.png" 
+                    src={images.about.rummyAtWork} 
                     alt="Rummy at work"
                     className="w-full h-full object-cover"
                   />

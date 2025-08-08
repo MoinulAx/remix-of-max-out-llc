@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent } from '@/components/ui/card';
+import { images } from '@/assets/images';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('photography');
@@ -13,19 +14,19 @@ const Portfolio = () => {
     {
       title: "Portrait Session",
       category: "Portraits",
-      image: "/lovable-uploads/34a58283-8b82-48f9-88f4-2c88b069921d.png",
+      image: images.portraits.portraitSession,
       description: "Professional headshots and portrait photography"
     },
     {
       title: "Event Coverage",
       category: "Events",
-      image: "/lovable-uploads/af28398b-9e23-4e2b-9de1-bda457e09fd8.png",
+      image: images.events.eventCoverage,
       description: "Complete event documentation and highlights"
     },
     {
       title: "Product Shoot",
       category: "Product",
-      image: "/lovable-uploads/dabbf929-5dd0-4794-a011-fe43bf4b3418.png",
+      image: images.products.productShoot,
       description: "High-quality product photography for brands"
     }
   ];
@@ -34,13 +35,13 @@ const Portfolio = () => {
     {
       title: "E-commerce Platform",
       category: "E-commerce",
-      image: "/lovable-uploads/47f9a1d0-4458-400a-8fc0-79adf093cf18.png",
+      image: images.webProjects.ecommercePlatform,
       description: "Modern online store with full payment integration"
     },
     {
       title: "Portfolio Website",
       category: "Portfolio",
-      image: "/lovable-uploads/a0278ce1-b82d-4ed6-a186-14a9503ef65c.png",
+      image: images.backgrounds.orangeryMain,
       description: "Responsive portfolio site for creative professionals"
     }
   ];

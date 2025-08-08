@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import FadeIn from './animations/FadeIn';
 import { Link } from 'react-router-dom';
+import { images } from '@/assets/images';
 
 interface HeroProps {
   className?: string;
@@ -12,7 +13,7 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
     <section className={cn('relative min-h-screen flex items-center overflow-hidden', className)}>
       <div className="absolute inset-0 -z-10">
         <img 
-          src="/lovable-uploads/a0278ce1-b82d-4ed6-a186-14a9503ef65c.png" 
+          src={images.backgrounds.orangeryMain} 
           alt="Orangery" 
           className="w-full h-full object-cover"
         />

@@ -5,6 +5,7 @@ import FadeIn from './animations/FadeIn';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { images } from '@/assets/images';
 
 interface GapProps {
   className?: string;
@@ -95,7 +96,7 @@ const Gap: React.FC<GapProps> = ({ className }) => {
             <div className="relative">
               <div className="w-full h-[500px] overflow-hidden">
                 <img 
-                  src="/lovable-uploads/dabbf929-5dd0-4794-a011-fe43bf4b3418.png" 
+                  src={images.portfolio.orangeryGallery} 
                   alt="Beautiful orangery with palm trees and plants" 
                   className="w-full h-full object-cover"
                 />

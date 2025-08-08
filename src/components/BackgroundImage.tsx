@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { images } from '@/assets/images';
 
 interface BackgroundImageProps {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({
     <section className={cn('relative', className)}>
       <div className="absolute inset-0 -z-10">
         <img 
-          src="/lovable-uploads/a0278ce1-b82d-4ed6-a186-14a9503ef65c.png" 
+          src={images.backgrounds.orangeryMain} 
           alt="Background" 
           className="w-full h-full object-cover"
         />
