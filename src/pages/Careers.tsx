@@ -30,6 +30,7 @@ const Careers = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isGeneralApplicationOpen, setIsGeneralApplicationOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -116,7 +117,7 @@ const Careers = () => {
         resume_url = fileName;
       }
 
-      // Insert application
+      // Insert application into database first (ensure data persistence)
       const { error } = await supabase
         .from('job_applications')
         .insert({
@@ -131,7 +132,7 @@ const Careers = () => {
 
       if (error) throw error;
 
-      // Send confirmation email
+      // Send confirmation email (don't fail if this fails)
       try {
         await sendApplicationEmail({
           name: formData.name,
@@ -140,12 +141,12 @@ const Careers = () => {
         });
       } catch (emailError) {
         console.error('Error sending confirmation email:', emailError);
-        // Don't fail the application if email fails
+        // Continue - application is still stored in database
       }
 
       toast({
         title: "Application Submitted!",
-        description: "We'll review your application and get back to you soon. Check your email for confirmation.",
+        description: "We'll review your application and get back to you soon.",
       });
 
       setIsDialogOpen(false);
@@ -153,6 +154,78 @@ const Careers = () => {
       setResumeFile(null);
     } catch (error) {
       console.error('Error submitting application:', error);
+      toast({
+        title: "Error",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleGeneralApplication = () => {
+    setSelectedJob(null);
+    setIsGeneralApplicationOpen(true);
+  };
+
+  const handleSubmitGeneralApplication = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUploading(true);
+
+    try {
+      let resume_url = null;
+
+      // Upload resume if provided
+      if (resumeFile) {
+        const fileExt = resumeFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${formData.name.replace(/\s+/g, '-')}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('resumes')
+          .upload(fileName, resumeFile);
+
+        if (uploadError) throw uploadError;
+        resume_url = fileName;
+      }
+
+      // Insert general application into database first (ensure data persistence)
+      const { error } = await supabase
+        .from('job_applications')
+        .insert({
+          job_id: null, // null for general applications
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          cover_letter: formData.cover_letter,
+          portfolio_url: formData.portfolio_url,
+          resume_url: resume_url,
+        });
+
+      if (error) throw error;
+
+      // Send confirmation email (don't fail if this fails)
+      try {
+        await sendApplicationEmail({
+          name: formData.name,
+          email: formData.email,
+          jobTitle: 'General Application',
+        });
+      } catch (emailError) {
+        console.error('Error sending confirmation email:', emailError);
+        // Continue - application is still stored in database
+      }
+
+      toast({
+        title: "Application Submitted!",
+        description: "Thank you for your interest! We'll keep your information on file for future opportunities.",
+      });
+
+      setIsGeneralApplicationOpen(false);
+      setFormData({ name: '', email: '', phone: '', cover_letter: '', portfolio_url: '' });
+      setResumeFile(null);
+    } catch (error) {
+      console.error('Error submitting general application:', error);
       toast({
         title: "Error",
         description: "There was an error submitting your application. Please try again.",
@@ -308,7 +381,7 @@ const Careers = () => {
                       We're always looking for talented individuals to join our team. 
                       Send us your resume and we'll keep you in mind for future opportunities.
                     </p>
-                    <Button variant="outline">
+                    <Button variant="outline" onClick={handleGeneralApplication}>
                       Send General Application
                     </Button>
                   </CardContent>
@@ -418,6 +491,112 @@ const Careers = () => {
                 {isUploading ? "Submitting..." : "Submit Application"}
               </Button>
               <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isUploading}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* General Application Dialog */}
+      <Dialog open={isGeneralApplicationOpen} onOpenChange={setIsGeneralApplicationOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>General Application</DialogTitle>
+            <DialogDescription>
+              Submit your information and we'll keep you in mind for future opportunities that match your skills.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <form onSubmit={handleSubmitGeneralApplication} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="general-name">Full Name *</Label>
+                <Input
+                  id="general-name"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="general-email">Email *</Label>
+                <Input
+                  id="general-email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="general-phone">Phone Number</Label>
+              <Input
+                id="general-phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="general-portfolio">Portfolio URL</Label>
+              <Input
+                id="general-portfolio"
+                type="url"
+                placeholder="https://your-portfolio.com"
+                value={formData.portfolio_url}
+                onChange={(e) => setFormData({ ...formData, portfolio_url: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="general-resume">Resume (PDF or Word) *</Label>
+              <div className="border border-border rounded p-4 bg-background">
+                <div className="flex items-center gap-3">
+                  <Upload className="h-5 w-5 text-muted-foreground" />
+                  <div className="flex-1">
+                    <input
+                      id="general-resume"
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                      className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                      required
+                    />
+                  </div>
+                </div>
+                {resumeFile && (
+                  <p className="text-sm text-primary mt-2 flex items-center gap-2">
+                    <span>✓ {resumeFile.name}</span>
+                  </p>
+                )}
+                <p className="text-xs text-muted-foreground mt-2">
+                  Accepted formats: PDF, DOC, DOCX (max 5MB)
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="general-cover-letter">Tell us about yourself *</Label>
+              <Textarea
+                id="general-cover-letter"
+                placeholder="Tell us about your background, skills, and what type of opportunities interest you..."
+                value={formData.cover_letter}
+                onChange={(e) => setFormData({ ...formData, cover_letter: e.target.value })}
+                rows={6}
+                required
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <Button type="submit" className="flex-1" disabled={isUploading}>
+                {isUploading ? "Submitting..." : "Submit Application"}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setIsGeneralApplicationOpen(false)} disabled={isUploading}>
                 Cancel
               </Button>
             </div>
