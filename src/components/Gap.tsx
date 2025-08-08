@@ -96,7 +96,7 @@ const Gap: React.FC<GapProps> = ({ className }) => {
             <div className="relative">
               <div className="w-full h-[500px] overflow-hidden">
                 <img 
-                  src={images.portfolio.orangeryGallery} 
+                  src={images.portfolio.orangeryGalleryShowcase} 
                   alt="Beautiful orangery with palm trees and plants" 
                   className="w-full h-full object-cover"
                 />

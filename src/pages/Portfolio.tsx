@@ -14,19 +14,19 @@ const Portfolio = () => {
     {
       title: "Portrait Session",
       category: "Portraits",
-      image: images.portraits.portraitSession,
+      image: images.portraits.professionalPortraitShoot,
       description: "Professional headshots and portrait photography"
     },
     {
       title: "Event Coverage",
       category: "Events",
-      image: images.events.eventCoverage,
+      image: images.events.corporateEventPhotography,
       description: "Complete event documentation and highlights"
     },
     {
       title: "Product Shoot",
       category: "Product",
-      image: images.products.productShoot,
+      image: images.products.commercialProductPhotography,
       description: "High-quality product photography for brands"
     }
   ];
@@ -35,13 +35,13 @@ const Portfolio = () => {
     {
       title: "E-commerce Platform",
       category: "E-commerce",
-      image: images.webProjects.ecommercePlatform,
+      image: images.webProjects.modernEcommerceDashboard,
       description: "Modern online store with full payment integration"
     },
     {
       title: "Portfolio Website",
       category: "Portfolio",
-      image: images.backgrounds.orangeryMain,
+      image: images.backgrounds.luxuryOrangeryInterior,
       description: "Responsive portfolio site for creative professionals"
     }
   ];

@@ -126,7 +126,7 @@ const About = () => {
                 </div>
                 <div className="relative h-64 md:h-96 overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
                   <img 
-                    src={images.about.rummyAtWork} 
+                    src={images.about.rummyWorkingInStudio} 
                     alt="Rummy at work"
                     className="w-full h-full object-cover"
                   />

@@ -12,42 +12,42 @@ const Team = () => {
       role: "Founder & Lead Developer",
       bio: "Full-stack developer with 8+ years of experience building scalable web applications and leading development teams.",
       skills: ["React", "Node.js", "Python", "AWS", "UI/UX Design"],
-      image: images.team.rummy
+      image: images.team.founderRummyHeadshot
     },
     {
       name: "Sarah Chen",
       role: "Senior Designer",
       bio: "Creative designer specialized in brand identity and user experience with a passion for minimalist aesthetics.",
       skills: ["UI/UX", "Branding", "Figma", "Adobe Creative Suite"],
-      image: images.team.designer
+      image: images.team.sarahChenDesignerPortrait
     },
     {
       name: "Marcus Johnson",
       role: "Marketing Strategist",
       bio: "Digital marketing expert helping brands grow their online presence through data-driven strategies.",
       skills: ["SEO", "Content Marketing", "Analytics", "Social Media"],
-      image: images.team.marketer
+      image: images.team.marcusJohnsonMarketerPhoto
     },
     {
       name: "Elena Rodriguez",
       role: "Content Creator",
       bio: "Skilled photographer and videographer with expertise in storytelling through visual media and social content creation.",
       skills: ["Photography", "Video Editing", "Social Media", "Creative Direction"],
-      image: images.team.photographer
+      image: images.team.elenaRodriguezPhotographerHeadshot
     },
     {
       name: "Alex Thompson",
       role: "Technical Lead",
       bio: "Backend architect focused on building robust, scalable systems and optimizing performance for high-traffic applications.",
       skills: ["System Architecture", "Database Design", "DevOps", "Performance Optimization"],
-      image: images.team.architect
+      image: images.team.alexThompsonArchitectPortrait
     },
     {
       name: "Maya Patel",
       role: "Client Relations Manager",
       bio: "Project coordinator ensuring smooth communication and delivery, dedicated to exceeding client expectations on every project.",
       skills: ["Project Management", "Client Communication", "Quality Assurance", "Team Coordination"],
-      image: images.team.coordinator
+      image: images.team.mayaPatelCoordinatorPhoto
     }
   ];
 

@@ -19,7 +19,7 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({
     <section className={cn('relative', className)}>
       <div className="absolute inset-0 -z-10">
         <img 
-          src={images.backgrounds.orangeryMain} 
+          src={images.backgrounds.luxuryOrangeryInterior} 
           alt="Background" 
           className="w-full h-full object-cover"
         />
