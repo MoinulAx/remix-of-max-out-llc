@@ -2,7 +2,7 @@ import emailjs from '@emailjs/browser';
 
 // EmailJS Configuration
 export const EMAILJS_CONFIG = {
-  PUBLIC_KEY: 'YOUR_EMAILJS_PUBLIC_KEY', // Replace with your EmailJS public key
+  PUBLIC_KEY: 'An42SLd7uHrb9AN-r', // Public key provided by user
   SERVICE_ID: 'YOUR_SERVICE_ID', // Replace with your Gmail service ID
   TEMPLATES: {
     CONTACT: 'YOUR_CONTACT_TEMPLATE_ID', // Replace with your contact template ID

@@ -14,6 +14,9 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Careers from "./pages/Careers";
 import Download from "./pages/Download";
+import PortfolioPhotography from "./pages/PortfolioPhotography";
+import PortfolioVideography from "./pages/PortfolioVideography";
+import PortfolioWeb from "./pages/PortfolioWeb";
 
 const queryClient = new QueryClient();
 
@@ -25,8 +28,10 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/photography" element={<PortfolioPhotography />} />
+          <Route path="/portfolio/videography" element={<PortfolioVideography />} />
+          <Route path="/portfolio/web" element={<PortfolioWeb />} />
           <Route path="/services" element={<Services />} />
           <Route path="/photography" element={<Photography />} />
           <Route path="/web-development" element={<WebDevelopment />} />
