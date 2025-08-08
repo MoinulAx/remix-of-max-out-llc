@@ -1,18 +1,7 @@
-import emailjs from '@emailjs/browser';
+import { supabase } from '@/integrations/supabase/client';
 
-// EmailJS Configuration
-export const EMAILJS_CONFIG = {
-  PUBLIC_KEY: 'An42SLd7uHrb9AN-r', // Public key provided by user
-  SERVICE_ID: 'YOUR_SERVICE_ID', // Replace with your Gmail service ID
-  TEMPLATES: {
-    CONTACT: 'YOUR_CONTACT_TEMPLATE_ID', // Replace with your contact template ID
-    QUOTE: 'YOUR_QUOTE_TEMPLATE_ID', // Replace with your quote template ID
-    APPLICATION: 'YOUR_APPLICATION_TEMPLATE_ID' // Replace with your application template ID
-  }
-};
-
-// Initialize EmailJS
-emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+// Email sending via Supabase Edge Functions (Resend)
+// Keeps the same function names used across the app, but routes through secure backend functions.
 
 // Contact form email service
 export const sendContactEmail = async (formData: {
@@ -24,32 +13,20 @@ export const sendContactEmail = async (formData: {
   timeline?: string;
   message: string;
 }) => {
-  const templateParams = {
-    to_name: formData.name,
-    to_email: formData.email,
-    from_name: 'RummSpace',
-    from_email: 'rummspace@gmail.com',
-    client_name: formData.name,
-    client_email: formData.email,
-    client_phone: formData.phone || 'Not provided',
-    service_type: formData.service,
-    budget_range: formData.budget || 'Not specified',
-    project_timeline: formData.timeline || 'Not specified',
-    project_details: formData.message,
-    reply_to: 'rummspace@gmail.com'
-  };
+  const { data, error } = await supabase.functions.invoke('send-contact-email', {
+    body: {
+      name: formData.name,
+      email: formData.email,
+      service: formData.service,
+      message: formData.message,
+    },
+  });
 
-  try {
-    const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATES.CONTACT,
-      templateParams
-    );
-    return response;
-  } catch (error) {
-    console.error('EmailJS Contact Error:', error);
+  if (error) {
+    console.error('Edge Function Contact Error:', error);
     throw error;
   }
+  return data;
 };
 
 // Quote request email service
@@ -62,32 +39,22 @@ export const sendQuoteEmail = async (formData: {
   projectTimeline?: string;
   message?: string;
 }) => {
-  const templateParams = {
-    to_name: formData.name,
-    to_email: formData.email,
-    from_name: 'RummSpace',
-    from_email: 'rummspace@gmail.com',
-    client_name: formData.name,
-    client_email: formData.email,
-    client_phone: formData.phone || 'Not provided',
-    service_type: formData.serviceType,
-    budget_range: formData.budgetRange || 'Not specified',
-    project_timeline: formData.projectTimeline || 'Not specified',
-    project_details: formData.message || 'No additional details provided',
-    reply_to: 'rummspace@gmail.com'
-  };
+  const { data, error } = await supabase.functions.invoke('send-quote-email', {
+    body: {
+      name: formData.name,
+      email: formData.email,
+      serviceType: formData.serviceType,
+      budgetRange: formData.budgetRange,
+      projectTimeline: formData.projectTimeline,
+      message: formData.message,
+    },
+  });
 
-  try {
-    const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATES.QUOTE,
-      templateParams
-    );
-    return response;
-  } catch (error) {
-    console.error('EmailJS Quote Error:', error);
+  if (error) {
+    console.error('Edge Function Quote Error:', error);
     throw error;
   }
+  return data;
 };
 
 // Application email service
@@ -96,26 +63,17 @@ export const sendApplicationEmail = async (formData: {
   email: string;
   jobTitle: string;
 }) => {
-  const templateParams = {
-    to_name: formData.name,
-    to_email: formData.email,
-    from_name: 'RummSpace',
-    from_email: 'rummspace@gmail.com',
-    applicant_name: formData.name,
-    applicant_email: formData.email,
-    job_title: formData.jobTitle,
-    reply_to: 'rummspace@gmail.com'
-  };
+  const { data, error } = await supabase.functions.invoke('send-application-email', {
+    body: {
+      name: formData.name,
+      email: formData.email,
+      jobTitle: formData.jobTitle,
+    },
+  });
 
-  try {
-    const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATES.APPLICATION,
-      templateParams
-    );
-    return response;
-  } catch (error) {
-    console.error('EmailJS Application Error:', error);
+  if (error) {
+    console.error('Edge Function Application Error:', error);
     throw error;
   }
+  return data;
 };
