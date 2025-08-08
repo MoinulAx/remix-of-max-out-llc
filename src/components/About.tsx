@@ -54,8 +54,8 @@ const About: React.FC<AboutProps> = ({ className }) => {
           <FadeIn delay={150} className="md:col-span-7">
             <div className="relative h-[500px] lg:h-[600px] w-full rounded-lg overflow-hidden">
               <img 
-                src={images.about.modernInteriorDesign}
-                alt="Interior with palm trees and ornate architecture"
+                src={images.cityscape.subwayStationMoment}
+                alt="Blurred train in subway station street photography"
                 className="w-full h-full object-cover"
               />
             </div>
