@@ -38,6 +38,13 @@
     --gradient-secondary: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 89%));
     --shadow-sharp: 0 4px 20px -4px hsl(0 0% 9% / 0.25);
     --shadow-card: 0 2px 12px -2px hsl(0 0% 9% / 0.08);
+    
+    /* Oil painting artistic effects */
+    --paint-texture: 
+      radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(255,255,255,0.03) 0%, transparent 50%);
+    --brush-stroke: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
   }
 
   .dark {
@@ -136,6 +143,38 @@
   .stagger-3 {
     animation-delay: 0.3s;
   }
+
+  /* Oil painting artistic styles */
+  .paint-text {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.1);
+    background: var(--paint-texture);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+
+  .artistic-badge {
+    position: relative;
+    background: var(--paint-texture), var(--brush-stroke);
+    border-image: var(--brush-stroke) 2;
+  }
+
+  .artistic-badge::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--brush-stroke);
+    border-radius: inherit;
+    opacity: 0.3;
+    animation: paint-flow 3s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+
+  .animate-paint-drip {
+    animation: paint-drip 4s ease-in-out infinite;
+  }
 }
 
 @keyframes reveal {
@@ -146,6 +185,26 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes paint-flow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes paint-drip {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
   }
 }
 
