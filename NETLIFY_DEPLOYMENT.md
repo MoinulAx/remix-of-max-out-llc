@@ -27,12 +27,7 @@ VITE_SUPABASE_URL=https://toineffabdvvtwfngmkw.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvaW5lZmZhYmR2dnR3Zm5nbWt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMjY0NTMsImV4cCI6MjA2OTkwMjQ1M30.P2wcVpnvmCHpE1ua66ySZLyNOZR2HVgv1CBRGLxzVP8
 ```
 
-### Optional for EmailJS (if you want to use EmailJS instead of Supabase for emails)
-```
-VITE_EMAILJS_SERVICE_ID=service_rummspace
-VITE_EMAILJS_TEMPLATE_ID=template_contact
-VITE_EMAILJS_PUBLIC_KEY=An42SLd7uHrb9AN-r
-```
+**IMPORTANT**: These are the ONLY environment variables needed for your project. Do NOT add any VITE_EMAILJS variables since EmailJS configuration is hardcoded in the source code.
 
 ## Step 4: Custom Domain (Optional)
 1. In Netlify dashboard, go to Domain settings
@@ -73,6 +68,7 @@ Once connected, every push to your main branch will trigger a new deployment aut
 - Test locally with the same environment variables
 
 ### Email Forms Not Working
+- **EmailJS "recipients address is empty"**: Go to your EmailJS dashboard → Email Templates → Select your template → Settings tab → Add "TO" email address (e.g., your business email)
 - Check browser console for EmailJS errors
 - Verify Supabase Edge Functions are deployed
 - Test email templates in EmailJS dashboard
