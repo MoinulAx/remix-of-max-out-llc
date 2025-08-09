@@ -1,9 +1,11 @@
 import emailjs from '@emailjs/browser';
 import { supabase } from '@/integrations/supabase/client';
 
-// EmailJS Configuration
-const EMAILJS_SERVICE_ID = 'service_rummspace';
-const EMAILJS_TEMPLATE_ID = 'template_contact';
+// EmailJS Configuration - Update these with your actual IDs from EmailJS dashboard
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // Replace with your service ID from EmailJS dashboard
+const EMAILJS_CONTACT_TEMPLATE = 'YOUR_CONTACT_TEMPLATE_ID'; // Replace with your contact template ID  
+const EMAILJS_QUOTE_TEMPLATE = 'YOUR_QUOTE_TEMPLATE_ID'; // Replace with your quote template ID
+const EMAILJS_APPLICATION_TEMPLATE = 'YOUR_APPLICATION_TEMPLATE_ID'; // Replace with your application template ID
 const EMAILJS_PUBLIC_KEY = 'An42SLd7uHrb9AN-r';
 
 // Initialize EmailJS
@@ -25,7 +27,7 @@ export const sendContactEmail = async (formData: {
     // Try EmailJS first
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
+      EMAILJS_CONTACT_TEMPLATE,
       {
         from_name: formData.name,
         from_email: formData.email,
@@ -72,7 +74,7 @@ export const sendQuoteEmail = async (formData: {
     // Try EmailJS first
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      'template_quote',
+      EMAILJS_QUOTE_TEMPLATE,
       {
         from_name: formData.name,
         from_email: formData.email,
@@ -117,7 +119,7 @@ export const sendApplicationEmail = async (formData: {
     // Try EmailJS first
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      'template_application',
+      EMAILJS_APPLICATION_TEMPLATE,
       {
         from_name: formData.name,
         from_email: formData.email,
