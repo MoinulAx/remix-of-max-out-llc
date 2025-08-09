@@ -1,11 +1,11 @@
 import emailjs from '@emailjs/browser';
 import { supabase } from '@/integrations/supabase/client';
 
-// EmailJS Configuration - Update these with your actual IDs from EmailJS dashboard
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // Replace with your service ID from EmailJS dashboard
-const EMAILJS_CONTACT_TEMPLATE = 'YOUR_CONTACT_TEMPLATE_ID'; // Replace with your contact template ID  
-const EMAILJS_QUOTE_TEMPLATE = 'YOUR_QUOTE_TEMPLATE_ID'; // Replace with your quote template ID
-const EMAILJS_APPLICATION_TEMPLATE = 'YOUR_APPLICATION_TEMPLATE_ID'; // Replace with your application template ID
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = 'service_suhuy02';
+const EMAILJS_CONTACT_TEMPLATE = 'template_7gqt14r'; // Combined contact/quote template
+const EMAILJS_QUOTE_TEMPLATE = 'template_7gqt14r'; // Combined contact/quote template
+const EMAILJS_APPLICATION_TEMPLATE = 'template_gsqyins'; // Job application template
 const EMAILJS_PUBLIC_KEY = 'An42SLd7uHrb9AN-r';
 
 // Initialize EmailJS
