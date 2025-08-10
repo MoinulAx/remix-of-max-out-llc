@@ -5,12 +5,14 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { images } from '@/assets/images';
-import { useScreenshotProtection } from '@/hooks/useScreenshotProtection';
+import ImageModal from '@/components/ImageModal';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('photography');
-  useScreenshotProtection();
+  const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null);
+  const [expandedAlbums, setExpandedAlbums] = useState<Set<string>>(new Set());
 
   const photographyWork: Array<any> = []; // moved to albums structure
 
@@ -138,22 +140,49 @@ const Portfolio = () => {
                     <p className="text-muted-foreground">{album.person}</p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                    {album.photos.map((src, index) => (
-                      <Card key={index} className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 portfolio-protected portfolio-watermark relative">
+                    {(expandedAlbums.has(album.id) ? album.photos : album.photos.slice(0, 3)).map((src, index) => (
+                      <Card 
+                        key={index} 
+                        className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 cursor-pointer relative"
+                        onClick={() => setSelectedImage({ src, alt: `${album.name} photo ${index + 1}` })}
+                      >
                         <div className="aspect-square overflow-hidden relative">
                           <img 
                             src={src} 
                             alt={`${album.name} photo ${index + 1}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 portfolio-protected"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
                             draggable="false"
                             onContextMenu={(e) => e.preventDefault()}
                             onDragStart={(e) => e.preventDefault()}
                           />
+                          {/* Watermark */}
+                          <div className="absolute bottom-2 right-2 text-white/80 text-xs font-medium bg-black/50 px-1.5 py-0.5 rounded pointer-events-none">
+                            RummSpace
+                          </div>
                         </div>
                       </Card>
                     ))}
                   </div>
+                  {album.photos.length > 3 && (
+                    <div className="mt-4 text-center">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          const newExpanded = new Set(expandedAlbums);
+                          if (expandedAlbums.has(album.id)) {
+                            newExpanded.delete(album.id);
+                          } else {
+                            newExpanded.add(album.id);
+                          }
+                          setExpandedAlbums(newExpanded);
+                        }}
+                        className="text-sm"
+                      >
+                        {expandedAlbums.has(album.id) ? 'Show Less' : `See More (${album.photos.length - 3} more)`}
+                      </Button>
+                    </div>
+                  )}
                 </FadeIn>
               ))}
             </div>
@@ -202,6 +231,16 @@ const Portfolio = () => {
       </div>
 
       <Footer />
+      
+      {/* Image Modal */}
+      {selectedImage && (
+        <ImageModal
+          isOpen={!!selectedImage}
+          onClose={() => setSelectedImage(null)}
+          src={selectedImage.src}
+          alt={selectedImage.alt}
+        />
+      )}
     </main>
   );
 };

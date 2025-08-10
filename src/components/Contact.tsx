@@ -32,7 +32,7 @@ const Contact: React.FC<ContactProps> = ({ className }) => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Email</h3>
-                    <p className="text-muted-foreground">hello@rummy.dev</p>
+                    <p className="text-muted-foreground">rummspace@gmail.com</p>
                   </div>
                 </div>
 
@@ -44,7 +44,7 @@ const Contact: React.FC<ContactProps> = ({ className }) => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Phone</h3>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                    <p className="text-muted-foreground">(347) 460-3609</p>
                   </div>
                 </div>
 
@@ -57,7 +57,7 @@ const Contact: React.FC<ContactProps> = ({ className }) => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Location</h3>
-                    <p className="text-muted-foreground">New York City, NY</p>
+                    <p className="text-muted-foreground">538 Johnson Ave, Brooklyn NY 11237</p>
                   </div>
                 </div>
               </div>

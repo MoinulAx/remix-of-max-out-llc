@@ -8,10 +8,10 @@ import { images } from '@/assets/images';
 const Team = () => {
   const teamMembers = [
     {
-      name: "Rummy Developer",
-      role: "Founder & Lead Developer",
-      bio: "Full-stack developer with 8+ years of experience building scalable web applications and leading development teams.",
-      skills: ["React", "Node.js", "Python", "AWS", "UI/UX Design"],
+      name: "Moinul K",
+      role: "Founder, Developer & Photographer",
+      bio: "Versatile creative professional combining technical expertise in full-stack development with artistic vision in photography, delivering comprehensive digital solutions.",
+      skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design"],
       image: images.team.founderRummyHeadshot
     },
     {

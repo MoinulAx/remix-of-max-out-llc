@@ -3,10 +3,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
-import { useScreenshotProtection } from '@/hooks/useScreenshotProtection';
+
 
 const PortfolioVideography = () => {
-  useScreenshotProtection();
   
   return (
     <main className="relative">

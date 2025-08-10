@@ -105,7 +105,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
                 </svg>
               </a>
               <a 
-                href="mailto:hello@rummspace.com"
+                href="mailto:rummspace@gmail.com"
                 className="text-muted-foreground hover:text-foreground transition-colors p-1"
                 aria-label="Email"
               >
