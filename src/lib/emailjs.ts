@@ -32,9 +32,9 @@ export const sendContactEmail = async (formData: {
         from_name: formData.name,
         from_email: formData.email,
         phone: formData.phone || '',
-        service: formData.service,
-        budget_range: formData.budget || '',
-        project_timeline: formData.timeline || '',
+        service: formData.service ? `Service Requested: ${formData.service}` : '',
+        budget_range: formData.budget ? `Budget Range: ${formData.budget}` : '',
+        project_timeline: formData.timeline ? `Project Timeline: ${formData.timeline}` : '',
         message: formData.message,
       }
     );
@@ -79,9 +79,9 @@ export const sendQuoteEmail = async (formData: {
         from_name: formData.name,
         from_email: formData.email,
         phone: formData.phone || '',
-        service: formData.serviceType,
-        budget_range: formData.budgetRange || '',
-        project_timeline: formData.projectTimeline || '',
+        service: formData.serviceType ? `Service Requested: ${formData.serviceType}` : '',
+        budget_range: formData.budgetRange ? `Budget Range: ${formData.budgetRange}` : '',
+        project_timeline: formData.projectTimeline ? `Project Timeline: ${formData.projectTimeline}` : '',
         message: formData.message || '',
       }
     );
