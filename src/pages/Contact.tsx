@@ -91,19 +91,19 @@ const Contact = () => {
   const contactMethods = [
     {
       title: "Email",
-      value: "hello@rummspace.com",
+      value: "rummspace@gmail.com",
       description: "For project inquiries and collaborations",
       icon: "📧"
     },
     {
       title: "Phone",
-      value: "+1 (555) 123-4567",
+      value: "(347) 460-3609",
       description: "Available Mon-Fri, 9AM-6PM EST",
       icon: "📞"
     },
     {
       title: "Studio Location",
-      value: "New York City, NY",
+      value: "538 Johnson Ave, Brooklyn NY 11237",
       description: "Available for local shoots and consultations",
       icon: "📍"
     }
@@ -151,7 +151,7 @@ const Contact = () => {
                 <CardHeader>
                   <CardTitle className="text-2xl">Start Your Project</CardTitle>
                   <p className="text-muted-foreground">
-                    Fill out the form below and I'll get back to you within 24 hours.
+                    Fill out the form below and we'll get back to you within 24 hours.
                   </p>
                 </CardHeader>
                 <CardContent>
