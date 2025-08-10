@@ -3,16 +3,19 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
+import { useScreenshotProtection } from '@/hooks/useScreenshotProtection';
 
 const PortfolioVideography = () => {
+  useScreenshotProtection();
+  
   return (
     <main className="relative">
       <Header />
       <div className="pt-24 pb-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight">Videography</h1>
-            <Link to="/portfolio" className="px-4 py-2 bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+            <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold tracking-tight">Videography</h1>
+            <Link to="/portfolio" className="px-3 py-2 md:px-4 md:py-2 bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity text-sm md:text-base rounded-md">
               ← Back to Portfolio
             </Link>
           </div>

@@ -6,9 +6,11 @@ import Footer from '@/components/Footer';
 import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent } from '@/components/ui/card';
 import { images } from '@/assets/images';
+import { useScreenshotProtection } from '@/hooks/useScreenshotProtection';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('photography');
+  useScreenshotProtection();
 
   const photographyWork: Array<any> = []; // moved to albums structure
 
@@ -108,16 +110,16 @@ const Portfolio = () => {
 
           {/* Tab Navigation */}
           <FadeIn delay={100} className="flex justify-center mb-12 px-4">
-            <div className="flex flex-wrap justify-center bg-card shadow-[var(--shadow-card)] p-1 gap-1">
+            <div className="flex flex-wrap justify-center bg-card shadow-[var(--shadow-card)] p-1 gap-1 rounded-lg">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-300 whitespace-nowrap",
+                    "px-3 py-2 text-sm sm:text-base font-semibold transition-all duration-300 whitespace-nowrap rounded-md",
                     activeTab === tab.id
                       ? "bg-primary text-primary-foreground shadow-[var(--shadow-sharp)]"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   )}
                 >
                   {tab.label}
@@ -135,15 +137,18 @@ const Portfolio = () => {
                     <h3 className="text-2xl font-bold mb-1">{album.name}</h3>
                     <p className="text-muted-foreground">{album.person}</p>
                   </div>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                     {album.photos.map((src, index) => (
-                      <Card key={index} className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                        <div className="aspect-square overflow-hidden">
+                      <Card key={index} className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 portfolio-protected portfolio-watermark relative">
+                        <div className="aspect-square overflow-hidden relative">
                           <img 
                             src={src} 
                             alt={`${album.name} photo ${index + 1}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 portfolio-protected"
                             loading="lazy"
+                            draggable="false"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
                           />
                         </div>
                       </Card>
@@ -169,7 +174,7 @@ const Portfolio = () => {
 
           {/* Web Projects Tab */}
           {activeTab === 'web' && (
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {webProjects.map((item, index) => (
                 <FadeIn key={item.title} delay={200 + (index * 100)}>
                   <Card className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
@@ -180,11 +185,11 @@ const Portfolio = () => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <CardContent className="p-6">
+                    <CardContent className="p-4 md:p-6">
                       <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
-                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground mb-4">{item.description}</p>
-                      <button className="text-primary font-semibold hover:underline">
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground mb-4 text-sm md:text-base">{item.description}</p>
+                      <button className="text-primary font-semibold hover:underline text-sm md:text-base">
                         View Project →
                       </button>
                     </CardContent>

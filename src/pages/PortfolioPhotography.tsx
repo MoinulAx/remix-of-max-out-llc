@@ -4,8 +4,11 @@ import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+import { useScreenshotProtection } from '@/hooks/useScreenshotProtection';
 
 const PortfolioPhotography = () => {
+  useScreenshotProtection();
+  
   const albums = [
     {
       id: 'aqua-headwrap',
@@ -86,9 +89,9 @@ const PortfolioPhotography = () => {
       <Header />
       <div className="pt-24 pb-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight">Photography</h1>
-            <Link to="/portfolio" className="px-4 py-2 bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+            <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold tracking-tight">Photography</h1>
+            <Link to="/portfolio" className="px-3 py-2 md:px-4 md:py-2 bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity text-sm md:text-base rounded-md">
               ← Back to Portfolio
             </Link>
           </div>
@@ -100,15 +103,18 @@ const PortfolioPhotography = () => {
                   <h3 className="text-2xl font-bold mb-1">{album.name}</h3>
                   <p className="text-muted-foreground">{album.person}</p>
                 </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                   {album.photos.map((src, index) => (
-                    <Card key={index} className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                      <div className="aspect-square overflow-hidden">
+                    <Card key={index} className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 portfolio-protected portfolio-watermark relative">
+                      <div className="aspect-square overflow-hidden relative">
                         <img
                           src={src}
                           alt={`${album.name} photo ${index + 1}`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 portfolio-protected"
                           loading="lazy"
+                          draggable="false"
+                          onContextMenu={(e) => e.preventDefault()}
+                          onDragStart={(e) => e.preventDefault()}
                         />
                       </div>
                     </Card>

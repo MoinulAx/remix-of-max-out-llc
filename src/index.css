@@ -230,7 +230,76 @@ html.dark ::-webkit-scrollbar-thumb {
   display: none;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Screenshot Protection */
+  .portfolio-protected {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: none;
+  }
+
+  .portfolio-protected img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  .portfolio-protected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 1;
+    pointer-events: all;
+  }
+
+  /* Hide content when dev tools are open */
+  @media (max-device-width: 0px) {
+    .portfolio-protected {
+      display: none !important;
+    }
+  }
+
+  /* Prevent print screen */
+  .portfolio-protected {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @media print {
+    .portfolio-protected {
+      display: none !important;
+    }
+  }
+
+  /* Watermark overlay */
+  .portfolio-watermark::after {
+    content: 'RummSpace Portfolio';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: clamp(1rem, 4vw, 2rem);
+    color: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 2;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }

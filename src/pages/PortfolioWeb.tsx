@@ -5,8 +5,10 @@ import FadeIn from '@/components/animations/FadeIn';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { images } from '@/assets/images';
+import { useScreenshotProtection } from '@/hooks/useScreenshotProtection';
 
 const PortfolioWeb = () => {
+  useScreenshotProtection();
   const webProjects = [
     {
       title: 'E-commerce Platform',
