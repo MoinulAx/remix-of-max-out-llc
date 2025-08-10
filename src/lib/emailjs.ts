@@ -33,8 +33,8 @@ export const sendContactEmail = async (formData: {
         from_email: formData.email,
         phone: formData.phone || '',
         service: formData.service,
-        budget: formData.budget || '',
-        timeline: formData.timeline || '',
+        budget_range: formData.budget || '',
+        project_timeline: formData.timeline || '',
         message: formData.message,
       }
     );
@@ -79,7 +79,7 @@ export const sendQuoteEmail = async (formData: {
         from_name: formData.name,
         from_email: formData.email,
         phone: formData.phone || '',
-        service_type: formData.serviceType,
+        service: formData.serviceType,
         budget_range: formData.budgetRange || '',
         project_timeline: formData.projectTimeline || '',
         message: formData.message || '',
@@ -123,7 +123,7 @@ export const sendApplicationEmail = async (formData: {
       {
         from_name: formData.name,
         from_email: formData.email,
-        job_title: formData.jobTitle,
+        service_type: formData.jobTitle,
       }
     );
     return { success: true, provider: 'emailjs' };
