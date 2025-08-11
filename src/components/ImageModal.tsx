@@ -12,11 +12,11 @@ interface ImageModalProps {
 const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, src, alt }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] max-h-[95vh] w-auto h-auto p-0 overflow-hidden border-0 bg-transparent">
-        <div className="relative flex items-center justify-center min-h-[50vh]">
+      <DialogContent className="w-[100vw] h-[100vh] md:w-auto md:h-auto md:max-w-[95vw] md:max-h-[95vh] p-0 overflow-hidden border-0 bg-transparent">
+        <div className="relative flex items-center justify-center h-full md:min-h-[50vh]">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+            className="absolute top-3 right-3 md:top-4 md:right-4 z-50 p-3 md:p-2 bg-black/60 hover:bg-black/70 text-white rounded-full transition-colors"
             aria-label="Close modal"
           >
             <X size={20} />
@@ -24,7 +24,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, src, alt }) =>
           <img
             src={src}
             alt={alt}
-            className="max-w-full max-h-[90vh] object-contain portfolio-protected"
+            className="max-w-full max-h-[85vh] md:max-h-[90vh] object-contain portfolio-protected"
             draggable="false"
             onContextMenu={(e) => e.preventDefault()}
             onDragStart={(e) => e.preventDefault()}

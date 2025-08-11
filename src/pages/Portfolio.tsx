@@ -8,11 +8,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { images } from '@/assets/images';
 import ImageModal from '@/components/ImageModal';
+import WebProjectModal from '@/components/WebProjectModal';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('photography');
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null);
   const [expandedAlbums, setExpandedAlbums] = useState<Set<string>>(new Set());
+  const [selectedProject, setSelectedProject] = useState<{ title: string; category: string; image: string; description: string } | null>(null);
 
   const photographyWork: Array<any> = []; // moved to albums structure
 
@@ -90,10 +92,8 @@ const Portfolio = () => {
       id: 'client-work',
       name: 'Client Work',
       person: 'Events & Products',
-      cover: '/lovable-uploads/135A8314.jpg',
+      cover: '/lovable-uploads/135A8479.jpg',
       photos: [
-        '/lovable-uploads/135A8314.jpg',
-        '/lovable-uploads/135A8318.jpg',
         '/lovable-uploads/135A8479.jpg',
         '/lovable-uploads/135A8916.jpg',
         '/lovable-uploads/135A8948.jpg',
@@ -215,19 +215,28 @@ const Portfolio = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {webProjects.map((item, index) => (
                 <FadeIn key={item.title} delay={200 + (index * 100)}>
-                  <Card className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
+                  <Card 
+                    className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 cursor-pointer"
+                    onClick={() => setSelectedProject(item)}
+                    role="button"
+                    tabIndex={0}
+                  >
                     <div className="aspect-video overflow-hidden">
                       <img 
                         src={item.image} 
                         alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
                       />
                     </div>
                     <CardContent className="p-4 md:p-6">
                       <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
                       <h3 className="text-lg md:text-xl font-bold mb-2">{item.title}</h3>
                       <p className="text-muted-foreground mb-4 text-sm md:text-base">{item.description}</p>
-                      <button className="text-primary font-semibold hover:underline text-sm md:text-base">
+                      <button 
+                        className="text-primary font-semibold hover:underline text-sm md:text-base"
+                        onClick={(e) => { e.stopPropagation(); setSelectedProject(item); }}
+                      >
                         View Project →
                       </button>
                     </CardContent>
@@ -248,6 +257,15 @@ const Portfolio = () => {
           onClose={() => setSelectedImage(null)}
           src={selectedImage.src}
           alt={selectedImage.alt}
+        />
+      )}
+
+      {/* Web Project Modal */}
+      {selectedProject && (
+        <WebProjectModal
+          isOpen={!!selectedProject}
+          onClose={() => setSelectedProject(null)}
+          project={selectedProject}
         />
       )}
     </main>
