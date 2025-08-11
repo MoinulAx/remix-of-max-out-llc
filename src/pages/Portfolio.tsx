@@ -20,16 +20,16 @@ const Portfolio = () => {
 
   const webProjects = [
     {
-      title: "E-commerce Platform",
-      category: "E-commerce",
-      image: images.webProjects.modernEcommerceDashboard,
-      description: "Modern online store with full payment integration"
+      title: "Upcoming Project #1",
+      category: "Web Project — Coming Soon",
+      image: "/lovable-uploads/b35f30fe-e495-4a6a-96da-bf3887c2eee8.png",
+      description: "Preview coming soon. Stay tuned for the full case study."
     },
     {
-      title: "Portfolio Website",
-      category: "Portfolio",
-      image: images.backgrounds.luxuryOrangeryInterior,
-      description: "Responsive portfolio site for creative professionals"
+      title: "Upcoming Project #2",
+      category: "Web Project — Coming Soon",
+      image: "/lovable-uploads/9c25ad72-5dbb-49ae-8f01-aa60c6616ee2.png",
+      description: "Preview coming soon. Stay tuned for the full case study."
     }
   ];
 
@@ -64,15 +64,8 @@ const Portfolio = () => {
       photos: [
         images.portraits.dramaticFeatherPortrait,
         images.portraits.boldFeatherEditorial,
-        images.portraits.duplicateFeatherShoot
+        
       ]
-    },
-    {
-      id: 'gold-nail-art',
-      name: 'Gold Nail Art',
-      person: 'Model — Fashion',
-      cover: images.portraits.goldNailArtPortrait,
-      photos: [images.portraits.goldNailArtPortrait]
     },
     {
       id: 'pink-beauty',
@@ -94,8 +87,7 @@ const Portfolio = () => {
       person: 'Events & Products',
       cover: '/lovable-uploads/135A8479.jpg',
       photos: [
-        '/lovable-uploads/135A8479.jpg',
-        '/lovable-uploads/135A8916.jpg',
+        
         '/lovable-uploads/135A8948.jpg',
         '/lovable-uploads/135A9034.jpg',
         '/lovable-uploads/DSC_6799.jpg',

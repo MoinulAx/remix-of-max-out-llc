@@ -17,6 +17,7 @@ import Download from "./pages/Download";
 import PortfolioPhotography from "./pages/PortfolioPhotography";
 import PortfolioVideography from "./pages/PortfolioVideography";
 import PortfolioWeb from "./pages/PortfolioWeb";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/portfolio" element={<Portfolio />} />
