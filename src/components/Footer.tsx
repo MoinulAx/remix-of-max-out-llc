@@ -83,7 +83,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
                 </svg>
               </a>
               <a 
-                href="https://linkedin.com/in/rummy" 
+                href="www.linkedin.com/in/moinul-khan-647535238" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors p-1"
@@ -94,7 +94,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
                 </svg>
               </a>
               <a 
-                href="https://twitter.com/rummspace" 
+                href="https://x.com/RummSpace" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors p-1"
