@@ -90,8 +90,17 @@ const Portfolio = () => {
       id: 'client-work',
       name: 'Client Work',
       person: 'Events & Products',
-      cover: images.events.corporateEventPhotography,
-      photos: [images.events.corporateEventPhotography, images.products.commercialProductPhotography]
+      cover: '/lovable-uploads/135A8314.jpg',
+      photos: [
+        '/lovable-uploads/135A8314.jpg',
+        '/lovable-uploads/135A8318.jpg',
+        '/lovable-uploads/135A8479.jpg',
+        '/lovable-uploads/135A8916.jpg',
+        '/lovable-uploads/135A8948.jpg',
+        '/lovable-uploads/135A9034.jpg',
+        '/lovable-uploads/DSC_6799.jpg',
+        '/lovable-uploads/DSC_6828.jpg'
+      ]
     }
   ];
 

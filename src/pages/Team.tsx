@@ -1,10 +1,10 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React, { useEffect } from 'react';
+
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { images } from '@/assets/images';
+
 const Team = () => {
   const teamMembers = [
     {
@@ -12,46 +12,36 @@ const Team = () => {
       role: "Founder, Developer & Photographer",
       bio: "Versatile creative professional combining technical expertise in full-stack development with artistic vision in photography, delivering comprehensive digital solutions.",
       skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design"],
-      image: images.team.founderRummyHeadshot
+      image: "/lovable-uploads/ruman-profile.jpeg"
     },
     {
-      name: "Sarah Chen",
-      role: "Senior Designer",
-      bio: "Creative designer specialized in brand identity and user experience with a passion for minimalist aesthetics.",
-      skills: ["UI/UX", "Branding", "Figma", "Adobe Creative Suite"],
-      image: images.team.sarahChenDesignerPortrait
+      name: "Jonathan",
+      role: "Project Manager",
+      bio: "Dedicated to keeping projects on track and clients informed.",
+      skills: ["Project Management", "Client Communication", "Quality Assurance"],
+      image: "/placeholder.svg"
     },
     {
-      name: "Marcus Johnson",
-      role: "Marketing Strategist",
-      bio: "Digital marketing expert helping brands grow their online presence through data-driven strategies.",
-      skills: ["SEO", "Content Marketing", "Analytics", "Social Media"],
-      image: images.team.marcusJohnsonMarketerPhoto
+      name: "Chris",
+      role: "Designer",
+      bio: "Focuses on clean, user-centered design and brand consistency.",
+      skills: ["UI/UX", "Branding", "Figma"],
+      image: "/placeholder.svg"
     },
     {
-      name: "Elena Rodriguez",
-      role: "Content Creator",
-      bio: "Skilled photographer and videographer with expertise in storytelling through visual media and social content creation.",
-      skills: ["Photography", "Video Editing", "Social Media", "Creative Direction"],
-      image: images.team.elenaRodriguezPhotographerHeadshot
-    },
-    {
-      name: "Alex Thompson",
-      role: "Technical Lead",
-      bio: "Backend architect focused on building robust, scalable systems and optimizing performance for high-traffic applications.",
-      skills: ["System Architecture", "Database Design", "DevOps", "Performance Optimization"],
-      image: images.team.alexThompsonArchitectPortrait
-    },
-    {
-      name: "Maya Patel",
-      role: "Client Relations Manager",
-      bio: "Project coordinator ensuring smooth communication and delivery, dedicated to exceeding client expectations on every project.",
-      skills: ["Project Management", "Client Communication", "Quality Assurance", "Team Coordination"],
-      image: images.team.mayaPatelCoordinatorPhoto
+      name: "Zainab",
+      role: "Content & Social",
+      bio: "Creates compelling content and manages social engagement.",
+      skills: ["Content Writing", "Social Media", "Photography"],
+      image: "/placeholder.svg"
     }
   ];
 
-  return (
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+   return (
     <main className="relative">
       <Header />
       
