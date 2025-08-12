@@ -69,6 +69,7 @@ export type Database = {
           resume_url: string | null
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           cover_letter?: string | null
@@ -82,6 +83,7 @@ export type Database = {
           resume_url?: string | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           cover_letter?: string | null
@@ -95,6 +97,7 @@ export type Database = {
           resume_url?: string | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
