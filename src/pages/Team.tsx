@@ -13,8 +13,8 @@ const Team = () => {
       name: "Moinul K",
       role: "Founder, Developer & Photographer",
       bio: "Founder of RummSpace, is a Software Engineer and Media Creator experienced in backend, frontend, and full-stack development. With a background in networking, security, AV systems, and photo/video production, he builds scalable, secure applications and produces creative, high-impact media solutions.",
-      skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design"],
-      image: "/lovable-uploads/ruman-profile.jpeg",
+      skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design", "Auobe Lightroom", "Adobe Premiere Pro"],
+      image: "/lovable-uploads/moinul-pfp.jpeg",
       social: {
         instagram: "https://instagram.com/rummyshoots",
         linkedin: "https://www.linkedin.com/in/moinul-khan-647535238/",
@@ -25,8 +25,8 @@ const Team = () => {
       name: "Larry Lamouth",
       role: "Full Stack Developer & Cybersecurity Specialist",
       bio: "Full Stack Developer skilled in building scalable applications with React, Node.js, PostgreSQL, and Express. Currently expanding his expertise in cybersecurity, he combines technical excellence with strong communication to deliver impactful, real-world solutions.",
-      skills: ["Project Management", "Client Communication", "Quality Assurance"],
-      image: "/lovable-uploads/larry-lamouth.png",
+      skills: ["React", "Node.js", "PostgreSQL", "Express","WireShark"],
+      image: "/lovable-uploads/larrypic-main.jpeg",
       social: {
         linkedin: "https://www.linkedin.com/in/larryalamouth/", 
         website: "https://larrylamouth.com/"
