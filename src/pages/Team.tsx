@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import { Instagram, Linkedin, Globe, Music } from 'lucide-react';
 
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const Team = () => {
   const teamMembers = [
@@ -12,28 +14,45 @@ const Team = () => {
       role: "Founder, Developer & Photographer",
       bio: "Versatile creative professional combining technical expertise in full-stack development with artistic vision in photography, delivering comprehensive digital solutions.",
       skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design"],
-      image: "/lovable-uploads/ruman-profile.jpeg"
+      image: "/lovable-uploads/ruman-profile.jpeg",
+      social: {
+        instagram: "https://instagram.com/rummspace",
+        linkedin: "https://linkedin.com/in/moinulk",
+        website: "https://rummspace.com"
+      }
     },
     {
       name: "Jonathan",
       role: "Project Manager",
       bio: "Dedicated to keeping projects on track and clients informed.",
       skills: ["Project Management", "Client Communication", "Quality Assurance"],
-      image: "/placeholder.svg"
+      image: "/lovable-uploads/jonathan_profile_pic.png",
+      social: {
+        linkedin: "https://linkedin.com/in/jonathan"
+      }
     },
     {
       name: "Chris",
       role: "Designer",
       bio: "Focuses on clean, user-centered design and brand consistency.",
       skills: ["UI/UX", "Branding", "Figma"],
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      social: {
+        instagram: "https://instagram.com/chris.design",
+        website: "https://chris-portfolio.com"
+      }
     },
     {
       name: "Zainab",
       role: "Content & Social",
       bio: "Creates compelling content and manages social engagement.",
       skills: ["Content Writing", "Social Media", "Photography"],
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      social: {
+        instagram: "https://instagram.com/zainab.creates",
+        tiktok: "https://tiktok.com/@zainab.creates",
+        linkedin: "https://linkedin.com/in/zainab"
+      }
     }
   ];
 
@@ -88,6 +107,58 @@ const Team = () => {
                           </span>
                         ))}
                       </div>
+                    </div>
+
+                    {/* Social Media Links */}
+                    <div className="flex justify-center gap-2 pt-2">
+                      {member.social?.instagram && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          asChild
+                          className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
+                        >
+                          <a href={member.social.instagram} target="_blank" rel="noopener noreferrer">
+                            <Instagram className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {member.social?.linkedin && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          asChild
+                          className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
+                        >
+                          <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
+                            <Linkedin className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {member.social?.website && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          asChild
+                          className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
+                        >
+                          <a href={member.social.website} target="_blank" rel="noopener noreferrer">
+                            <Globe className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {member.social?.tiktok && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          asChild
+                          className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
+                        >
+                          <a href={member.social.tiktok} target="_blank" rel="noopener noreferrer">
+                            <Music className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
