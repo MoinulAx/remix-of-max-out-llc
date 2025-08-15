@@ -7,62 +7,15 @@ import BackgroundImage from '@/components/BackgroundImage';
 import QuoteModal from '@/components/QuoteModal';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useServicesByCategory, ServiceCategory } from '@/hooks/useServices';
 
 const Services = () => {
   const [quoteModal, setQuoteModal] = useState({ isOpen: false, serviceType: '' });
-  const photographyServices = [
-    {
-      title: "Portrait Photography",
-      description: "Professional headshots and personal portraits that capture your unique personality",
-      features: ["Studio or location shoots", "Professional retouching", "Multiple outfit changes", "High-resolution files"],
-      startingPrice: "From $200"
-    },
-    {
-      title: "Event Photography",
-      description: "Complete event coverage for weddings, corporate events, and special occasions",
-      features: ["Full event coverage", "Candid and posed shots", "Online gallery delivery", "Print release included"],
-      startingPrice: "From $500"
-    },
-    {
-      title: "Product Photography",
-      description: "High-quality product shots for e-commerce, catalogs, and marketing materials",
-      features: ["Studio lighting setup", "Multiple angles", "Lifestyle and clean shots", "Same-day turnaround"],
-      startingPrice: "From $150"
-    },
-    {
-      title: "Photo Editing",
-      description: "Professional post-processing and retouching services",
-      features: ["Color correction", "Background removal", "Skin retouching", "Batch processing"],
-      startingPrice: "From $25/photo"
-    }
-  ];
-
-  const webServices = [
-    {
-      title: "Website Design",
-      description: "Custom websites that perfectly represent your brand and convert visitors",
-      features: ["Responsive design", "SEO optimization", "Content management", "Performance optimization"],
-      startingPrice: "From $1,500"
-    },
-    {
-      title: "E-commerce Development",
-      description: "Online stores built for sales with secure payment processing",
-      features: ["Payment integration", "Inventory management", "Mobile optimization", "Analytics setup"],
-      startingPrice: "From $2,500"
-    },
-    {
-      title: "Brand & Logo Design",
-      description: "Complete brand identity packages that make you stand out",
-      features: ["Logo design", "Brand guidelines", "Business cards", "Social media kit"],
-      startingPrice: "From $800"
-    },
-    {
-      title: "UI/UX Consulting",
-      description: "User experience optimization for better engagement and conversions",
-      features: ["User research", "Wireframing", "Prototype testing", "Design systems"],
-      startingPrice: "From $150/hour"
-    }
-  ];
+  
+  // Fetch services from database
+  const { data: mediaServices = [], isLoading: mediaLoading } = useServicesByCategory('media');
+  const { data: webServices = [], isLoading: webLoading } = useServicesByCategory('web');
+  const { data: marketingServices = [], isLoading: marketingLoading } = useServicesByCategory('marketing');
 
   const openQuoteModal = (serviceType: string) => {
     setQuoteModal({ isOpen: true, serviceType });
@@ -95,8 +48,8 @@ const Services = () => {
             </div>
             
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {photographyServices.map((service, index) => (
-                <FadeIn key={service.title} delay={200 + (index * 100)}>
+              {mediaServices.map((service, index) => (
+                <FadeIn key={service.id} delay={200 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
                     <CardHeader>
                       <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
@@ -113,7 +66,7 @@ const Services = () => {
                       </ul>
                       <div className="pt-4 border-t border-border">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                          <span className="text-lg font-bold text-primary">{service.startingPrice}</span>
+                          <span className="text-lg font-bold text-primary">{service.starting_price}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
                             className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
@@ -138,7 +91,7 @@ const Services = () => {
             
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {webServices.map((service, index) => (
-                <FadeIn key={service.title} delay={400 + (index * 100)}>
+                <FadeIn key={service.id} delay={400 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
                     <CardHeader>
                       <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
@@ -155,7 +108,49 @@ const Services = () => {
                       </ul>
                       <div className="pt-4 border-t border-border">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                          <span className="text-lg font-bold text-primary">{service.startingPrice}</span>
+                          <span className="text-lg font-bold text-primary">{service.starting_price}</span>
+                          <button 
+                            onClick={() => openQuoteModal(service.title)}
+                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
+                          >
+                            Request Quote
+                          </button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              ))}
+            </div>
+          </FadeIn>
+
+          {/* Marketing Services */}
+          <FadeIn delay={500} className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Marketing Services</h2>
+              <div className="w-24 h-1 bg-white mx-auto"></div>
+            </div>
+            
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {marketingServices.map((service, index) => (
+                <FadeIn key={service.id} delay={600 + (index * 100)}>
+                  <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
+                    <CardHeader>
+                      <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
+                      <p className="text-muted-foreground">{service.description}</p>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <ul className="space-y-2">
+                        {service.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center text-sm">
+                            <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="pt-4 border-t border-border">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                          <span className="text-lg font-bold text-primary">{service.starting_price}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
                             className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
