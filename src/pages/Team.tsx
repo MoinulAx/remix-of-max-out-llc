@@ -45,15 +45,13 @@ const Team = () => {
       }
     },
     {
-      name: "Zainab",
-      role: "Content & Social",
-      bio: "Creates compelling content and manages social engagement.",
-      skills: ["Content Writing", "Social Media", "Photography"],
-      image: "/placeholder.svg",
+      name: "Jodestee Jn Francois",
+      role: "Network Cybersecurity Specialist",
+      bio: "Cybersecurity technologist experienced in incident response, OSINT, vulnerability validation, and network hardening, with skills in log analysis, system administration, networking, and Python/Bash automation.",
+      skills: ["Incident Response", "Vulnerability Assessment", "Network Hardening", "Log Analysis", "Python & Bash Automation"],
+      image: "/lovable-uploads/joddestee.png",
       social: {
-        instagram: "https://instagram.com/zainab.creates",
-        tiktok: "https://tiktok.com/@zainab.creates",
-        linkedin: "https://linkedin.com/in/zainab"
+        linkedin: "https://www.linkedin.com/in/jodestee-jn-francois/"
       }
     }
   ];
