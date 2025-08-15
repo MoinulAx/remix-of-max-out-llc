@@ -44,18 +44,6 @@ const Team = () => {
       }
     },
     {
-      name: "Chris",
-      role: "Video & Motion",
-      bio: "Focuses on clean, user-centered design and brand consistency.",
-      skills: ["UI/UX", "Branding", "Figma"],
-      image: "/placeholder.svg",
-      social: {
-        instagram: "https://instagram.com/chris.design",
-        website: "https://chris-portfolio.com"
-      }
-    },
-
-    {
       name: "Zainab Anjum",
       role: "Creative Director & Make Up Artist",
       bio: "A certified Hair, Makeup, and Henna Artist with 7+ years of experience, specializing in bridal looks, event styling, and intricate henna designs. Originally from Pakistan, she brings her passion and creativity to clients across New York City.",
@@ -66,7 +54,18 @@ const Team = () => {
         website: "https://zstudios.info/"
       }
     },
-   
+    {
+      name: "Chris",
+      role: "Video & Motion",
+      bio: "Focuses on clean, user-centered design and brand consistency.",
+      skills: ["UI/UX", "Branding", "Figma"],
+      image: "/placeholder.svg",
+      social: {
+        instagram: "https://instagram.com/chris.design",
+        website: "https://chris-portfolio.com"
+      }
+    }
+
   ];
 
   useEffect(() => {
