@@ -40,14 +40,14 @@ const Services = () => {
             </p>
           </FadeIn>
 
-          {/* Photography Services */}
-          <FadeIn delay={100} className="mb-20">
+          {/* Media Services */}
+          <FadeIn delay={100} className="mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Photography Services</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Media Services</h2>
               <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {mediaServices.map((service, index) => (
                 <FadeIn key={service.id} delay={200 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
@@ -83,13 +83,13 @@ const Services = () => {
           </FadeIn>
 
           {/* Web & Branding Services */}
-          <FadeIn delay={300}>
+          <FadeIn delay={300} className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Web & Branding</h2>
               <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {webServices.map((service, index) => (
                 <FadeIn key={service.id} delay={400 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
@@ -125,13 +125,13 @@ const Services = () => {
           </FadeIn>
 
           {/* Marketing Services */}
-          <FadeIn delay={500} className="mb-20">
+          <FadeIn delay={500} className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Marketing Services</h2>
               <div className="w-24 h-1 bg-white mx-auto"></div>
             </div>
             
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {marketingServices.map((service, index) => (
                 <FadeIn key={service.id} delay={600 + (index * 100)}>
                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
