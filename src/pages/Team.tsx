@@ -54,17 +54,17 @@ const Team = () => {
         website: "https://zstudios.info/"
       }
     },
-    {
-      name: "Chris",
-      role: "Video & Motion",
-      bio: "Focuses on clean, user-centered design and brand consistency.",
-      skills: ["UI/UX", "Branding", "Figma"],
-      image: "/placeholder.svg",
-      social: {
-        instagram: "https://instagram.com/chris.design",
-        website: "https://chris-portfolio.com"
-      }
-    }
+    // {
+    //   name: "Chris",
+    //   role: "Video & Motion",
+    //   bio: "Focuses on clean, user-centered design and brand consistency.",
+    //   skills: ["UI/UX", "Branding", "Figma"],
+    //   image: "/placeholder.svg",
+    //   social: {
+    //     instagram: "https://instagram.com/chris.design",
+    //     website: "https://chris-portfolio.com"
+    //   }
+    // }
 
   ];
 
