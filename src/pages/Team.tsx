@@ -13,7 +13,7 @@ const Team = () => {
       name: "Moinul K",
       role: "Founder, Developer & Photographer",
       bio: "Founder of RummSpace, is a Software Engineer and Media Creator experienced in backend, frontend, and full-stack development. With a background in networking, security, AV systems, and photo/video production, he builds scalable, secure applications and produces creative, high-impact media solutions.",
-      skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design", "Auobe Lightroom", "Adobe Premiere Pro"],
+      skills: ["React", "Node.js", "Python", "Photography", "UI/UX Design", "Adobe Lightroom", "Adobe Premiere Pro"],
       image: "/lovable-uploads/moinul-pfp.jpeg",
       social: {
         instagram: "https://instagram.com/rummyshoots",
@@ -24,13 +24,23 @@ const Team = () => {
     {
       name: "Larry Lamouth",
       role: "Full Stack Developer & Cybersecurity Specialist",
-      bio: "Full Stack Developer skilled in building scalable applications with React, Node.js, PostgreSQL, and Express. Currently expanding his expertise in cybersecurity, he combines technical excellence with strong communication to deliver impactful, real-world solutions.",
-      skills: ["React", "Node.js", "PostgreSQL", "Express","WireShark"],
+      bio: "Full Stack Developer skilled in building scalable applications with React, Node.js, PostgreSQL, WireShark, and Express. Currently expanding his expertise in cybersecurity, he combines technical excellence with strong communication to deliver impactful, real-world solutions.",
+      skills: ["React", "Node.js", "PostgreSQL", "Express","WireShark","Python","Penetration Testing"],
       image: "/lovable-uploads/larrypic-main.jpeg",
       social: {
         linkedin: "https://www.linkedin.com/in/larryalamouth/", 
         website: "https://larrylamouth.com/"
 
+      }
+    },
+      {
+      name: "Jodestee Jn Francois",
+      role: "Network Cybersecurity Specialist",
+      bio: "Cybersecurity technologist experienced in incident response, OSINT, vulnerability validation, and network hardening, with skills in log analysis, system administration, networking, and Python/Bash automation.",
+      skills: ["Incident Response", "Vulnerability Assessment", "Network Hardening", "Log Analysis", "Python & Bash Automation"],
+      image: "/lovable-uploads/joddestee.png",
+      social: {
+        linkedin: "https://www.linkedin.com/in/jodestee-jn-francois/"
       }
     },
     {
@@ -44,16 +54,19 @@ const Team = () => {
         website: "https://chris-portfolio.com"
       }
     },
+
     {
-      name: "Jodestee Jn Francois",
-      role: "Network Cybersecurity Specialist",
-      bio: "Cybersecurity technologist experienced in incident response, OSINT, vulnerability validation, and network hardening, with skills in log analysis, system administration, networking, and Python/Bash automation.",
-      skills: ["Incident Response", "Vulnerability Assessment", "Network Hardening", "Log Analysis", "Python & Bash Automation"],
-      image: "/lovable-uploads/joddestee.png",
+      name: "Zainab Anjum",
+      role: "Creative Director & Make Up Artist",
+      bio: "A certified Hair, Makeup, and Henna Artist with 7+ years of experience, specializing in bridal looks, event styling, and intricate henna designs. Originally from Pakistan, she brings her passion and creativity to clients across New York City.",
+      skills: ["Content Strategy", "Analytics", "Brand Development", "Makeup Artistry", "Henna Design"],
+      image: "/lovable-uploads/zanaib.jpg",
       social: {
-        linkedin: "https://www.linkedin.com/in/jodestee-jn-francois/"
+        instagram: "https://www.instagram.com/_zeestudios__/",
+        website: "https://zstudios.info/"
       }
-    }
+    },
+   
   ];
 
   useEffect(() => {
