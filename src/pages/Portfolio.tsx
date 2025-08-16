@@ -93,6 +93,19 @@ const Portfolio = () => {
         '/lovable-uploads/DSC_6799.jpg',
         '/lovable-uploads/DSC_6828.jpg'
       ]
+    },
+    {
+      id: 'beach-photography',
+      name: 'Beach Photography',
+      person: 'Outdoor Sessions',
+      cover: '/lovable-uploads/RAL_1306.jpg',
+      photos: [
+        '/lovable-uploads/RAL_1306.jpg',
+        '/lovable-uploads/RAL_1307.jpg',
+        '/lovable-uploads/RAL_1399.jpg',
+        '/lovable-uploads/RAL_1405.jpg',
+        '/lovable-uploads/RAL_1408.jpg'
+      ]
     }
   ];
 

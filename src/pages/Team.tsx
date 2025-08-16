@@ -7,8 +7,22 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
+interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  skills: string[];
+  image: string;
+  social: {
+    instagram?: string;
+    linkedin?: string;
+    website?: string;
+    tiktok?: string;
+  };
+}
+
 const Team = () => {
-  const teamMembers = [
+  const teamMembers: TeamMember[] = [
     {
       name: "Moinul K",
       role: "Founder, Developer & Photographer",
