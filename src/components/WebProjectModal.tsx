@@ -18,16 +18,11 @@ interface WebProjectModalProps {
 }
 
 const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, project }) => {
-  const handleBackdropTouch = (e: React.TouchEvent) => {
-    // Only close if touching the backdrop, not the content
+  const handleBackdropEvent = (e: React.MouseEvent | React.TouchEvent) => {
+    // Only close if touching/clicking the backdrop, not the content
     if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    // Only close if clicking the backdrop, not the content
-    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
       onClose();
     }
   };
@@ -36,17 +31,18 @@ const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, proj
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
         className="w-[100vw] h-[100vh] md:w-auto md:h-auto md:max-w-2xl p-0 border-0 bg-transparent overflow-hidden"
-        onPointerDownOutside={onClose}
-        onInteractOutside={onClose}
       >
         <VisuallyHidden>
           <DialogTitle>{project.title}</DialogTitle>
           <DialogDescription>{project.description}</DialogDescription>
         </VisuallyHidden>
         <div 
-          className="relative h-full md:h-auto flex items-center justify-center touch-manipulation"
-          onClick={handleBackdropClick}
-          onTouchEnd={handleBackdropTouch}
+          className="absolute inset-0 bg-black/20"
+          onClick={handleBackdropEvent}
+          onTouchStart={handleBackdropEvent}
+        />
+        <div 
+          className="relative h-full md:h-auto flex items-center justify-center touch-manipulation z-10"
         >
           <button
             onClick={onClose}
