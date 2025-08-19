@@ -17,14 +17,18 @@ interface WebProjectModalProps {
 }
 
 const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, project }) => {
-  const handleBackdropClick = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onClose();
+  const handleBackdropTouch = (e: React.TouchEvent) => {
+    // Only close if touching the backdrop, not the content
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
 
-  const handleContentClick = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    // Only close if clicking the backdrop, not the content
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
 
   return (
@@ -35,13 +39,9 @@ const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, proj
         onInteractOutside={onClose}
       >
         <div 
-          className="absolute inset-0 bg-transparent cursor-pointer touch-manipulation"
+          className="relative h-full md:h-auto flex items-center justify-center touch-manipulation"
           onClick={handleBackdropClick}
-          onTouchStart={handleBackdropClick}
-          onTouchEnd={handleBackdropClick}
-        />
-        <div 
-          className="relative h-full md:h-auto flex items-center justify-center z-10 pointer-events-none"
+          onTouchEnd={handleBackdropTouch}
         >
           <button
             onClick={onClose}
@@ -53,10 +53,9 @@ const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, proj
           </button>
 
           <Card 
-            className="mx-auto w-[92vw] md:w-full overflow-hidden bg-card shadow-[var(--shadow-card)] pointer-events-auto"
-            onClick={handleContentClick}
-            onTouchStart={handleContentClick}
-            onTouchEnd={handleContentClick}
+            className="mx-auto w-[92vw] md:w-full overflow-hidden bg-card shadow-[var(--shadow-card)]"
+            onClick={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
           >
             <div className="aspect-video overflow-hidden">
               <img
