@@ -17,10 +17,14 @@ interface WebProjectModalProps {
 }
 
 const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, project }) => {
-  const handleOverlayClick = (e: React.MouseEvent | React.TouchEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
+  const handleBackdropClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+  };
+
+  const handleContentClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
   };
 
   return (
@@ -31,23 +35,28 @@ const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, proj
         onInteractOutside={onClose}
       >
         <div 
-          className="relative h-full md:h-auto flex items-center justify-center touch-auto"
-          onClick={handleOverlayClick}
-          onTouchEnd={handleOverlayClick}
+          className="absolute inset-0 bg-transparent cursor-pointer touch-manipulation"
+          onClick={handleBackdropClick}
+          onTouchStart={handleBackdropClick}
+          onTouchEnd={handleBackdropClick}
+        />
+        <div 
+          className="relative h-full md:h-auto flex items-center justify-center z-10 pointer-events-none"
         >
           <button
             onClick={onClose}
             onTouchEnd={(e) => { e.preventDefault(); onClose(); }}
-            className="absolute top-4 right-4 z-[60] p-2 bg-background/90 hover:bg-background text-foreground rounded-full transition-colors shadow-lg border border-border/20 backdrop-blur-sm touch-manipulation"
+            className="absolute top-4 right-4 z-[60] p-2 bg-background/90 hover:bg-background text-foreground rounded-full transition-colors shadow-lg border border-border/20 backdrop-blur-sm touch-manipulation pointer-events-auto"
             aria-label="Close modal"
           >
             <X size={20} />
           </button>
 
           <Card 
-            className="mx-auto w-[92vw] md:w-full overflow-hidden bg-card shadow-[var(--shadow-card)]"
-            onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            className="mx-auto w-[92vw] md:w-full overflow-hidden bg-card shadow-[var(--shadow-card)] pointer-events-auto"
+            onClick={handleContentClick}
+            onTouchStart={handleContentClick}
+            onTouchEnd={handleContentClick}
           >
             <div className="aspect-video overflow-hidden">
               <img
