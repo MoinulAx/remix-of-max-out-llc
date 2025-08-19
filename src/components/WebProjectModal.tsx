@@ -18,12 +18,12 @@ interface WebProjectModalProps {
 
 const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, project }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose} modal>
       <DialogContent className="w-[100vw] h-[100vh] md:w-auto md:h-auto md:max-w-2xl p-0 border-0 bg-transparent overflow-hidden">
         <div className="relative h-full md:h-auto flex items-center justify-center">
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 md:top-4 md:right-4 z-50 p-3 md:p-2 bg-black/60 hover:bg-black/70 text-white rounded-full transition-colors"
+            className="absolute top-4 right-4 z-[60] p-2 bg-background/90 hover:bg-background text-foreground rounded-full transition-colors shadow-lg border border-border/20 backdrop-blur-sm"
             aria-label="Close modal"
           >
             <X size={20} />
