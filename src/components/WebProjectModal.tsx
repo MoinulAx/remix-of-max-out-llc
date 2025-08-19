@@ -1,7 +1,8 @@
 import React from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { X } from 'lucide-react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface WebProject {
   title: string;
@@ -38,6 +39,10 @@ const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClose, proj
         onPointerDownOutside={onClose}
         onInteractOutside={onClose}
       >
+        <VisuallyHidden>
+          <DialogTitle>{project.title}</DialogTitle>
+          <DialogDescription>{project.description}</DialogDescription>
+        </VisuallyHidden>
         <div 
           className="relative h-full md:h-auto flex items-center justify-center touch-manipulation"
           onClick={handleBackdropClick}
