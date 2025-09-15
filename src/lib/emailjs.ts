@@ -42,7 +42,8 @@ export const sendContactEmail = async (formData: {
   } catch (emailjsError) {
     console.warn('EmailJS failed, trying Supabase fallback:', emailjsError);
     
-    const { data, error: fnError } = await supabase.functions.invoke('send-contact-email', {
+    // Fallback to Supabase Edge Functions
+    const { data, error } = await supabase.functions.invoke('send-contact-email', {
       body: {
         name: formData.name,
         email: formData.email,
@@ -51,9 +52,9 @@ export const sendContactEmail = async (formData: {
       },
     });
 
-    if (fnError) {
-      console.error('Both EmailJS and Edge Function failed:', fnError);
-      throw fnError;
+    if (error) {
+      console.error('Both EmailJS and Edge Function failed:', error);
+      throw error;
     }
     return { ...data, provider: 'supabase' };
   }
@@ -87,8 +88,9 @@ export const sendQuoteEmail = async (formData: {
     return { success: true, provider: 'emailjs' };
   } catch (emailjsError) {
     console.warn('EmailJS failed, trying Supabase fallback:', emailjsError);
-
-    const { data, error: fnError } = await supabase.functions.invoke('send-quote-email', {
+    
+    // Fallback to Supabase Edge Functions
+    const { data, error } = await supabase.functions.invoke('send-quote-email', {
       body: {
         name: formData.name,
         email: formData.email,
@@ -99,9 +101,9 @@ export const sendQuoteEmail = async (formData: {
       },
     });
 
-    if (fnError) {
-      console.error('Both EmailJS and Edge Function failed:', fnError);
-      throw fnError;
+    if (error) {
+      console.error('Both EmailJS and Edge Function failed:', error);
+      throw error;
     }
     return { ...data, provider: 'supabase' };
   }
@@ -127,8 +129,9 @@ export const sendApplicationEmail = async (formData: {
     return { success: true, provider: 'emailjs' };
   } catch (emailjsError) {
     console.warn('EmailJS failed, trying Supabase fallback:', emailjsError);
-
-    const { data, error: fnError } = await supabase.functions.invoke('send-application-email', {
+    
+    // Fallback to Supabase Edge Functions
+    const { data, error } = await supabase.functions.invoke('send-application-email', {
       body: {
         name: formData.name,
         email: formData.email,
@@ -136,9 +139,9 @@ export const sendApplicationEmail = async (formData: {
       },
     });
 
-    if (fnError) {
-      console.error('Both EmailJS and Edge Function failed:', fnError);
-      throw fnError;
+    if (error) {
+      console.error('Both EmailJS and Edge Function failed:', error);
+      throw error;
     }
     return { ...data, provider: 'supabase' };
   }
