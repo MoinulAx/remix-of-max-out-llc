@@ -23,12 +23,11 @@ In your Netlify dashboard, go to Site settings → Environment variables and add
 
 ### Required for Supabase
 ```
-VITE_SUPABASE_URL=https://toineffabdvvtwfngmkw.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvaW5lZmZhYmR2dnR3Zm5nbWt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMjY0NTMsImV4cCI6MjA2OTkwMjQ1M30.P2wcVpnvmCHpE1ua66ySZLyNOZR2HVgv1CBRGLxzVP8
+VITE_SUPABASE_URL=<your-supabase-url>
+VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 ```
 
-**IMPORTANT**: These are the ONLY environment variables needed for your project. Do NOT add any VITE_EMAILJS variables since EmailJS configuration is hardcoded in the source code.
-
+Note: To avoid Netlify secrets scanning false positives for these public Supabase values, set SECRETS_SCAN_OMIT_KEYS to "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY" in Site settings → Environment variables or in netlify.toml. Also add your EmailJS env vars as documented in README-EMAILJS.md.
 ## Step 4: Custom Domain (Optional)
 1. In Netlify dashboard, go to Domain settings
 2. Click "Add custom domain"
