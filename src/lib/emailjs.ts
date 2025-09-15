@@ -1,5 +1,5 @@
 import emailjs from '@emailjs/browser';
-import { supabase } from '@/integrations/supabase/client';
+
 
 // EmailJS Configuration
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -39,24 +39,9 @@ export const sendContactEmail = async (formData: {
       }
     );
     return { success: true, provider: 'emailjs' };
-  } catch (emailjsError) {
-    console.warn('EmailJS failed, trying Supabase fallback:', emailjsError);
-    
-    // Fallback to Supabase Edge Functions
-    const { data, error } = await supabase.functions.invoke('send-contact-email', {
-      body: {
-        name: formData.name,
-        email: formData.email,
-        service: formData.service,
-        message: formData.message,
-      },
-    });
-
-    if (error) {
-      console.error('Both EmailJS and Edge Function failed:', error);
-      throw error;
-    }
-    return { ...data, provider: 'supabase' };
+  } catch (error) {
+    console.error('EmailJS failed:', error);
+    throw error;
   }
 };
 
@@ -86,26 +71,9 @@ export const sendQuoteEmail = async (formData: {
       }
     );
     return { success: true, provider: 'emailjs' };
-  } catch (emailjsError) {
-    console.warn('EmailJS failed, trying Supabase fallback:', emailjsError);
-    
-    // Fallback to Supabase Edge Functions
-    const { data, error } = await supabase.functions.invoke('send-quote-email', {
-      body: {
-        name: formData.name,
-        email: formData.email,
-        serviceType: formData.serviceType,
-        budgetRange: formData.budgetRange,
-        projectTimeline: formData.projectTimeline,
-        message: formData.message,
-      },
-    });
-
-    if (error) {
-      console.error('Both EmailJS and Edge Function failed:', error);
-      throw error;
-    }
-    return { ...data, provider: 'supabase' };
+  } catch (error) {
+    console.error('EmailJS failed:', error);
+    throw error;
   }
 };
 
@@ -127,22 +95,8 @@ export const sendApplicationEmail = async (formData: {
       }
     );
     return { success: true, provider: 'emailjs' };
-  } catch (emailjsError) {
-    console.warn('EmailJS failed, trying Supabase fallback:', emailjsError);
-    
-    // Fallback to Supabase Edge Functions
-    const { data, error } = await supabase.functions.invoke('send-application-email', {
-      body: {
-        name: formData.name,
-        email: formData.email,
-        jobTitle: formData.jobTitle,
-      },
-    });
-
-    if (error) {
-      console.error('Both EmailJS and Edge Function failed:', error);
-      throw error;
-    }
-    return { ...data, provider: 'supabase' };
+  } catch (error) {
+    console.error('EmailJS failed:', error);
+    throw error;
   }
 };
