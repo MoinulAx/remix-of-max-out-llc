@@ -33,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
     }[service] || 'Our Creative Services';
 
     const emailResponse = await resend.emails.send({
-      from: "RummSpace <onboarding@resend.dev>",
+      from: "RummSpace <moinulkhan347@gmail.com>",
       to: [email],
       subject: `Thank you for contacting RummSpace about ${serviceDescription}!`,
       html: `
