@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { X } from 'lucide-react';
 
 interface ImageModalProps {
@@ -13,6 +14,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, src, alt }) =>
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[100vw] h-[100vh] md:w-auto md:h-auto md:max-w-[95vw] md:max-h-[95vh] p-0 overflow-hidden border-0 bg-transparent">
+        <VisuallyHidden>
+          <DialogTitle>Portfolio Image</DialogTitle>
+          <DialogDescription>{alt}</DialogDescription>
+        </VisuallyHidden>
         <div className="relative flex items-center justify-center h-full md:min-h-[50vh]">
           <button
             onClick={onClose}
