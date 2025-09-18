@@ -85,20 +85,23 @@ export const usePortfolioAlbums = (categoryId?: string) => {
   });
 };
 
-export const usePortfolioItems = (albumId?: string, categoryId?: string) => {
+export const usePortfolioItems = (albumId?: string, categorySlug?: string) => {
   return useQuery({
-    queryKey: ['portfolio-items', albumId, categoryId],
+    queryKey: ['portfolio-items', albumId, categorySlug],
     queryFn: async () => {
       let query = supabase
         .from('portfolio_items')
-        .select('*')
+        .select(`
+          *,
+          portfolio_categories!inner(slug)
+        `)
         .eq('is_active', true)
         .order('display_order');
 
       if (albumId) {
         query = query.eq('album_id', albumId);
-      } else if (categoryId) {
-        query = query.eq('category_id', categoryId);
+      } else if (categorySlug) {
+        query = query.eq('portfolio_categories.slug', categorySlug);
       }
 
       const { data, error } = await query;
