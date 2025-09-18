@@ -103,7 +103,10 @@ const Portfolio = () => {
                                 onDragStart={(e) => e.preventDefault()}
                                 onError={(e) => {
                                   console.error('Image failed to load:', getImageUrl(item.image_url));
-                                  console.error('Original path:', item.image_url);
+                                  const filename = item.image_url.split('/').pop();
+                                  if (filename) {
+                                    (e.currentTarget as HTMLImageElement).src = `/lovable-uploads/${filename}`;
+                                  }
                                 }}
                                 onLoad={() => console.log('Image loaded successfully:', getImageUrl(item.image_url))}
                               />
@@ -176,6 +179,13 @@ const Portfolio = () => {
                         alt={item.alt_text || item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
+                        onError={(e) => {
+                          console.error('Image failed to load (web):', getImageUrl(item.image_url));
+                          const filename = item.image_url.split('/').pop();
+                          if (filename) {
+                            (e.currentTarget as HTMLImageElement).src = `/lovable-uploads/${filename}`;
+                          }
+                        }}
                       />
                     </div>
                     <CardContent className="p-4 md:p-6">

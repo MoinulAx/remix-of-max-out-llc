@@ -66,6 +66,13 @@ const PortfolioPhotography = () => {
                               draggable="false"
                               onContextMenu={(e) => e.preventDefault()}
                               onDragStart={(e) => e.preventDefault()}
+                              onError={(e) => {
+                                console.error('Image failed to load:', getImageUrl(item.image_url));
+                                const filename = item.image_url.split('/').pop();
+                                if (filename) {
+                                  (e.currentTarget as HTMLImageElement).src = `/lovable-uploads/${filename}`;
+                                }
+                              }}
                             />
                             {/* Watermark */}
                             <div className="absolute bottom-2 right-2 text-white/80 text-xs font-medium bg-black/50 px-1.5 py-0.5 rounded pointer-events-none">
