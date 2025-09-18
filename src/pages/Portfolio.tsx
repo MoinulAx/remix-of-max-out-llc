@@ -6,9 +6,10 @@ import Footer from '@/components/Footer';
 import BackgroundImage from '@/components/BackgroundImage';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { images } from '@/assets/images';
 import ImageModal from '@/components/ImageModal';
 import WebProjectModal from '@/components/WebProjectModal';
+import { usePortfolioAlbumsByCategory, usePortfolioItems } from '@/hooks/usePortfolio';
+import { getImageUrl } from '@/lib/portfolioUtils';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('photography');
@@ -16,22 +17,10 @@ const Portfolio = () => {
   const [expandedAlbums, setExpandedAlbums] = useState<Set<string>>(new Set());
   const [selectedProject, setSelectedProject] = useState<{ title: string; category: string; image: string; description: string } | null>(null);
 
-  const photographyWork: Array<any> = []; // moved to albums structure
-
-  const webProjects = [
-    {
-      title: "Upcoming Project #1",
-      category: "Web Project — Coming Soon",
-      image: "/lovable-uploads/b35f30fe-e495-4a6a-96da-bf3887c2eee8.png",
-      description: "Preview coming soon. Stay tuned for the full case study."
-    },
-    {
-      title: "Upcoming Project #2",
-      category: "Web Project — Coming Soon",
-      image: "/lovable-uploads/9c25ad72-5dbb-49ae-8f01-aa60c6616ee2.png",
-      description: "Preview coming soon. Stay tuned for the full case study."
-    }
-  ];
+  // Fetch portfolio data from Supabase
+  const { data: photographyAlbums = [], isLoading: albumsLoading } = usePortfolioAlbumsByCategory('photography');
+  const { data: photographyItems = [] } = usePortfolioItems(undefined, 'photography');
+  const { data: webItems = [] } = usePortfolioItems(undefined, 'web-projects');
 
   const tabs = [
     { id: 'photography', label: 'Photography' },
@@ -39,75 +28,9 @@ const Portfolio = () => {
     { id: 'web', label: 'Web Projects' }
   ];
 
-  // Albums grouped by person/series
-  const albums = [
-    {
-      id: 'aqua-headwrap',
-      name: 'Aqua Headwrap Series',
-      person: 'Model — Blue Headwrap',
-      cover: images.portraits.etherealBlueHeadwrap,
-      photos: [
-        '/lovable-uploads/dd63bc8c-851a-451c-8330-82b1b31829b2.png',
-        '/lovable-uploads/23433dc1-77c1-4a75-9af7-472f398955e1.png',
-        '/lovable-uploads/a7d5a05f-c4e1-4c2d-a78f-cf155f1f6f2d.png',
-        '/lovable-uploads/f7afd1ed-fa8c-4e1b-af72-7dcfa398c9cd.png',
-        '/lovable-uploads/ad08e91d-3ee2-44f6-af1d-069b15d2c318.png',
-        '/lovable-uploads/7e6cf1cd-a5e2-41be-a479-484862aa56f2.png',
-        images.portraits.etherealBlueHeadwrap
-      ]
-    },
-    {
-      id: 'feather-editorial',
-      name: 'Feather Editorial Series',
-      person: 'Model — Feather Styling',
-      cover: images.portraits.dramaticFeatherPortrait,
-      photos: [
-        images.portraits.dramaticFeatherPortrait,
-        images.portraits.boldFeatherEditorial,
-        
-      ]
-    },
-    {
-      id: 'pink-beauty',
-      name: 'Pink Backdrop Beauty',
-      person: 'Model — Beauty',
-      cover: '/lovable-uploads/373096af-ca0a-4bfb-9ca8-15f70d6a3bc1.png',
-      photos: ['/lovable-uploads/373096af-ca0a-4bfb-9ca8-15f70d6a3bc1.png']
-    },
-    {
-      id: 'city-street',
-      name: 'City & Street',
-      person: 'New York',
-      cover: images.cityscape.vintageCityClockScene,
-      photos: [images.cityscape.vintageCityClockScene, images.cityscape.subwayStationMoment]
-    },
-    {
-      id: 'client-work',
-      name: 'Client Work',
-      person: 'Events & Products',
-      cover: '/lovable-uploads/135A8479.jpg',
-      photos: [
-        
-        '/lovable-uploads/135A8948.jpg',
-        '/lovable-uploads/135A9034.jpg',
-        '/lovable-uploads/DSC_6799.jpg',
-        '/lovable-uploads/DSC_6828.jpg'
-      ]
-    },
-    {
-      id: 'beach-photography',
-      name: 'Beach Photography',
-      person: 'Outdoor Sessions',
-      cover: '/lovable-uploads/RAL_1306.jpg',
-      photos: [
-        '/lovable-uploads/RAL_1306.jpg',
-        '/lovable-uploads/RAL_1307.jpg',
-        '/lovable-uploads/RAL_1399.jpg',
-        '/lovable-uploads/RAL_1405.jpg',
-        '/lovable-uploads/RAL_1408.jpg'
-      ]
-    }
-  ];
+  const getAlbumItems = (albumId: string) => {
+    return photographyItems.filter(item => item.album_id === albumId);
+  };
 
   return (
     <main className="relative">
@@ -147,58 +70,69 @@ const Portfolio = () => {
           {/* Photography Tab */}
           {activeTab === 'photography' && (
             <div className="space-y-12">
-              {albums.map((album, aIndex) => (
-                <FadeIn key={album.id} delay={200 + aIndex * 100}>
-                  <div className="mb-4">
-                    <h3 className="text-2xl font-bold mb-1">{album.name}</h3>
-                    <p className="text-muted-foreground">{album.person}</p>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                    {(expandedAlbums.has(album.id) ? album.photos : album.photos.slice(0, 3)).map((src, index) => (
-                      <Card 
-                        key={index} 
-                        className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 cursor-pointer relative"
-                        onClick={() => setSelectedImage({ src, alt: `${album.name} photo ${index + 1}` })}
-                      >
-                        <div className="aspect-square overflow-hidden relative">
-                          <img 
-                            src={src} 
-                            alt={`${album.name} photo ${index + 1}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            loading="lazy"
-                            draggable="false"
-                            onContextMenu={(e) => e.preventDefault()}
-                            onDragStart={(e) => e.preventDefault()}
-                          />
-                          {/* Watermark */}
-                          <div className="absolute bottom-2 right-2 text-white/80 text-xs font-medium bg-black/50 px-1.5 py-0.5 rounded pointer-events-none">
-                            RummSpace
-                          </div>
+              {albumsLoading ? (
+                <div className="text-center py-8">Loading portfolio...</div>
+              ) : (
+                photographyAlbums.map((album, aIndex) => {
+                  const albumItems = getAlbumItems(album.id);
+                  
+                  return (
+                    <FadeIn key={album.id} delay={200 + aIndex * 100}>
+                      <div className="mb-4">
+                        <h3 className="text-2xl font-bold mb-1">{album.name}</h3>
+                        {album.person && <p className="text-muted-foreground">{album.person}</p>}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                        {(expandedAlbums.has(album.id) ? albumItems : albumItems.slice(0, 3)).map((item, index) => (
+                          <Card 
+                            key={item.id} 
+                            className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 cursor-pointer relative"
+                            onClick={() => setSelectedImage({ 
+                              src: getImageUrl(item.image_url), 
+                              alt: item.alt_text || `${album.name} photo ${index + 1}` 
+                            })}
+                          >
+                            <div className="aspect-square overflow-hidden relative">
+                              <img 
+                                src={getImageUrl(item.image_url)} 
+                                alt={item.alt_text || `${album.name} photo ${index + 1}`}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                                draggable="false"
+                                onContextMenu={(e) => e.preventDefault()}
+                                onDragStart={(e) => e.preventDefault()}
+                              />
+                              {/* Watermark */}
+                              <div className="absolute bottom-2 right-2 text-white/80 text-xs font-medium bg-black/50 px-1.5 py-0.5 rounded pointer-events-none">
+                                RummSpace
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+                      {albumItems.length > 3 && (
+                        <div className="mt-4 text-center">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              const newExpanded = new Set(expandedAlbums);
+                              if (expandedAlbums.has(album.id)) {
+                                newExpanded.delete(album.id);
+                              } else {
+                                newExpanded.add(album.id);
+                              }
+                              setExpandedAlbums(newExpanded);
+                            }}
+                            className="text-sm"
+                          >
+                            {expandedAlbums.has(album.id) ? 'Show Less' : `See More (${albumItems.length - 3} more)`}
+                          </Button>
                         </div>
-                      </Card>
-                    ))}
-                  </div>
-                  {album.photos.length > 3 && (
-                    <div className="mt-4 text-center">
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          const newExpanded = new Set(expandedAlbums);
-                          if (expandedAlbums.has(album.id)) {
-                            newExpanded.delete(album.id);
-                          } else {
-                            newExpanded.add(album.id);
-                          }
-                          setExpandedAlbums(newExpanded);
-                        }}
-                        className="text-sm"
-                      >
-                        {expandedAlbums.has(album.id) ? 'Show Less' : `See More (${album.photos.length - 3} more)`}
-                      </Button>
-                    </div>
-                  )}
-                </FadeIn>
-              ))}
+                      )}
+                    </FadeIn>
+                  );
+                })
+              )}
             </div>
           )}
 
@@ -218,29 +152,42 @@ const Portfolio = () => {
           {/* Web Projects Tab */}
           {activeTab === 'web' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {webProjects.map((item, index) => (
-                <FadeIn key={item.title} delay={200 + (index * 100)}>
+              {webItems.map((item, index) => (
+                <FadeIn key={item.id} delay={200 + (index * 100)}>
                   <Card 
                     className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 cursor-pointer"
-                    onClick={() => setSelectedProject(item)}
+                    onClick={() => setSelectedProject({
+                      title: item.title,
+                      category: 'Web Development',
+                      image: getImageUrl(item.image_url),
+                      description: item.description || 'Professional web development project showcasing modern design and functionality.'
+                    })}
                     role="button"
                     tabIndex={0}
                   >
                     <div className="aspect-video overflow-hidden">
                       <img 
-                        src={item.image} 
-                        alt={item.title}
+                        src={getImageUrl(item.image_url)} 
+                        alt={item.alt_text || item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                     </div>
                     <CardContent className="p-4 md:p-6">
-                      <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
+                      <div className="text-sm text-primary font-semibold mb-2">Web Development</div>
                       <h3 className="text-lg md:text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground mb-4 text-sm md:text-base">{item.description}</p>
+                      <p className="text-muted-foreground mb-4 text-sm md:text-base">{item.description || 'Professional web development project showcasing modern design and functionality.'}</p>
                       <button 
                         className="text-primary font-semibold hover:underline text-sm md:text-base"
-                        onClick={(e) => { e.stopPropagation(); setSelectedProject(item); }}
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          setSelectedProject({
+                            title: item.title,
+                            category: 'Web Development',
+                            image: getImageUrl(item.image_url),
+                            description: item.description || 'Professional web development project showcasing modern design and functionality.'
+                          }); 
+                        }}
                       >
                         View Project →
                       </button>

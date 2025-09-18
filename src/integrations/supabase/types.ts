@@ -151,6 +151,149 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_albums: {
+        Row: {
+          category_id: string
+          cover_image: string | null
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          is_active: boolean
+          name: string
+          person: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          person?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          person?: string | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_albums_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      portfolio_items: {
+        Row: {
+          album_id: string | null
+          alt_text: string | null
+          category_id: string
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          image_url: string
+          is_active: boolean
+          metadata: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          album_id?: string | null
+          alt_text?: string | null
+          category_id: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url: string
+          is_active?: boolean
+          metadata?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          album_id?: string | null
+          alt_text?: string | null
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          metadata?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_items_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_albums"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portfolio_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quote_requests: {
         Row: {
           budget_range: string | null
