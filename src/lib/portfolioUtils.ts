@@ -10,7 +10,8 @@ export const getImageUrl = (path: string) => {
   const { data } = supabase.storage
     .from('portfolio')
     .getPublicUrl(path);
-    
+  
+  console.log('Image path:', path, 'Generated URL:', data.publicUrl);
   return data.publicUrl;
 };
 
