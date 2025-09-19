@@ -50,33 +50,33 @@ const Services = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {mediaServices.map((service, index) => (
                 <FadeIn key={service.id} delay={200 + (index * 100)}>
-                  <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                    <CardHeader>
-                      <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
-                      <p className="text-muted-foreground">{service.description}</p>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <ul className="space-y-2">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center text-sm">
-                            <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="pt-4 border-t border-border">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                          <span className="text-lg font-bold text-primary">{service.starting_price}</span>
-                          <button 
-                            onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
-                          >
-                            Request Quote
-                          </button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 flex flex-col">
+                     <CardHeader className="flex-shrink-0">
+                       <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
+                       <p className="text-muted-foreground">{service.description}</p>
+                     </CardHeader>
+                     <CardContent className="flex flex-col flex-grow">
+                       <ul className="space-y-2 flex-grow">
+                         {service.features.map((feature, idx) => (
+                           <li key={idx} className="flex items-center text-sm">
+                             <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
+                             {feature}
+                           </li>
+                         ))}
+                       </ul>
+                       <div className="pt-4 border-t border-border mt-auto">
+                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                           <span className="text-lg font-bold text-primary">{service.starting_price}</span>
+                           <button 
+                             onClick={() => openQuoteModal(service.title)}
+                             className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
+                           >
+                             Request Quote
+                           </button>
+                         </div>
+                       </div>
+                     </CardContent>
+                   </Card>
                 </FadeIn>
               ))}
             </div>
@@ -92,33 +92,33 @@ const Services = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {webServices.map((service, index) => (
                 <FadeIn key={service.id} delay={400 + (index * 100)}>
-                  <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                    <CardHeader>
-                      <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
-                      <p className="text-muted-foreground">{service.description}</p>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <ul className="space-y-2">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center text-sm">
-                            <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="pt-4 border-t border-border">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                          <span className="text-lg font-bold text-primary">{service.starting_price}</span>
-                          <button 
-                            onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
-                          >
-                            Request Quote
-                          </button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 flex flex-col">
+                     <CardHeader className="flex-shrink-0">
+                       <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
+                       <p className="text-muted-foreground">{service.description}</p>
+                     </CardHeader>
+                     <CardContent className="flex flex-col flex-grow">
+                       <ul className="space-y-2 flex-grow">
+                         {service.features.map((feature, idx) => (
+                           <li key={idx} className="flex items-center text-sm">
+                             <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
+                             {feature}
+                           </li>
+                         ))}
+                       </ul>
+                       <div className="pt-4 border-t border-border mt-auto">
+                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                           <span className="text-lg font-bold text-primary">{service.starting_price}</span>
+                           <button 
+                             onClick={() => openQuoteModal(service.title)}
+                             className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
+                           >
+                             Request Quote
+                           </button>
+                         </div>
+                       </div>
+                     </CardContent>
+                   </Card>
                 </FadeIn>
               ))}
             </div>
@@ -134,33 +134,33 @@ const Services = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {marketingServices.map((service, index) => (
                 <FadeIn key={service.id} delay={600 + (index * 100)}>
-                  <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                    <CardHeader>
-                      <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
-                      <p className="text-muted-foreground">{service.description}</p>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <ul className="space-y-2">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center text-sm">
-                            <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="pt-4 border-t border-border">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                          <span className="text-lg font-bold text-primary">{service.starting_price}</span>
-                          <button 
-                            onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
-                          >
-                            Request Quote
-                          </button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                   <Card className="h-full bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 flex flex-col">
+                     <CardHeader className="flex-shrink-0">
+                       <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
+                       <p className="text-muted-foreground">{service.description}</p>
+                     </CardHeader>
+                     <CardContent className="flex flex-col flex-grow">
+                       <ul className="space-y-2 flex-grow">
+                         {service.features.map((feature, idx) => (
+                           <li key={idx} className="flex items-center text-sm">
+                             <div className="w-2 h-2 bg-primary mr-3 flex-shrink-0"></div>
+                             {feature}
+                           </li>
+                         ))}
+                       </ul>
+                       <div className="pt-4 border-t border-border mt-auto">
+                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                           <span className="text-lg font-bold text-primary">{service.starting_price}</span>
+                           <button 
+                             onClick={() => openQuoteModal(service.title)}
+                             className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
+                           >
+                             Request Quote
+                           </button>
+                         </div>
+                       </div>
+                     </CardContent>
+                   </Card>
                 </FadeIn>
               ))}
             </div>
