@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import ImageModal from '@/components/ImageModal';
+import ImageLoader from '@/components/ImageLoader';
 import { usePortfolioAlbumsByCategory, usePortfolioItems } from '@/hooks/usePortfolio';
 import { getImageUrl } from '@/lib/portfolioUtils';
 
@@ -57,28 +58,12 @@ const PortfolioPhotography = () => {
                             alt: item.alt_text || `${album.name} photo ${index + 1}` 
                           })}
                         >
-                          <div className="aspect-square overflow-hidden relative">
-                            <img
-                              src={getImageUrl(item.image_url)}
-                              alt={item.alt_text || `${album.name} photo ${index + 1}`}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              loading="lazy"
-                              draggable="false"
-                              onContextMenu={(e) => e.preventDefault()}
-                              onDragStart={(e) => e.preventDefault()}
-                              onError={(e) => {
-                                console.error('Image failed to load:', getImageUrl(item.image_url));
-                                const filename = item.image_url.split('/').pop();
-                                if (filename) {
-                                  (e.currentTarget as HTMLImageElement).src = `/lovable-uploads/${filename}`;
-                                }
-                              }}
-                            />
-                            {/* Watermark */}
-                            <div className="absolute bottom-2 right-2 text-white/80 text-xs font-medium bg-black/50 px-1.5 py-0.5 rounded pointer-events-none">
-                              RummSpace
-                            </div>
-                          </div>
+                          <ImageLoader
+                            src={getImageUrl(item.image_url)}
+                            alt={item.alt_text || `${album.name} photo ${index + 1}`}
+                            aspectRatio="square"
+                            showWatermark={true}
+                          />
                         </Card>
                       ))}
                     </div>

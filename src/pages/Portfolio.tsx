@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ImageModal from '@/components/ImageModal';
 import WebProjectModal from '@/components/WebProjectModal';
+import ImageLoader from '@/components/ImageLoader';
 import { usePortfolioAlbumsByCategory, usePortfolioItems } from '@/hooks/usePortfolio';
 import { getImageUrl } from '@/lib/portfolioUtils';
 
@@ -92,29 +93,12 @@ const Portfolio = () => {
                               alt: item.alt_text || `${album.name} photo ${index + 1}` 
                             })}
                           >
-                            <div className="aspect-square overflow-hidden relative">
-                              <img 
-                                src={getImageUrl(item.image_url)} 
-                                alt={item.alt_text || `${album.name} photo ${index + 1}`}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                loading="lazy"
-                                draggable="false"
-                                onContextMenu={(e) => e.preventDefault()}
-                                onDragStart={(e) => e.preventDefault()}
-                                onError={(e) => {
-                                  console.error('Image failed to load:', getImageUrl(item.image_url));
-                                  const filename = item.image_url.split('/').pop();
-                                  if (filename) {
-                                    (e.currentTarget as HTMLImageElement).src = `/lovable-uploads/${filename}`;
-                                  }
-                                }}
-                                onLoad={() => console.log('Image loaded successfully:', getImageUrl(item.image_url))}
-                              />
-                              {/* Watermark */}
-                              <div className="absolute bottom-2 right-2 text-white/80 text-xs font-medium bg-black/50 px-1.5 py-0.5 rounded pointer-events-none">
-                                RummSpace
-                              </div>
-                            </div>
+                            <ImageLoader
+                              src={getImageUrl(item.image_url)}
+                              alt={item.alt_text || `${album.name} photo ${index + 1}`}
+                              aspectRatio="square"
+                              showWatermark={true}
+                            />
                           </Card>
                         ))}
                       </div>
@@ -159,57 +143,14 @@ const Portfolio = () => {
 
           {/* Web Projects Tab */}
           {activeTab === 'web' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {webItems.map((item, index) => (
-                <FadeIn key={item.id} delay={200 + (index * 100)}>
-                  <Card 
-                    className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300 cursor-pointer"
-                    onClick={() => setSelectedProject({
-                      title: item.title,
-                      category: 'Web Development',
-                      image: getImageUrl(item.image_url),
-                      description: item.description || 'Professional web development project showcasing modern design and functionality.'
-                    })}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <div className="aspect-video overflow-hidden">
-                      <img 
-                        src={getImageUrl(item.image_url)} 
-                        alt={item.alt_text || item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                        onError={(e) => {
-                          console.error('Image failed to load (web):', getImageUrl(item.image_url));
-                          const filename = item.image_url.split('/').pop();
-                          if (filename) {
-                            (e.currentTarget as HTMLImageElement).src = `/lovable-uploads/${filename}`;
-                          }
-                        }}
-                      />
-                    </div>
-                    <CardContent className="p-4 md:p-6">
-                      <div className="text-sm text-primary font-semibold mb-2">Web Development</div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground mb-4 text-sm md:text-base">{item.description || 'Professional web development project showcasing modern design and functionality.'}</p>
-                      <button 
-                        className="text-primary font-semibold hover:underline text-sm md:text-base"
-                        onClick={(e) => { 
-                          e.stopPropagation(); 
-                          setSelectedProject({
-                            title: item.title,
-                            category: 'Web Development',
-                            image: getImageUrl(item.image_url),
-                            description: item.description || 'Professional web development project showcasing modern design and functionality.'
-                          }); 
-                        }}
-                      >
-                        View Project →
-                      </button>
-                    </CardContent>
-                  </Card>
-                </FadeIn>
-              ))}
+            <div className="text-center py-20">
+              <FadeIn>
+                <h3 className="text-2xl font-bold mb-4">Web Development Portfolio</h3>
+                <p className="text-muted-foreground mb-8">Coming soon - showcasing web development projects and applications</p>
+                <button className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] rounded-md">
+                  Contact for Web Development Services
+                </button>
+              </FadeIn>
             </div>
           )}
         </div>
