@@ -65,11 +65,11 @@ const Services = () => {
                         ))}
                       </ul>
                       <div className="pt-4 border-t border-border">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <span className="text-lg font-bold text-primary">{service.starting_price}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
+                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
                           >
                             Request Quote
                           </button>
@@ -107,11 +107,11 @@ const Services = () => {
                         ))}
                       </ul>
                       <div className="pt-4 border-t border-border">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <span className="text-lg font-bold text-primary">{service.starting_price}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
+                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
                           >
                             Request Quote
                           </button>
@@ -149,11 +149,11 @@ const Services = () => {
                         ))}
                       </ul>
                       <div className="pt-4 border-t border-border">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <span className="text-lg font-bold text-primary">{service.starting_price}</span>
                           <button 
                             onClick={() => openQuoteModal(service.title)}
-                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto"
+                            className="bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] w-full sm:w-auto whitespace-nowrap"
                           >
                             Request Quote
                           </button>
