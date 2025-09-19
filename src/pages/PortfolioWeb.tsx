@@ -1,27 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
-import { Card, CardContent } from '@/components/ui/card';
+import QuoteModal from '@/components/QuoteModal';
 import { Link } from 'react-router-dom';
-import { images } from '@/assets/images';
 
 
 const PortfolioWeb = () => {
-  const webProjects = [
-    {
-      title: 'E-commerce Platform',
-      category: 'E-commerce',
-      image: images.webProjects.modernEcommerceDashboard,
-      description: 'Modern online store with full payment integration',
-    },
-    {
-      title: 'Portfolio Website',
-      category: 'Portfolio',
-      image: images.backgrounds.luxuryOrangeryInterior,
-      description: 'Responsive portfolio site for creative professionals',
-    },
-  ];
+  const [quoteModal, setQuoteModal] = useState({ isOpen: false, serviceType: 'Web Development' });
+
+  const openQuoteModal = () => {
+    setQuoteModal({ isOpen: true, serviceType: 'Web Development' });
+  };
+
+  const closeQuoteModal = () => {
+    setQuoteModal({ isOpen: false, serviceType: 'Web Development' });
+  };
 
   return (
     <main className="relative">
@@ -35,29 +29,34 @@ const PortfolioWeb = () => {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {webProjects.map((item, index) => (
-              <FadeIn key={item.title} delay={200 + index * 100}>
-                <Card className="group overflow-hidden bg-card shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-sharp)] transition-all duration-300">
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <div className="text-sm text-primary font-semibold mb-2">{item.category}</div>
-                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground mb-4">{item.description}</p>
-                    <button className="text-primary font-semibold hover:underline">View Project →</button>
-                  </CardContent>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
+          <FadeIn>
+            <div className="text-center py-20">
+              <h3 className="text-2xl font-bold mb-4">Web Projects Portfolio</h3>
+              <p className="text-muted-foreground mb-8">Coming soon - showcasing web development work</p>
+              <div className="space-y-4">
+                <button 
+                  onClick={openQuoteModal}
+                  className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] inline-block"
+                >
+                  Get Web Development Quote
+                </button>
+                <div>
+                  <Link to="/contact" className="text-primary hover:underline font-semibold">
+                    Or contact us directly →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </div>
+
+      <QuoteModal 
+        isOpen={quoteModal.isOpen}
+        onClose={closeQuoteModal}
+        serviceType={quoteModal.serviceType}
+      />
+
       <Footer />
     </main>
   );

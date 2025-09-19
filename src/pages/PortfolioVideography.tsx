@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
+import QuoteModal from '@/components/QuoteModal';
 import { Link } from 'react-router-dom';
 
 
 const PortfolioVideography = () => {
+  const [quoteModal, setQuoteModal] = useState({ isOpen: false, serviceType: 'Video Services' });
+
+  const openQuoteModal = () => {
+    setQuoteModal({ isOpen: true, serviceType: 'Video Services' });
+  };
+
+  const closeQuoteModal = () => {
+    setQuoteModal({ isOpen: false, serviceType: 'Video Services' });
+  };
   
   return (
     <main className="relative">
@@ -23,13 +33,30 @@ const PortfolioVideography = () => {
             <div className="text-center py-20">
               <h3 className="text-2xl font-bold mb-4">Videography Portfolio</h3>
               <p className="text-muted-foreground mb-8">Coming soon - showcasing video production work</p>
-              <Link to="/contact" className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] inline-block">
-                Contact for Video Services
-              </Link>
+              <div className="space-y-4">
+                <button 
+                  onClick={openQuoteModal}
+                  className="bg-primary text-primary-foreground px-8 py-3 font-semibold hover:bg-primary/90 transition-colors shadow-[var(--shadow-sharp)] inline-block"
+                >
+                  Get Video Services Quote
+                </button>
+                <div>
+                  <Link to="/contact" className="text-primary hover:underline font-semibold">
+                    Or contact us directly →
+                  </Link>
+                </div>
+              </div>
             </div>
           </FadeIn>
         </div>
       </div>
+
+      <QuoteModal 
+        isOpen={quoteModal.isOpen}
+        onClose={closeQuoteModal}
+        serviceType={quoteModal.serviceType}
+      />
+
       <Footer />
     </main>
   );
