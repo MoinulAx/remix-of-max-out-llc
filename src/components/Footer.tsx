@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
             <Link to="/" className="text-lg font-medium tracking-tight">
-              RummSpace
+              MAX OUT MANAGEMENT
             </Link>
             <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               <button
@@ -43,28 +43,34 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
                 Home
               </button>
               <Link 
-                to="/services"
+                to="/roster"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Services
+                Roster
               </Link>
               <Link 
-                to="/portfolio"
+                to="/content-hub"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Portfolio
+                Content Hub
               </Link>
               <Link 
-                to="/about"
+                to="/leadership"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                About
+                Leadership
               </Link>
               <Link 
-                to="/contact"
+                to="/inquire"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Contact
+                Inquire
+              </Link>
+              <Link 
+                to="/partners"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Partners
               </Link>
             </div>
           </div>
@@ -72,7 +78,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
             <div className="flex space-x-4">
               <a 
-                href="https://instagram.com/rummspace" 
+                href="https://instagram.com/maxoutmgmt" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors p-1"
@@ -83,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
                 </svg>
               </a>
               <a 
-                href="www.linkedin.com/in/moinul-khan-647535238" 
+                href="https://www.linkedin.com/company/maxoutmanagement" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors p-1"
@@ -94,7 +100,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
                 </svg>
               </a>
               <a 
-                href="https://x.com/RummSpace" 
+                href="https://x.com/maxoutmgmt" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors p-1"
@@ -116,7 +122,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             </div>
             
             <div className="text-sm text-muted-foreground text-center">
-              &copy; {new Date().getFullYear()} RummSpace
+              &copy; {new Date().getFullYear()} Max Out Management LLC
             </div>
           </div>
         </div>

@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           to="/" 
           className="text-xl font-bold tracking-tight text-foreground hover:opacity-80"
         >
-          RummSpace
+          MAX OUT MANAGEMENT
         </NavLink>
         
         <div className="hidden md:flex items-center space-x-8">
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         
         <nav className="flex flex-col space-y-6 text-lg">
           <NavLink 
-            to="/" 
+            to="/home" 
             className={({ isActive }) => cn(
               "hover:text-primary transition-colors",
               isActive && "text-primary font-semibold"
@@ -98,53 +98,39 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             Home
           </NavLink>
           <NavLink 
-            to="/portfolio"
+            to="/roster"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Portfolio
+            Roster
           </NavLink>
           <NavLink 
-            to="/services"
+            to="/content-hub"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Services
+            Content Hub
           </NavLink>
           <NavLink 
-            to="/about"
+            to="/leadership"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            About
+            Leadership
           </NavLink>
           <NavLink 
-            to="/team"
+            to="/inquire"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Team
+            Inquire
           </NavLink>
           <NavLink 
-            to="/careers"
+            to="/partners"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Careers
-          </NavLink>
-          <NavLink 
-            to="/download"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Download App
-          </NavLink>
-          <NavLink 
-            to="/contact"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Contact
+            Partners
           </NavLink>
         </nav>
       </div>
@@ -159,67 +145,58 @@ interface NavLinksProps {
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
     <NavLink 
-      to="/about"
+      to="/home"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
         isActive && "text-primary"
       )}
     >
-      About
+      Home
     </NavLink>
     <NavLink 
-      to="/portfolio"
+      to="/roster"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
         isActive && "text-primary"
       )}
     >
-      Portfolio
+      Roster
     </NavLink>
     <NavLink 
-      to="/services"
+      to="/content-hub"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
         isActive && "text-primary"
       )}
     >
-      Services
+      Content Hub
     </NavLink>
     <NavLink 
-      to="/team"
+      to="/leadership"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
         isActive && "text-primary"
       )}
     >
-      Team
+      Leadership
     </NavLink>
     <NavLink 
-      to="/careers"
+      to="/inquire"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
         isActive && "text-primary"
       )}
     >
-      Careers
+      Inquire
     </NavLink>
     <NavLink 
-      to="/download"
+      to="/partners"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
         isActive && "text-primary"
       )}
     >
-      Download App
-    </NavLink>
-    <NavLink 
-      to="/contact"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Contact
+      Partners
     </NavLink>
   </>
 );

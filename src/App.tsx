@@ -3,20 +3,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import Team from "./pages/Team";
-import Photography from "./pages/Photography";
-import WebDevelopment from "./pages/WebDevelopment";
-import Portfolio from "./pages/Portfolio";
-import Services from "./pages/Services";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Splash from "./pages/Splash";
+import Home from "./pages/Home";
+import Roster from "./pages/Roster";
+import ContentHub from "./pages/ContentHub";
+import Leadership from "./pages/Leadership";
+import Inquire from "./pages/Inquire";
+import Partners from "./pages/Partners";
 import NotFound from "./pages/NotFound";
-import Careers from "./pages/Careers";
-import Download from "./pages/Download";
-import PortfolioPhotography from "./pages/PortfolioPhotography";
-import PortfolioVideography from "./pages/PortfolioVideography";
-import PortfolioWeb from "./pages/PortfolioWeb";
 import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -29,19 +23,13 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/portfolio/photography" element={<PortfolioPhotography />} />
-          <Route path="/portfolio/videography" element={<PortfolioVideography />} />
-          <Route path="/portfolio/web" element={<PortfolioWeb />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/photography" element={<Photography />} />
-          <Route path="/web-development" element={<WebDevelopment />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/download" element={<Download />} />
+          <Route path="/" element={<Splash />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/roster" element={<Roster />} />
+          <Route path="/content-hub" element={<ContentHub />} />
+          <Route path="/leadership" element={<Leadership />} />
+          <Route path="/inquire" element={<Inquire />} />
+          <Route path="/partners" element={<Partners />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
