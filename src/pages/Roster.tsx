@@ -5,13 +5,47 @@ import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
 
 const Roster = () => {
-  const talents = [
-    { name: 'Artist Name', specialty: 'Photography', availability: 'available' },
-    { name: 'Creator Name', specialty: 'Videography', availability: 'pending' },
-    { name: 'Model Name', specialty: 'Fashion', availability: 'booked' },
-    { name: 'Director Name', specialty: 'Film', availability: 'available' },
-    { name: 'Influencer Name', specialty: 'Social Media', availability: 'available' },
-    { name: 'Producer Name', specialty: 'Music', availability: 'pending' },
+  const talentCategories = [
+    {
+      category: "Artists, Models & Actors",
+      talents: [
+        { name: 'EV09 Loso', specialty: 'Artist, Model, Actor, Fashion Designer', availability: 'available', instagram: 'https://www.instagram.com/ev09loso/' },
+        { name: 'Flaco', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/whois.flac0/' },
+        { name: 'Ayce Slater', specialty: 'Artist, Content Creator', availability: 'pending', instagram: 'https://www.instagram.com/ayceslater/' },
+        { name: 'Steve Drivee', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/_stevedrivee/' },
+        { name: 'Kid Cole', specialty: 'Artist, Model', availability: 'booked', instagram: 'https://www.instagram.com/realkidcole/' },
+        { name: 'Yns', specialty: 'Artist', availability: 'available', instagram: 'https://www.instagram.com/ynsilxss/' },
+        { name: 'Sky Banks', specialty: 'Artist, Model, Actor, Author', availability: 'available', instagram: 'https://www.instagram.com/skybanksofficial/' },
+        { name: 'Anais', specialty: 'Artist, Model, Song Writer', availability: 'pending', instagram: 'https://www.instagram.com/_anais_xo99/' },
+        { name: 'Rakku', specialty: 'Artist, Model', availability: 'available', instagram: 'https://www.instagram.com/realrakku/' },
+        { name: '2PT', specialty: 'Artist', availability: 'available', instagram: 'https://www.instagram.com/_theofficial2pt/' },
+        { name: 'Pretty Boi Green', specialty: 'Artist, Model, Actor', availability: 'pending', instagram: 'https://www.instagram.com/prettyboi_green/' },
+        { name: 'Sstel', specialty: 'Artist, Model, Actor, Host', availability: 'available', instagram: '#' },
+        { name: 'P-take', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/ptakee1/' },
+        { name: 'Outside the Temple', specialty: 'Artist, Song Writer, Musician', availability: 'booked', instagram: 'https://www.instagram.com/outsidethetemple/' },
+        { name: 'Isabela Donna', specialty: 'Artist, Model, Actor, Model Manager', availability: 'available', instagram: 'https://www.instagram.com/isabeladonnaa/' },
+      ]
+    },
+    {
+      category: "Content Creators & Managers",
+      talents: [
+        { name: 'Danny Nym', specialty: 'Content Creator', availability: 'available', instagram: 'https://www.instagram.com/danny.nym/' },
+        { name: 'Adeola', specialty: 'Creative Director, Fashion Designer, Manager', availability: 'available', instagram: 'https://www.instagram.com/ade_hunchoo/' },
+        { name: 'Kay Talks Lyfe', specialty: 'Content Creator, Entrepreneur', availability: 'pending', instagram: 'https://www.youtube.com/@KayTalksLyfe' },
+        { name: 'Partii', specialty: 'Content Creator, Model, Creative Director, Host', availability: 'available', instagram: 'https://www.instagram.com/partii__21/' },
+        { name: 'Mb TV', specialty: 'Content Creator', availability: 'available', instagram: 'https://www.instagram.com/7_mbtvvv/' },
+        { name: 'Yaggi Baby', specialty: 'Content Creator, Entrepreneur', availability: 'booked', instagram: 'https://www.instagram.com/yaggii.baby/' },
+        { name: 'Mr.ifykyk', specialty: 'Content Creator, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/mr.ifykyk__/' },
+        { name: 'Jwxra', specialty: 'Photographer, Videographer', availability: 'available', instagram: 'https://www.instagram.com/jwxra/' },
+      ]
+    },
+    {
+      category: "Producers, Engineers & A&R",
+      talents: [
+        { name: 'Shomojo', specialty: 'Engineer, Artist, A&R', availability: 'available', instagram: 'https://www.instagram.com/_shomojo_/' },
+        { name: 'Lil Black Diamond', specialty: 'Producer, Artist, Engineer', availability: 'pending', instagram: 'https://www.instagram.com/lilblkdiamond/' },
+      ]
+    }
   ];
 
   const getStatusColor = (status: string) => {
@@ -36,34 +70,55 @@ const Roster = () => {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {talents.map((talent, index) => (
-              <FadeIn key={index} delay={index * 100}>
-                <Link to={`/roster/${talent.name.toLowerCase().replace(' ', '-')}`} className="block group">
-                  <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="aspect-[3/4] bg-muted"></div>
-                    
-                    {/* Status Badge */}
-                    <div className="absolute top-4 right-4">
-                      <div className={`${getStatusColor(talent.availability)} w-4 h-4 rounded-full`}></div>
-                    </div>
+          {talentCategories.map((section, sectionIndex) => (
+            <div key={sectionIndex} className="mb-16">
+              <FadeIn delay={sectionIndex * 100}>
+                <h2 className="text-3xl font-bold mb-8 border-b border-border pb-4">{section.category}</h2>
+              </FadeIn>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {section.talents.map((talent, index) => (
+                  <FadeIn key={index} delay={(sectionIndex * 100) + (index * 50)}>
+                    <div className="block group">
+                      <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div className="aspect-[3/4] bg-muted"></div>
+                        
+                        {/* Status Badge */}
+                        <div className="absolute top-4 right-4">
+                          <div className={`${getStatusColor(talent.availability)} w-4 h-4 rounded-full`}></div>
+                        </div>
 
-                    {/* Info Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-6">
-                      <div className="w-full">
-                        <h3 className="text-white text-2xl font-bold mb-2">{talent.name}</h3>
-                        <p className="text-white/80 mb-4">{talent.specialty}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-white text-sm capitalize">{talent.availability}</span>
-                          <span className="text-white group-hover:translate-x-1 transition-transform">→</span>
+                        {/* Instagram Link */}
+                        {talent.instagram && talent.instagram !== '#' && (
+                          <a 
+                            href={talent.instagram} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="absolute top-4 left-4 bg-black/50 hover:bg-black/70 p-2 rounded-full transition-colors z-10"
+                          >
+                            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                          </a>
+                        )}
+
+                        {/* Info Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-6">
+                          <div className="w-full">
+                            <h3 className="text-white text-2xl font-bold mb-2">{talent.name}</h3>
+                            <p className="text-white/80 mb-4 text-sm">{talent.specialty}</p>
+                            <div className="flex items-center justify-between">
+                              <span className="text-white text-sm capitalize">{talent.availability}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </FadeIn>
-            ))}
-          </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+          ))}
 
           {/* Legend */}
           <FadeIn delay={600}>
