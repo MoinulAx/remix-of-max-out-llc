@@ -28,7 +28,13 @@ const Leadership = () => {
           <FadeIn delay={100}>
             <div className="mb-24">
               <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="aspect-square bg-muted rounded-lg"></div>
+                <div className="aspect-square bg-muted rounded-lg overflow-hidden">
+                  <img 
+                    src="/leadership/rasheed-moon.heic" 
+                    alt="Rasheed Moon"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h2 className="text-3xl md:text-4xl font-bold mb-2">Rasheed Moon</h2>
                   <p className="text-xl text-primary mb-6">Owner / CEO</p>
