@@ -96,7 +96,7 @@ const Partners = () => {
               <h2 className="text-3xl font-bold mb-8 text-center">Key Industry Partners</h2>
               <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                 {[
-                  { name: 'CK Shawn', role: 'Producer', instagram: 'https://www.instagram.com/therealckshawn/', note: 'Highly Important' },
+                  { name: 'CPK Shawn', role: 'Producer', instagram: 'https://www.instagram.com/therealckshawn/', note: 'Highly Important' },
                   { name: 'Bizzaro Beats', role: 'Producer', instagram: 'https://www.instagram.com/bizzarobeats/', note: 'Partnered' },
                 ].map((partner, index) => (
                   <div key={index} className="p-8 border rounded-lg hover:shadow-lg transition-shadow bg-card">

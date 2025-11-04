@@ -5,10 +5,12 @@ import FadeIn from '@/components/animations/FadeIn';
 
 const Leadership = () => {
   const team = [
-    { name: 'Manager Name', role: 'Talent Manager', specialty: 'Artist Development' },
-    { name: 'Agent Name', role: 'Booking Agent', specialty: 'Strategic Partnerships' },
-    { name: 'Strategist Name', role: 'Brand Strategist', specialty: 'Marketing & Growth' },
-    { name: 'Director Name', role: 'Creative Director', specialty: 'Content Strategy' },
+    { name: 'Adeola Oni', role: 'Creative Director & Videographer' },
+    { name: 'Casalo D', role: 'Talent Manager' },
+    { name: 'Shomari', role: 'A&R' },
+    { name: 'Jayden M', role: 'Editor' },
+    { name: 'Brian (Bway)', role: 'PR' },
+    { name: 'RummSpace', role: 'Lead Software Architecture' },
   ];
 
   return (
@@ -57,15 +59,14 @@ const Leadership = () => {
           {/* Team Grid */}
           <FadeIn delay={200}>
             <h2 className="text-3xl font-bold mb-12">Our Team</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {team.map((member, index) => (
                 <div key={index} className="group">
                   <div className="aspect-square bg-muted rounded-lg mb-4 overflow-hidden">
                     <div className="w-full h-full bg-gradient-to-br from-primary/5 to-accent/5"></div>
                   </div>
                   <h3 className="font-bold text-lg mb-1">{member.name}</h3>
-                  <p className="text-primary text-sm mb-2">{member.role}</p>
-                  <p className="text-muted-foreground text-sm">{member.specialty}</p>
+                  <p className="text-primary text-sm">{member.role}</p>
                 </div>
               ))}
             </div>

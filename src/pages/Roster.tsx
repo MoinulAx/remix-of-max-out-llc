@@ -10,40 +10,32 @@ const Roster = () => {
       category: "Artists, Models & Actors",
       talents: [
         { name: 'EV09 Loso', specialty: 'Artist, Model, Actor, Fashion Designer', availability: 'available', instagram: 'https://www.instagram.com/ev09loso/', image: '/roster/ev09-loso.jpg' },
-        { name: 'Flaco', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/whois.flac0/' },
-        { name: 'Ayce Slater', specialty: 'Artist, Content Creator', availability: 'pending', instagram: 'https://www.instagram.com/ayceslater/', image: '/roster/ayce-slater.jpg' },
-        { name: 'Steve Drivee', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/_stevedrivee/', image: '/roster/steve-drivee.jpg' },
-        { name: 'Kid Cole', specialty: 'Artist, Model', availability: 'booked', instagram: 'https://www.instagram.com/realkidcole/' },
-        { name: 'Yns', specialty: 'Artist', availability: 'available', instagram: 'https://www.instagram.com/ynsilxss/', image: '/roster/yns.jpg' },
         { name: 'Sky Banks', specialty: 'Artist, Model, Actor, Author', availability: 'available', instagram: 'https://www.instagram.com/skybanksofficial/', image: '/roster/sky-banks.jpeg' },
-        { name: 'Anais', specialty: 'Artist, Model, Song Writer', availability: 'pending', instagram: 'https://www.instagram.com/_anais_xo99/' },
+        { name: 'Flaco', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/whois.flac0/' },
         { name: 'Rakku', specialty: 'Artist, Model', availability: 'available', instagram: 'https://www.instagram.com/realrakku/', image: '/roster/rakku.heic' },
-        { name: '2PT', specialty: 'Artist', availability: 'available', instagram: 'https://www.instagram.com/_theofficial2pt/', image: '/roster/2pt.jpg' },
-        { name: 'Pretty Boi Green', specialty: 'Artist, Model, Actor', availability: 'pending', instagram: 'https://www.instagram.com/prettyboi_green/', image: '/roster/pretty-boi-green.png' },
         { name: 'Sstel', specialty: 'Artist, Model, Actor, Host', availability: 'available', instagram: '#', image: '/roster/sstel.jpeg' },
+        { name: 'Pretty Boi Green', specialty: 'Artist, Model, Actor', availability: 'pending', instagram: 'https://www.instagram.com/prettyboi_green/', image: '/roster/pretty-boi-green.png' },
         { name: 'P-take', specialty: 'Artist, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/ptakee1/', image: '/roster/p-take.jpg' },
-        { name: 'Outside the Temple', specialty: 'Artist, Song Writer, Musician', availability: 'booked', instagram: 'https://www.instagram.com/outsidethetemple/' },
-        { name: 'Isabela Donna', specialty: 'Artist, Model, Actor, Model Manager', availability: 'available', instagram: 'https://www.instagram.com/isabeladonnaa/', image: '/roster/isabela-donna.jpg' },
+        { name: 'Anais', specialty: 'Artist, Model, Song Writer', availability: 'pending', instagram: 'https://www.instagram.com/_anais_xo99/' },
+        { name: 'Kid Cole', specialty: 'Artist, Model', availability: 'booked', instagram: 'https://www.instagram.com/realkidcole/' },
       ]
     },
     {
-      category: "Content Creators & Managers",
+      category: "Content Creators",
       talents: [
-        { name: 'Danny Nym', specialty: 'Content Creator', availability: 'available', instagram: 'https://www.instagram.com/danny.nym/' },
-        { name: 'Adeola', specialty: 'Creative Director, Fashion Designer, Manager', availability: 'available', instagram: 'https://www.instagram.com/ade_hunchoo/' },
-        { name: 'Kay Talks Lyfe', specialty: 'Content Creator, Entrepreneur', availability: 'pending', instagram: 'https://www.youtube.com/@KayTalksLyfe', image: '/roster/kay-talks-lyfe.png' },
         { name: 'Partii', specialty: 'Content Creator, Model, Creative Director, Host', availability: 'available', instagram: 'https://www.instagram.com/partii__21/' },
-        { name: 'Mb TV', specialty: 'Content Creator', availability: 'available', instagram: 'https://www.instagram.com/7_mbtvvv/', image: '/roster/mbtv.jpg' },
+        { name: 'Danny Nym', specialty: 'Content Creator', availability: 'available', instagram: 'https://www.instagram.com/danny.nym/' },
+        { name: 'Kay Talks Lyfe', specialty: 'Content Creator, Entrepreneur', availability: 'pending', instagram: 'https://www.youtube.com/@KayTalksLyfe', image: '/roster/kay-talks-lyfe.png' },
         { name: 'Yaggi Baby', specialty: 'Content Creator, Entrepreneur', availability: 'booked', instagram: 'https://www.instagram.com/yaggii.baby/', image: '/roster/yaggi-baby.png' },
+        { name: 'Film by Jwxra', specialty: 'Photographer, Videographer', availability: 'available', instagram: 'https://www.instagram.com/jwxra/', image: '/roster/jwxra.jpeg' },
         { name: 'Mr.ifykyk', specialty: 'Content Creator, Model, Actor', availability: 'available', instagram: 'https://www.instagram.com/mr.ifykyk__/', image: '/roster/mr-ifykyk.jpg' },
-        { name: 'Jwxra', specialty: 'Photographer, Videographer', availability: 'available', instagram: 'https://www.instagram.com/jwxra/', image: '/roster/jwxra.jpeg' },
       ]
     },
     {
-      category: "Producers, Engineers & A&R",
+      category: "Producers",
       talents: [
-        { name: 'Shomojo', specialty: 'Engineer, Artist, A&R', availability: 'available', instagram: 'https://www.instagram.com/_shomojo_/' },
-        { name: 'Lil Black Diamond', specialty: 'Producer, Artist, Engineer', availability: 'pending', instagram: 'https://www.instagram.com/lilblkdiamond/', image: '/roster/lil-black-diamond.jpg' },
+        { name: 'Joe BPM', specialty: 'Producer', availability: 'available', instagram: '#' },
+        { name: 'Lil Blk Diamond', specialty: 'Producer, Artist, Engineer', availability: 'pending', instagram: 'https://www.instagram.com/lilblkdiamond/', image: '/roster/lil-black-diamond.jpg' },
       ]
     }
   ];

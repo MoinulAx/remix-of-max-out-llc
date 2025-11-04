@@ -11,47 +11,28 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 
-const talentSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+const bookingSchema = z.object({
+  yourName: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-  specialty: z.string().min(2, 'Please specify your specialty'),
-  portfolio: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
+  talentName: z.string().min(2, 'Please specify who you are inquiring about'),
+  services: z.string().min(2, 'Please specify the services needed'),
+  budget: z.string().min(1, 'Please provide a budget range'),
+  timeline: z.string().min(2, 'Please specify your timeline'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
-});
-
-const careerSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-  position: z.string().min(2, 'Please specify desired position'),
-  experience: z.string().min(10, 'Please describe your experience'),
-  resume: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
 });
 
 const Inquire = () => {
   const { toast } = useToast();
 
-  const talentForm = useForm({
-    resolver: zodResolver(talentSchema),
-    defaultValues: { name: '', email: '', phone: '', specialty: '', portfolio: '', message: '' },
+  const bookingForm = useForm({
+    resolver: zodResolver(bookingSchema),
+    defaultValues: { yourName: '', email: '', talentName: '', services: '', budget: '', timeline: '', message: '' },
   });
 
-  const careerForm = useForm({
-    resolver: zodResolver(careerSchema),
-    defaultValues: { name: '', email: '', phone: '', position: '', experience: '', resume: '' },
-  });
-
-  const onTalentSubmit = (data: z.infer<typeof talentSchema>) => {
-    const mailtoLink = `mailto:epcstudiosny@gmail.com?subject=Talent Inquiry - ${data.name}&body=Name: ${data.name}%0D%0AEmail: ${data.email}%0D%0APhone: ${data.phone}%0D%0ASpecialty: ${data.specialty}%0D%0APortfolio: ${data.portfolio}%0D%0A%0D%0AMessage:%0D%0A${data.message}`;
+  const onBookingSubmit = (data: z.infer<typeof bookingSchema>) => {
+    const mailtoLink = `mailto:epcstudiosny@gmail.com?subject=Booking Inquiry - ${data.talentName}&body=Your Name: ${data.yourName}%0D%0AEmail: ${data.email}%0D%0AInquiring About: ${data.talentName}%0D%0AServices Needed: ${data.services}%0D%0ABudget: ${data.budget}%0D%0ATimeline: ${data.timeline}%0D%0A%0D%0AMessage:%0D%0A${data.message}`;
     window.location.href = mailtoLink;
-    toast({ title: 'Opening email client...', description: 'Your inquiry will be sent to our team.' });
-  };
-
-  const onCareerSubmit = (data: z.infer<typeof careerSchema>) => {
-    const mailtoLink = `mailto:epcstudiosny@gmail.com?subject=Career Inquiry - ${data.name}&body=Name: ${data.name}%0D%0AEmail: ${data.email}%0D%0APhone: ${data.phone}%0D%0APosition: ${data.position}%0D%0AResume: ${data.resume}%0D%0A%0D%0AExperience:%0D%0A${data.experience}`;
-    window.location.href = mailtoLink;
-    toast({ title: 'Opening email client...', description: 'Your application will be sent to our team.' });
+    toast({ title: 'Opening email client...', description: 'Your booking inquiry will be sent to our team.' });
   };
 
   return (
@@ -61,30 +42,30 @@ const Inquire = () => {
       <section className="pt-32 pb-16 md:pb-24">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Inquire</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Book Talent</h1>
             <p className="text-xl text-muted-foreground mb-16 max-w-3xl">
-              Whether you're talent seeking representation or a professional looking to join our team, we'd love to hear from you.
+              Submit an inquiry to book one of our exclusive roster talents for your project.
             </p>
           </FadeIn>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Talent Inquiry Form */}
-            <FadeIn delay={100}>
+          {/* Booking Form */}
+          <FadeIn delay={100}>
+            <div className="max-w-3xl mx-auto mb-20">
               <div className="border rounded-2xl p-8">
-                <h2 className="text-2xl font-bold mb-2">Management Inquiry</h2>
-                <p className="text-muted-foreground mb-6">For artists, models, and creators seeking representation</p>
+                <h2 className="text-2xl font-bold mb-2">Talent Booking Inquiry</h2>
+                <p className="text-muted-foreground mb-6">Fill out the form below and we'll get back to you shortly</p>
                 
-                <Form {...talentForm}>
-                  <form onSubmit={talentForm.handleSubmit(onTalentSubmit)} className="space-y-6">
-                    <FormField control={talentForm.control} name="name" render={({ field }) => (
+                <Form {...bookingForm}>
+                  <form onSubmit={bookingForm.handleSubmit(onBookingSubmit)} className="space-y-6">
+                    <FormField control={bookingForm.control} name="yourName" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Full Name *</FormLabel>
-                        <FormControl><Input {...field} /></FormControl>
+                        <FormLabel>Who are you? *</FormLabel>
+                        <FormControl><Input placeholder="Your full name" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
                     
-                    <FormField control={talentForm.control} name="email" render={({ field }) => (
+                    <FormField control={bookingForm.control} name="email" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email *</FormLabel>
                         <FormControl><Input type="email" {...field} /></FormControl>
@@ -92,106 +73,94 @@ const Inquire = () => {
                       </FormItem>
                     )} />
                     
-                    <FormField control={talentForm.control} name="phone" render={({ field }) => (
+                    <FormField control={bookingForm.control} name="talentName" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone Number *</FormLabel>
-                        <FormControl><Input {...field} /></FormControl>
+                        <FormLabel>Who are you inquiring about? *</FormLabel>
+                        <FormControl><Input placeholder="Talent name from roster" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
                     
-                    <FormField control={talentForm.control} name="specialty" render={({ field }) => (
+                    <FormField control={bookingForm.control} name="services" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Specialty *</FormLabel>
-                        <FormControl><Input placeholder="e.g., Photography, Acting, Modeling" {...field} /></FormControl>
+                        <FormLabel>What services do you need? *</FormLabel>
+                        <FormControl><Input placeholder="e.g., Photoshoot, Music Video, Brand Campaign" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
                     
-                    <FormField control={talentForm.control} name="portfolio" render={({ field }) => (
+                    <FormField control={bookingForm.control} name="budget" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Portfolio Link</FormLabel>
-                        <FormControl><Input placeholder="https://" {...field} /></FormControl>
+                        <FormLabel>Budget *</FormLabel>
+                        <FormControl><Input placeholder="e.g., $5,000 - $10,000" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
                     
-                    <FormField control={talentForm.control} name="message" render={({ field }) => (
+                    <FormField control={bookingForm.control} name="timeline" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message *</FormLabel>
-                        <FormControl><Textarea rows={4} {...field} /></FormControl>
+                        <FormLabel>Timeline *</FormLabel>
+                        <FormControl><Input placeholder="e.g., Within 2 weeks, Next month" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
                     
-                    <Button type="submit" className="w-full">Submit Inquiry</Button>
+                    <FormField control={bookingForm.control} name="message" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Additional Details *</FormLabel>
+                        <FormControl><Textarea rows={4} placeholder="Tell us more about your project..." {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                    
+                    <Button type="submit" className="w-full">Submit Booking Inquiry</Button>
                   </form>
                 </Form>
               </div>
-            </FadeIn>
+            </div>
+          </FadeIn>
 
-            {/* Career Inquiry Form */}
-            <FadeIn delay={200}>
-              <div className="border rounded-2xl p-8">
-                <h2 className="text-2xl font-bold mb-2">Career Inquiry</h2>
-                <p className="text-muted-foreground mb-6">For management and agency professionals</p>
-                
-                <Form {...careerForm}>
-                  <form onSubmit={careerForm.handleSubmit(onCareerSubmit)} className="space-y-6">
-                    <FormField control={careerForm.control} name="name" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name *</FormLabel>
-                        <FormControl><Input {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    
-                    <FormField control={careerForm.control} name="email" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email *</FormLabel>
-                        <FormControl><Input type="email" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    
-                    <FormField control={careerForm.control} name="phone" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number *</FormLabel>
-                        <FormControl><Input {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    
-                    <FormField control={careerForm.control} name="position" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Desired Position *</FormLabel>
-                        <FormControl><Input placeholder="e.g., Talent Manager, Agent" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    
-                    <FormField control={careerForm.control} name="resume" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Resume Link</FormLabel>
-                        <FormControl><Input placeholder="https://" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    
-                    <FormField control={careerForm.control} name="experience" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Experience *</FormLabel>
-                        <FormControl><Textarea rows={4} {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    
-                    <Button type="submit" className="w-full">Submit Application</Button>
-                  </form>
-                </Form>
+          {/* Roster Cards Section */}
+          <FadeIn delay={200}>
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold mb-8 text-center">Featured Roster Talent</h2>
+              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {[
+                  { name: 'EV09 Loso', image: '/roster/ev09-loso.jpg' },
+                  { name: 'Sky Banks', image: '/roster/sky-banks.jpeg' },
+                  { name: 'Rakku', image: '/roster/rakku.heic' },
+                  { name: 'Film by Jwxra', image: '/roster/jwxra.jpeg' },
+                ].map((talent, index) => (
+                  <div key={index} className="group">
+                    <div className="aspect-[3/4] overflow-hidden rounded-lg mb-3">
+                      <img src={talent.image} alt={talent.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </div>
+                    <h3 className="font-bold text-center">{talent.name}</h3>
+                  </div>
+                ))}
               </div>
-            </FadeIn>
-          </div>
+            </div>
+          </FadeIn>
+
+          {/* Management Cards Section */}
+          <FadeIn delay={300}>
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold mb-8 text-center">Meet the Team</h2>
+              <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                {[
+                  { name: 'Rasheed Moon', role: 'Owner / CEO' },
+                  { name: 'Adeola Oni', role: 'Creative Director & Videographer' },
+                  { name: 'Casalo D', role: 'Talent Manager' },
+                ].map((member, index) => (
+                  <div key={index} className="text-center p-6 border rounded-lg">
+                    <div className="aspect-square bg-muted rounded-full mx-auto mb-4 w-32 h-32"></div>
+                    <h3 className="font-bold text-lg mb-1">{member.name}</h3>
+                    <p className="text-primary text-sm">{member.role}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
