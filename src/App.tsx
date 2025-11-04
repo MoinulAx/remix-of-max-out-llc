@@ -10,6 +10,7 @@ import ContentHub from "./pages/ContentHub";
 import Leadership from "./pages/Leadership";
 import Inquire from "./pages/Inquire";
 import Partners from "./pages/Partners";
+import TMobile from "./pages/TMobile";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/leadership" element={<Leadership />} />
           <Route path="/inquire" element={<Inquire />} />
           <Route path="/partners" element={<Partners />} />
+          <Route path="/tmobile" element={<TMobile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -127,6 +127,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           </NavLink>
           <NavLink 
             to="/partners"
+            className="text-left hover:text-primary transition-colors"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Partners
+          </NavLink>
+          <NavLink 
+            to="/tmobile"
             className="text-left bg-[#E20074] text-white px-4 py-2 rounded font-bold hover:bg-[#E20074]/90 transition-colors inline-block"
             onClick={() => setIsMobileMenuOpen(false)}
           >
@@ -191,6 +198,15 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     </NavLink>
     <NavLink 
       to="/partners"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
+    >
+      Partners
+    </NavLink>
+    <NavLink 
+      to="/tmobile"
       className={({ isActive }) => cn(
         "text-sm font-bold px-4 py-2 rounded transition-colors",
         isActive ? "bg-[#E20074] text-white" : "bg-[#E20074]/10 text-[#E20074] hover:bg-[#E20074]/20"
