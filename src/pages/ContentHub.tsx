@@ -3,6 +3,14 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 
+const youtubeVideos = [
+  { id: '-irsKNSAbdE', title: 'Video 1' },
+  { id: '8zeHmxZW4t4', title: 'Video 2' },
+  { id: 'QarooJx_QvY', title: 'Video 3' },
+  { id: 'jZFPDOxpE64', title: 'Video 4' },
+  { id: 'FlX7mMj-f0k', title: 'Video 5' },
+];
+
 const ContentHub = () => {
   return (
     <main className="relative min-h-screen">
@@ -21,9 +29,13 @@ const ContentHub = () => {
           <FadeIn delay={100}>
             <div className="mb-16">
               <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center">
-                  <p className="text-muted-foreground">Featured Video Embed</p>
-                </div>
+                <iframe
+                  src="https://www.youtube.com/embed/tqAfN9iqzk8"
+                  title="Featured Video"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </div>
             </div>
           </FadeIn>
@@ -34,9 +46,17 @@ const ContentHub = () => {
             <FadeIn delay={200}>
               <div>
                 <h2 className="text-3xl font-bold mb-6">YouTube Channel</h2>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="aspect-video bg-muted rounded-lg"></div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {youtubeVideos.map((video) => (
+                    <div key={video.id} className="aspect-video bg-muted rounded-lg overflow-hidden">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${video.id}`}
+                        title={video.title}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
