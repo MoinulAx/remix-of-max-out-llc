@@ -105,6 +105,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             Roster
           </NavLink>
           <NavLink 
+            to="/max-out-method"
+            className="text-left hover:text-primary transition-colors"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Max Out Method
+          </NavLink>
+          <NavLink 
             to="/content-hub"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -168,6 +175,15 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
       )}
     >
       Roster
+    </NavLink>
+    <NavLink 
+      to="/max-out-method"
+      className={({ isActive }) => cn(
+        "text-sm font-medium hover:text-primary transition-colors",
+        isActive && "text-primary"
+      )}
+    >
+      Max Out Method
     </NavLink>
     <NavLink 
       to="/content-hub"

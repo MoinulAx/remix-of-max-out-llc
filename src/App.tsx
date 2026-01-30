@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Splash from "./pages/Splash";
 import Home from "./pages/Home";
 import Roster from "./pages/Roster";
+import MaxOutMethod from "./pages/MaxOutMethod";
 import ContentHub from "./pages/ContentHub";
 import Leadership from "./pages/Leadership";
 import Inquire from "./pages/Inquire";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Splash />} />
           <Route path="/home" element={<Home />} />
           <Route path="/roster" element={<Roster />} />
+          <Route path="/max-out-method" element={<MaxOutMethod />} />
           <Route path="/content-hub" element={<ContentHub />} />
           <Route path="/leadership" element={<Leadership />} />
           <Route path="/inquire" element={<Inquire />} />
