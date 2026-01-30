@@ -188,28 +188,60 @@ const Inquire = () => {
           {/* Job Listings Section */}
           <FadeIn delay={300}>
             <div className="mb-16">
-              <h2 className="text-3xl font-bold mb-8">Open Positions</h2>
-              <div className="space-y-4 max-w-4xl">
-                {[
-                  { title: 'Social Media Manager', type: 'Full-time', location: 'Remote' },
-                  { title: 'Video Editor', type: 'Contract', location: 'New York, NY' },
-                  { title: 'Content Creator', type: 'Part-time', location: 'Hybrid' },
-                  { title: 'Marketing Coordinator', type: 'Full-time', location: 'New York, NY' },
-                ].map((job, index) => (
-                  <div key={index} className="border rounded-lg p-6 hover:border-primary transition-colors">
-                    <div className="flex justify-between items-start flex-wrap gap-4">
-                      <div>
-                        <h3 className="text-xl font-bold mb-2">{job.title}</h3>
-                        <div className="flex gap-4 text-muted-foreground">
-                          <span>{job.type}</span>
-                          <span>•</span>
-                          <span>{job.location}</span>
+              <h2 className="text-3xl font-bold mb-8">Max Out Management Openings</h2>
+              
+              {/* Internships */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-semibold mb-6 text-primary">Internships (Entry Level)</h3>
+                <div className="space-y-4 max-w-4xl">
+                  {[
+                    { title: 'Social Media Marketing Intern', type: 'Part-time', location: 'Remote', note: 'Unpaid Internship (College Credit Available)' },
+                    { title: 'Artist Management Intern', type: 'Part-time', location: 'Hybrid', note: 'Unpaid Internship' },
+                    { title: 'A&R Scout Intern', type: 'Part-time', location: 'Remote', note: 'Unpaid Internship' },
+                    { title: 'Graphic Design / Content Intern', type: 'Part-time', location: 'Remote', note: 'Unpaid Internship' },
+                  ].map((job, index) => (
+                    <div key={index} className="border rounded-lg p-6 hover:border-primary transition-colors">
+                      <div className="flex justify-between items-start flex-wrap gap-4">
+                        <div>
+                          <h4 className="text-xl font-bold mb-2">{job.title}</h4>
+                          <div className="flex flex-wrap gap-2 text-muted-foreground text-sm">
+                            <span className="bg-muted px-2 py-1 rounded">{job.type}</span>
+                            <span className="bg-muted px-2 py-1 rounded">{job.location}</span>
+                            <span className="bg-primary/10 text-primary px-2 py-1 rounded">{job.note}</span>
+                          </div>
                         </div>
+                        <Button variant="outline">Apply Now</Button>
                       </div>
-                      <Button variant="outline">Apply Now</Button>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Commission-Based Positions */}
+              <div>
+                <h3 className="text-2xl font-semibold mb-6 text-primary">Commission-Based Positions</h3>
+                <div className="space-y-4 max-w-4xl">
+                  {[
+                    { title: 'Talent Manager', type: 'Full-time', location: 'Hybrid', note: 'Commission Only (% of Client Earnings)' },
+                    { title: 'Booking Agent', type: 'Contract', location: 'Remote', note: 'Commission Based (Per Booking)' },
+                    { title: 'Brand Partnership Specialist', type: 'Contract', location: 'Remote', note: 'Commission on Sponsorship Deals' },
+                    { title: 'Sales Representative', type: 'Contract', location: 'Remote', note: '100% Commission' },
+                  ].map((job, index) => (
+                    <div key={index} className="border rounded-lg p-6 hover:border-primary transition-colors">
+                      <div className="flex justify-between items-start flex-wrap gap-4">
+                        <div>
+                          <h4 className="text-xl font-bold mb-2">{job.title}</h4>
+                          <div className="flex flex-wrap gap-2 text-muted-foreground text-sm">
+                            <span className="bg-muted px-2 py-1 rounded">{job.type}</span>
+                            <span className="bg-muted px-2 py-1 rounded">{job.location}</span>
+                            <span className="bg-green-500/10 text-green-600 px-2 py-1 rounded">{job.note}</span>
+                          </div>
+                        </div>
+                        <Button variant="outline">Apply Now</Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </FadeIn>
