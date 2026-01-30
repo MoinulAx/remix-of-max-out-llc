@@ -88,16 +88,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         
         <nav className="flex flex-col space-y-6 text-lg">
           <NavLink 
-            to="/home" 
-            className={({ isActive }) => cn(
-              "hover:text-primary transition-colors",
-              isActive && "text-primary font-semibold"
-            )}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Home
-          </NavLink>
-          <NavLink 
             to="/roster"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -158,15 +148,6 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
-    <NavLink 
-      to="/home"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Home
-    </NavLink>
     <NavLink 
       to="/roster"
       className={({ isActive }) => cn(
