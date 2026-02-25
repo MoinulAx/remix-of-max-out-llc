@@ -32,8 +32,7 @@ const Roster = () => {
     {
       category: "Producers",
       talents: [
-        { name: 'Joe BPM', specialty: 'Producer', availability: 'available', instagram: '#' },
-        { name: 'Lil Blk Diamond', specialty: 'Producer, Artist, Engineer', availability: 'pending', instagram: 'https://www.instagram.com/lilblkdiamond/', image: '/roster/lil-black-diamond.jpg' },
+        { name: 'Joe BPM', specialty: 'Producer', availability: 'available', instagram: '#', image: '/roster/joe-bpm.png' },
       ]
     }
   ];
