@@ -14,6 +14,13 @@ import Partners from "./pages/Partners";
 import TMobile from "./pages/TMobile";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminContentHub from "./pages/admin/AdminContentHub";
+import AdminRoster from "./pages/admin/AdminRoster";
+import AdminInquiries from "./pages/admin/AdminInquiries";
+import AdminPartners from "./pages/admin/AdminPartners";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +41,15 @@ const App = () => (
           <Route path="/inquire" element={<Inquire />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/tmobile" element={<TMobile />} />
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="content-hub" element={<AdminContentHub />} />
+            <Route path="roster" element={<AdminRoster />} />
+            <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="partners" element={<AdminPartners />} />
+          </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
