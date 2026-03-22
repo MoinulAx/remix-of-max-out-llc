@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
-  LayoutDashboard, Video, Users, Briefcase, Handshake, LogOut, Menu, X
+  LayoutDashboard, Video, Users, Briefcase, Handshake, LogOut, Menu, X, Mail, GraduationCap
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -10,7 +10,8 @@ const navItems = [
   { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Content Hub', path: '/admin/content-hub', icon: Video },
   { label: 'Leadership & Roster', path: '/admin/roster', icon: Users },
-  { label: 'Inquiries', path: '/admin/inquiries', icon: Briefcase },
+  { label: 'Careers', path: '/admin/careers', icon: GraduationCap },
+  { label: 'Inquiries', path: '/admin/inquiries', icon: Mail },
   { label: 'Partners', path: '/admin/partners', icon: Handshake },
 ];
 

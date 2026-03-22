@@ -21,6 +21,7 @@ import AdminContentHub from "./pages/admin/AdminContentHub";
 import AdminRoster from "./pages/admin/AdminRoster";
 import AdminInquiries from "./pages/admin/AdminInquiries";
 import AdminPartners from "./pages/admin/AdminPartners";
+import AdminCareers from "./pages/admin/AdminCareers";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="content-hub" element={<AdminContentHub />} />
             <Route path="roster" element={<AdminRoster />} />
+            <Route path="careers" element={<AdminCareers />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="partners" element={<AdminPartners />} />
           </Route>
