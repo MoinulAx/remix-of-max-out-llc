@@ -48,6 +48,7 @@ const App = () => (
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="content-hub" element={<AdminContentHub />} />
             <Route path="roster" element={<AdminRoster />} />
+            <Route path="careers" element={<AdminCareers />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="partners" element={<AdminPartners />} />
           </Route>

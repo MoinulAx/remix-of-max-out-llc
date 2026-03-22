@@ -10,6 +10,7 @@ const navItems = [
   { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Content Hub', path: '/admin/content-hub', icon: Video },
   { label: 'Leadership & Roster', path: '/admin/roster', icon: Users },
+  { label: 'Careers', path: '/admin/careers', icon: Briefcase },
   { label: 'Inquiries', path: '/admin/inquiries', icon: Briefcase },
   { label: 'Partners', path: '/admin/partners', icon: Handshake },
 ];
