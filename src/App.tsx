@@ -21,6 +21,7 @@ import AdminContentHub from "./pages/admin/AdminContentHub";
 import AdminRoster from "./pages/admin/AdminRoster";
 import AdminInquiries from "./pages/admin/AdminInquiries";
 import AdminPartners from "./pages/admin/AdminPartners";
+import AdminCareers from "./pages/admin/AdminCareers";
 
 const queryClient = new QueryClient();
 
