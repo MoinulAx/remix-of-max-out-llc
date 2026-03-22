@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
-  LayoutDashboard, Video, Users, Briefcase, Handshake, LogOut, Menu, X
+  LayoutDashboard, Video, Users, Briefcase, Handshake, LogOut, Menu, X, Mail, GraduationCap
 } from 'lucide-react';
 import { useState } from 'react';
 
