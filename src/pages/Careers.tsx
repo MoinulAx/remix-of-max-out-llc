@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useSyncExternalStore } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { sendApplicationEmail } from '@/lib/emailjs';
 import { Briefcase, MapPin, Clock, DollarSign, Users, Building, Upload } from 'lucide-react';
+import { careersStore } from '@/lib/careersStore';
 
 interface Job {
   id: string;
@@ -27,7 +28,9 @@ interface Job {
 }
 
 const Careers = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  // Read active jobs from the shared mock store (reactive to admin changes)
+  const activeJobs = useSyncExternalStore(careersStore.subscribe, careersStore.getActiveJobs);
+  const jobs: Job[] = activeJobs;
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isGeneralApplicationOpen, setIsGeneralApplicationOpen] = useState(false);
@@ -41,25 +44,6 @@ const Careers = () => {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    fetchJobs();
-  }, []);
-
-  const fetchJobs = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('jobs')
-        .select('*')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setJobs(data || []);
-    } catch (error) {
-      console.error('Error fetching jobs:', error);
-    }
-  };
 
   const handleApply = (job: Job) => {
     setSelectedJob(job);
