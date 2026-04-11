@@ -27,15 +27,17 @@ const defaultJobs: JobListing[] = [
 type Listener = () => void;
 
 let jobs: JobListing[] = [...defaultJobs];
+let cachedActiveJobs: JobListing[] = jobs.filter(j => j.is_active);
 const listeners: Set<Listener> = new Set();
 
 function notify() {
+  cachedActiveJobs = jobs.filter(j => j.is_active);
   listeners.forEach(fn => fn());
 }
 
 export const careersStore = {
   getJobs: () => jobs,
-  getActiveJobs: () => jobs.filter(j => j.is_active),
+  getActiveJobs: () => cachedActiveJobs,
 
   setJobs: (next: JobListing[]) => { jobs = next; notify(); },
   addJob: (job: Omit<JobListing, 'id'>) => {
