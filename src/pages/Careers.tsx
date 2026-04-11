@@ -32,6 +32,18 @@ const Careers = () => {
   const activeJobs = useSyncExternalStore(careersStore.subscribe, careersStore.getActiveJobs);
   const jobs: Job[] = activeJobs;
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isGeneralApplicationOpen, setIsGeneralApplicationOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    cover_letter: '',
+    portfolio_url: ''
+  });
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const { toast } = useToast();
 
   const handleApply = (job: Job) => {
     setSelectedJob(job);
