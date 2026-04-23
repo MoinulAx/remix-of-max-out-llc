@@ -11,7 +11,9 @@ import { Plus, Pencil, Trash2, Briefcase, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { careersStore, type JobListing } from '@/lib/careersStore';
 
-const emptyJob: Omit<JobListing, 'id'> = {
+type JobFormData = Omit<JobListing, 'id' | 'created_at'>;
+
+const emptyJob: JobFormData = {
   title: '', department: '', location: 'Remote', type: 'Part-time',
   salary_range: '', description: '', requirements: [], is_active: true,
 };
@@ -20,7 +22,7 @@ const AdminCareers: React.FC = () => {
   const jobs = useSyncExternalStore(careersStore.subscribe, careersStore.getJobs);
   const [editing, setEditing] = useState<JobListing | null>(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [form, setForm] = useState<Omit<JobListing, 'id'>>(emptyJob);
+  const [form, setForm] = useState<JobFormData>(emptyJob);
   const [newReq, setNewReq] = useState('');
   const { toast } = useToast();
 
