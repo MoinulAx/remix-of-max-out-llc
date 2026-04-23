@@ -310,13 +310,57 @@ const Careers = () => {
         </section>
 
         {/* Open Positions */}
-        <section className="py-20 md:py-32">
+        <section id="open-positions" className="py-20 md:py-32 scroll-mt-20">
           <div className="container mx-auto px-4 md:px-6">
-            <FadeIn className="text-center mb-16">
+            <FadeIn className="text-center mb-12">
               <h2 className="text-3xl md:text-5xl font-bold mb-6">Open Positions</h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 Find your next opportunity and join our growing team of creative professionals.
               </p>
+            </FadeIn>
+
+            <FadeIn delay={100} className="max-w-6xl mx-auto mb-8">
+              <div className="flex flex-col md:flex-row gap-3 md:items-end justify-between bg-muted/30 border border-border rounded-lg p-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
+                  <div>
+                    <Label className="text-xs text-muted-foreground mb-1 block">Location</Label>
+                    <Select value={locationFilter} onValueChange={setLocationFilter}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All locations</SelectItem>
+                        {locationOptions.map(loc => (
+                          <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-xs text-muted-foreground mb-1 block">Employment Type</Label>
+                    <Select value={typeFilter} onValueChange={setTypeFilter}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All types</SelectItem>
+                        {typeOptions.map(t => (
+                          <SelectItem key={t} value={t}>{t}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-xs text-muted-foreground mb-1 block">Sort by</Label>
+                    <Select value={sortBy} onValueChange={setSortBy}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newest">Newest first</SelectItem>
+                        <SelectItem value="oldest">Oldest first</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="text-sm text-muted-foreground md:pb-2 md:pl-4 whitespace-nowrap">
+                  {jobs.length} {jobs.length === 1 ? 'role' : 'roles'} shown
+                </div>
+              </div>
             </FadeIn>
 
             <FadeIn delay={150} className="max-w-6xl mx-auto">
@@ -324,7 +368,7 @@ const Careers = () => {
                 <Card>
                   <CardContent className="py-12 text-center">
                     <p className="text-lg text-muted-foreground">
-                      No open positions at the moment. Check back soon or send us your resume!
+                      No positions match your filters. Try clearing them or send us a general application below.
                     </p>
                   </CardContent>
                 </Card>
