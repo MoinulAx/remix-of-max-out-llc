@@ -232,4 +232,35 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   </>
 );
 
+const GetInvolvedDropdown: React.FC = () => {
+  const location = useLocation();
+  const isActive = location.pathname === '/inquire' || location.pathname === '/careers';
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors outline-none",
+          isActive && "text-primary"
+        )}
+      >
+        Get Involved
+        <ChevronDown className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-background z-50">
+        <DropdownMenuItem asChild>
+          <NavLink to="/inquire" className="cursor-pointer w-full">
+            Inquire
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/careers" className="cursor-pointer w-full">
+            Careers
+          </NavLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 export default Header;
