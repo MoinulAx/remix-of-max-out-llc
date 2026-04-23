@@ -44,8 +44,8 @@ export const careersStore = {
   getActiveJobs: () => cachedActiveJobs,
 
   setJobs: (next: JobListing[]) => { jobs = next; notify(); },
-  addJob: (job: Omit<JobListing, 'id'>) => {
-    jobs = [...jobs, { id: Date.now().toString(), ...job }];
+  addJob: (job: Omit<JobListing, 'id' | 'created_at'> & { created_at?: string }) => {
+    jobs = [...jobs, { id: Date.now().toString(), created_at: new Date().toISOString(), ...job }];
     notify();
   },
   updateJob: (id: string, updates: Partial<JobListing>) => {
