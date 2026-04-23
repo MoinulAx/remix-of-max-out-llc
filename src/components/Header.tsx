@@ -122,12 +122,31 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           >
             Leadership
           </NavLink>
+          <div className="pt-2">
+            <p className="text-sm font-semibold text-muted-foreground mb-2">Get Involved</p>
+            <div className="flex flex-col space-y-4 pl-2">
+              <NavLink 
+                to="/inquire"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Inquire
+              </NavLink>
+              <NavLink 
+                to="/careers"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Careers
+              </NavLink>
+            </div>
+          </div>
           <NavLink 
-            to="/inquire"
+            to="/partners"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Inquire
+            Partners
           </NavLink>
           <NavLink 
             to="/partners"
