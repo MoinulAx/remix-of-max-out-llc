@@ -291,6 +291,20 @@ const Careers = () => {
                   <span className="text-muted-foreground">Competitive Benefits</span>
                 </div>
               </div>
+
+              <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+                <Button size="lg" asChild className="text-base">
+                  <a href="#open-positions">
+                    View Open Roles
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" asChild className="text-base">
+                  <Link to="/inquire">
+                    Inquire About Joining
+                  </Link>
+                </Button>
+              </div>
             </FadeIn>
           </div>
         </section>
