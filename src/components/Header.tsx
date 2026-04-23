@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface HeaderProps {
   className?: string;
@@ -115,12 +122,31 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           >
             Leadership
           </NavLink>
+          <div className="pt-2">
+            <p className="text-sm font-semibold text-muted-foreground mb-2">Get Involved</p>
+            <div className="flex flex-col space-y-4 pl-2">
+              <NavLink 
+                to="/inquire"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Inquire
+              </NavLink>
+              <NavLink 
+                to="/careers"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Careers
+              </NavLink>
+            </div>
+          </div>
           <NavLink 
-            to="/inquire"
+            to="/partners"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Inquire
+            Partners
           </NavLink>
           <NavLink 
             to="/partners"
@@ -184,15 +210,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     >
       Leadership
     </NavLink>
-    <NavLink 
-      to="/inquire"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Inquire
-    </NavLink>
+    <GetInvolvedDropdown />
     <NavLink 
       to="/partners"
       className={({ isActive }) => cn(
@@ -213,5 +231,36 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     </NavLink>
   </>
 );
+
+const GetInvolvedDropdown: React.FC = () => {
+  const location = useLocation();
+  const isActive = location.pathname === '/inquire' || location.pathname === '/careers';
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors outline-none",
+          isActive && "text-primary"
+        )}
+      >
+        Get Involved
+        <ChevronDown className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-background z-50">
+        <DropdownMenuItem asChild>
+          <NavLink to="/inquire" className="cursor-pointer w-full">
+            Inquire
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/careers" className="cursor-pointer w-full">
+            Careers
+          </NavLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export default Header;
