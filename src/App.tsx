@@ -13,6 +13,7 @@ import Inquire from "./pages/Inquire";
 import Partners from "./pages/Partners";
 import TMobile from "./pages/TMobile";
 import Careers from "./pages/Careers";
+import JobDetail from "./pages/JobDetail";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/partners" element={<Partners />} />
           <Route path="/tmobile" element={<TMobile />} />
           <Route path="/careers" element={<Careers />} />
+          <Route path="/careers/:id" element={<JobDetail />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout />}>

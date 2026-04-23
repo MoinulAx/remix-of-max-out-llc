@@ -13,8 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { sendApplicationEmail } from '@/lib/emailjs';
-import { Briefcase, MapPin, Clock, DollarSign, Users, Building, Upload } from 'lucide-react';
+import { Briefcase, MapPin, Clock, DollarSign, Users, Building, Upload, ArrowRight } from 'lucide-react';
 import { careersStore } from '@/lib/careersStore';
+import { Link } from 'react-router-dom';
 
 interface Job {
   id: string;
@@ -339,13 +340,20 @@ const Careers = () => {
                               )}
                             </div>
                             
-                            <div className="flex-shrink-0">
-                              <Button 
+                            <div className="flex-shrink-0 flex flex-col gap-2">
+                              <Button asChild className="w-full md:w-auto">
+                                <Link to={`/careers/${job.id}`}>
+                                  View Details
+                                  <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                              </Button>
+                              <Button
+                                variant="outline"
                                 onClick={() => handleApply(job)}
                                 className="w-full md:w-auto"
                               >
                                 <Briefcase className="h-4 w-4 mr-2" />
-                                Apply Now
+                                Quick Apply
                               </Button>
                             </div>
                           </div>
