@@ -210,15 +210,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     >
       Leadership
     </NavLink>
-    <NavLink 
-      to="/inquire"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Inquire
-    </NavLink>
+    <GetInvolvedDropdown />
     <NavLink 
       to="/partners"
       className={({ isActive }) => cn(
