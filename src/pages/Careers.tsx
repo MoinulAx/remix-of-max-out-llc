@@ -31,7 +31,34 @@ interface Job {
 const Careers = () => {
   // Read active jobs from the shared mock store (reactive to admin changes)
   const activeJobs = useSyncExternalStore(careersStore.subscribe, careersStore.getActiveJobs);
-  const jobs: Job[] = activeJobs;
+  const allJobs: Job[] = activeJobs;
+
+  const [locationFilter, setLocationFilter] = useState<string>('all');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('newest');
+
+  const locationOptions = React.useMemo(
+    () => Array.from(new Set(allJobs.map(j => j.location))).sort(),
+    [allJobs]
+  );
+  const typeOptions = React.useMemo(
+    () => Array.from(new Set(allJobs.map(j => j.type))).sort(),
+    [allJobs]
+  );
+
+  const jobs: Job[] = React.useMemo(() => {
+    let list = allJobs.filter(j =>
+      (locationFilter === 'all' || j.location === locationFilter) &&
+      (typeFilter === 'all' || j.type === typeFilter)
+    );
+    list = [...list].sort((a, b) => {
+      const aT = new Date((a as any).created_at || 0).getTime();
+      const bT = new Date((b as any).created_at || 0).getTime();
+      return sortBy === 'oldest' ? aT - bT : bT - aT;
+    });
+    return list;
+  }, [allJobs, locationFilter, typeFilter, sortBy]);
+
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isGeneralApplicationOpen, setIsGeneralApplicationOpen] = useState(false);
