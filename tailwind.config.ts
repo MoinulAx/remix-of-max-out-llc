@@ -20,9 +20,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				display: ['Anton', 'sans-serif'],
+				display: ['Clash Display', 'sans-serif'],
 				sans: ['Inter', 'system-ui', 'sans-serif'],
-				serif: ['Anton', 'sans-serif'],
+				serif: ['Clash Display', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
