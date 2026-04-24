@@ -20,8 +20,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['SF Pro Display', 'Inter', 'system-ui', 'sans-serif'],
-				serif: ['GT Sectra', 'Georgia', 'serif'],
+				display: ['Anton', 'sans-serif'],
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+				serif: ['Anton', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
