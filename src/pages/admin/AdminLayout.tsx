@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
-  LayoutDashboard, Video, Users, Briefcase, Handshake, LogOut, Menu, X, Mail, GraduationCap
+  LayoutDashboard, Video, Users, Handshake, LogOut, Menu, X, Mail, GraduationCap
 } from 'lucide-react';
-import { useState } from 'react';
 
 const navItems = [
   { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -19,11 +18,6 @@ const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('maxout-admin-token');
-    if (!token) navigate('/admin');
-  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('maxout-admin-token');

@@ -24,6 +24,7 @@ import AdminRoster from "./pages/admin/AdminRoster";
 import AdminInquiries from "./pages/admin/AdminInquiries";
 import AdminPartners from "./pages/admin/AdminPartners";
 import AdminCareers from "./pages/admin/AdminCareers";
+import RequireAdmin from "./pages/admin/RequireAdmin";
 
 const queryClient = new QueryClient();
 
@@ -48,7 +49,14 @@ const App = () => (
           <Route path="/careers/:id" element={<JobDetail />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route
+            path="/admin"
+            element={
+              <RequireAdmin>
+                <AdminLayout />
+              </RequireAdmin>
+            }
+          >
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="content-hub" element={<AdminContentHub />} />
             <Route path="roster" element={<AdminRoster />} />
