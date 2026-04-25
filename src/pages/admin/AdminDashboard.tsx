@@ -20,7 +20,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Supabase Connection Banner */}
+      {/* Mock Data Banner */}
       <Card className="bg-amber-950/40 border-amber-700/50">
         <CardContent className="py-4 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
@@ -28,10 +28,7 @@ const AdminDashboard: React.FC = () => {
             <h3 className="text-amber-300 font-semibold text-sm">Mock Data Mode</h3>
             <p className="text-amber-200/70 text-xs mt-1">
               This admin panel is running on local mock data. Changes will reset on page reload.
-              To persist data and sync with the live website, connect this project to <strong>Lovable Cloud</strong> (Supabase).
-            </p>
-            <p className="text-amber-200/50 text-xs mt-2">
-              When you remix this project, ask Lovable to: <em>"Connect the admin dashboard to Lovable Cloud so all data persists in a real database."</em>
+              Connect a database to persist data and sync with the live website.
             </p>
           </div>
           <Database className="w-5 h-5 text-amber-500/50 flex-shrink-0" />
