@@ -79,9 +79,20 @@ const Contact = () => {
       });
     } catch (error) {
       console.error('Error submitting contact form:', error);
+      // Surface a useful message instead of a generic "Failed to send".
+      // Common Supabase errors: 23502 (not-null), 23514 (check), 42501 (RLS).
+      const supaErr = error as { message?: string; code?: string; details?: string };
+      const friendly =
+        supaErr?.code === '42501'
+          ? "Permission denied. We're investigating — please try again or email us directly."
+          : supaErr?.code === '23502'
+          ? 'Please fill out all required fields and try again.'
+          : supaErr?.message
+          ? `Couldn't send your message: ${supaErr.message}`
+          : 'Failed to send message. Please try again.';
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: 'Error',
+        description: friendly,
         variant: "destructive",
       });
     } finally {
