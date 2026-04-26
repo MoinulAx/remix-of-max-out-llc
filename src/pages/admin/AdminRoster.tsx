@@ -83,9 +83,12 @@ const AdminRoster: React.FC = () => {
   };
 
   const updateSocial = (m: RosterRow, key: string, value: string) => {
-    const social = { ...(m.social_links as Record<string, unknown> ?? {}) };
+    const social: Record<string, string | boolean> = {
+      ...(m.social_links as Record<string, string | boolean> ?? {}),
+    };
     if (value) social[key] = value; else delete social[key];
-    return updateMember(m.id, { social_links: social });
+    // social_links column accepts Json; cast through unknown to satisfy generated types
+    return updateMember(m.id, { social_links: social as unknown as RosterRow['social_links'] });
   };
 
   const renderUpload = (id: string) => (
