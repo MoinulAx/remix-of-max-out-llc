@@ -1,37 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
-const ADMIN_TOKEN_KEY = 'maxout-admin-token';
-const ADMIN_TOKEN_VALUE = 'authenticated';
-
-const readToken = (): string | null => {
-  if (typeof window === 'undefined') return null;
-  try {
-    return window.localStorage.getItem(ADMIN_TOKEN_KEY);
-  } catch {
-    return null;
-  }
-};
+type AuthState =
+  | { status: 'checking' }
+  | { status: 'unauthenticated' }
+  | { status: 'authorized' }
+  | { status: 'forbidden' };
 
 const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  // Compute synchronously on first render so protected UI never appears
-  // even for one frame when the token is missing/invalid.
-  const [token, setToken] = useState<string | null>(() => readToken());
+  const [state, setState] = useState<AuthState>({ status: 'checking' });
 
   useEffect(() => {
-    // Re-validate on tab focus and cross-tab logout so a stale session
-    // can never keep showing admin UI after sign-out elsewhere.
-    const sync = () => setToken(readToken());
-    window.addEventListener('storage', sync);
-    window.addEventListener('focus', sync);
+    let active = true;
+
+    const verify = async (userId: string | undefined) => {
+      if (!userId) {
+        if (active) setState({ status: 'unauthenticated' });
+        return;
+      }
+      const { data, error } = await supabase.rpc('has_role', {
+        _user_id: userId,
+        _role: 'admin',
+      });
+      if (!active) return;
+      if (error) {
+        setState({ status: 'forbidden' });
+        return;
+      }
+      setState({ status: data === true ? 'authorized' : 'forbidden' });
+    };
+
+    // Set up listener BEFORE getSession (Supabase best practice)
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      // Defer Supabase calls out of the listener to avoid deadlocks
+      setTimeout(() => verify(session?.user?.id), 0);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      verify(session?.user?.id);
+    });
+
     return () => {
-      window.removeEventListener('storage', sync);
-      window.removeEventListener('focus', sync);
+      active = false;
+      sub.subscription.unsubscribe();
     };
   }, []);
 
-  if (token !== ADMIN_TOKEN_VALUE) {
+  if (state.status === 'checking') {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center text-zinc-500 text-sm">
+        Verifying access…
+      </div>
+    );
+  }
+
+  if (state.status !== 'authorized') {
     return <Navigate to="/admin" replace state={{ from: location }} />;
   }
 

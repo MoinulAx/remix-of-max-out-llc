@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 import {
   LayoutDashboard, Video, Users, Handshake, LogOut, Menu, X, Mail, GraduationCap
 } from 'lucide-react';
@@ -19,8 +20,8 @@ const AdminLayout: React.FC = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('maxout-admin-token');
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     navigate('/admin');
   };
 
