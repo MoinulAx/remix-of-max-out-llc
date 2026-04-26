@@ -67,33 +67,42 @@ export type Database = {
       careers: {
         Row: {
           created_at: string
+          department: string | null
           description: string | null
+          display_order: number
           id: string
           is_active: boolean
           location: string | null
-          requirements: string | null
+          requirements: string[]
+          salary_range: string | null
           title: string
           type: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          department?: string | null
           description?: string | null
+          display_order?: number
           id?: string
           is_active?: boolean
           location?: string | null
-          requirements?: string | null
+          requirements?: string[]
+          salary_range?: string | null
           title: string
           type?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          department?: string | null
           description?: string | null
+          display_order?: number
           id?: string
           is_active?: boolean
           location?: string | null
-          requirements?: string | null
+          requirements?: string[]
+          salary_range?: string | null
           title?: string
           type?: string | null
           updated_at?: string
@@ -231,6 +240,7 @@ export type Database = {
           name: string
           sort_order: number
           updated_at: string
+          website: string | null
         }
         Insert: {
           created_at?: string
@@ -240,6 +250,7 @@ export type Database = {
           name: string
           sort_order?: number
           updated_at?: string
+          website?: string | null
         }
         Update: {
           created_at?: string
@@ -249,6 +260,7 @@ export type Database = {
           name?: string
           sort_order?: number
           updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
