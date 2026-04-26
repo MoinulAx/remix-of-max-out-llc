@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lock } from 'lucide-react';
+import { Lock, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -96,6 +96,19 @@ const AdminLogin: React.FC = () => {
               {loading ? 'Signing in…' : 'Sign In'}
             </Button>
           </form>
+          <p className="mt-4 text-center text-xs text-zinc-500 leading-relaxed">
+            Accounts are invitation-only. New admins must be created from the
+            Supabase dashboard — there is no public sign-up.
+          </p>
+          <div className="mt-4 text-center">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              <ArrowLeft className="w-3 h-3" />
+              Back to site
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
