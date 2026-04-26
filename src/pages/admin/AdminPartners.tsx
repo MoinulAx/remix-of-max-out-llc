@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useSupabaseTable } from '@/hooks/useSupabaseTable';
 import { uploadImage } from '@/lib/uploadImage';
+import { ListSearchBox } from '@/components/admin/ListSearchBox';
 import type { Database } from '@/integrations/supabase/types';
 
 type Partner = Database['public']['Tables']['partners']['Row'];
@@ -19,7 +20,16 @@ const AdminPartners: React.FC = () => {
   });
   const partners = rows as Partner[];
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
   const fileInputs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const filteredPartners = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return partners;
+    return partners.filter((p) =>
+      `${p.name} ${p.website ?? ''} ${p.description ?? ''}`.toLowerCase().includes(q)
+    );
+  }, [partners, query]);
 
   const addPartner = async () => {
     const nextOrder = (partners[partners.length - 1]?.sort_order ?? 0) + 1;
@@ -75,9 +85,14 @@ const AdminPartners: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Partners</h1>
-          <p className="text-zinc-400 text-sm mt-1">{partners.length} partner{partners.length === 1 ? '' : 's'}</p>
+          <p className="text-zinc-400 text-sm mt-1">
+            {query
+              ? `${filteredPartners.length} of ${partners.length} match`
+              : `${partners.length} partner${partners.length === 1 ? '' : 's'}`}
+          </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <ListSearchBox value={query} onChange={setQuery} placeholder="Filter partners…" />
           <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
             <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </Button>
@@ -119,7 +134,7 @@ const AdminPartners: React.FC = () => {
 
       {/* Edit list */}
       <div className="space-y-3">
-        {partners.map((partner) => (
+        {filteredPartners.map((partner) => (
           <Card key={partner.id} className="bg-zinc-900 border-zinc-800">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -186,6 +201,9 @@ const AdminPartners: React.FC = () => {
 
       {!loading && partners.length === 0 && (
         <p className="text-zinc-500 text-sm text-center py-8">No partners yet. Click "Add Partner" to create one.</p>
+      )}
+      {!loading && partners.length > 0 && filteredPartners.length === 0 && (
+        <p className="text-zinc-500 text-sm text-center py-4">No partners match "{query}".</p>
       )}
     </div>
   );
