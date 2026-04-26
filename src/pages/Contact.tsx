@@ -29,17 +29,25 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
+      // Build a single message that captures all fields for the inquiries table
+      const composedMessage = [
+        formData.service && `Service: ${formData.service}`,
+        formData.budget && `Budget: ${formData.budget}`,
+        formData.timeline && `Timeline: ${formData.timeline}`,
+        formData.message && `\n${formData.message}`,
+      ]
+        .filter(Boolean)
+        .join('\n');
+
       const { error } = await supabase
-        .from('contact_submissions')
-        .insert([{
+        .from('inquiries')
+        .insert({
           name: formData.name,
           email: formData.email,
           phone: formData.phone || null,
-          service: formData.service,
-          budget: formData.budget || null,
-          timeline: formData.timeline || null,
-          message: formData.message
-        }]);
+          message: composedMessage,
+          type: 'contact',
+        });
 
       if (error) throw error;
 
