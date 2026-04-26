@@ -1,159 +1,433 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Mail, Calendar, Eye, Trash2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
+import React, { useEffect, useMemo, useState } from 'react';
+import { format } from 'date-fns';
+import {
+  Mail, Calendar as CalendarIcon, Trash2, Search, RefreshCw, X,
+  Phone, User, Clock, FilterX,
+} from 'lucide-react';
 
-interface Inquiry {
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
+} from '@/components/ui/sheet';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+
+type Inquiry = {
   id: string;
   name: string;
   email: string;
-  type: 'client' | 'management';
-  message: string;
-  date: string;
-  read: boolean;
-}
-
-interface Opportunity {
-  id: string;
-  title: string;
+  phone: string | null;
+  message: string | null;
   type: string;
-  enabled: boolean;
-}
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
 
-const mockInquiries: Inquiry[] = [
-  { id: '1', name: 'John Smith', email: 'john@example.com', type: 'client', message: 'Looking to book Flacco for an event in NYC on March 15th.', date: '2026-03-20', read: false },
-  { id: '2', name: 'Sarah Johnson', email: 'sarah@email.com', type: 'management', message: 'Interested in your talent management services for our label.', date: '2026-03-19', read: true },
-  { id: '3', name: 'Mike Torres', email: 'mike@company.com', type: 'client', message: 'Need a quote for a private corporate event entertainment.', date: '2026-03-18', read: false },
-  { id: '4', name: 'Emily Davis', email: 'emily@uni.edu', type: 'management', message: 'Applying for the Social Media Marketing Intern position.', date: '2026-03-17', read: true },
-  { id: '5', name: 'Alex Rivera', email: 'alex@music.co', type: 'client', message: 'Partnership inquiry for upcoming music festival.', date: '2026-03-16', read: true },
-];
+const TYPE_OPTIONS = ['all', 'contact', 'booking', 'management'] as const;
+const STATUS_OPTIONS = ['new', 'in_progress', 'closed'] as const;
 
-const defaultOpportunities: Opportunity[] = [
-  { id: '1', title: 'Social Media Marketing Intern', type: 'Internship', enabled: true },
-  { id: '2', title: 'Artist Management Intern', type: 'Internship', enabled: true },
-  { id: '3', title: 'A&R Scout Intern', type: 'Internship', enabled: true },
-  { id: '4', title: 'Graphic Design / Content Intern', type: 'Internship', enabled: true },
-  { id: '5', title: 'Talent Manager', type: 'Commission', enabled: true },
-  { id: '6', title: 'Booking Agent', type: 'Commission', enabled: true },
-  { id: '7', title: 'Brand Partnership Specialist', type: 'Commission', enabled: true },
-  { id: '8', title: 'Sales Representative', type: 'Commission', enabled: true },
-];
+const typeBadgeClass = (type: string) => {
+  switch (type) {
+    case 'contact': return 'border-blue-600 text-blue-400';
+    case 'booking': return 'border-green-600 text-green-400';
+    case 'management': return 'border-purple-600 text-purple-400';
+    default: return 'border-zinc-600 text-zinc-400';
+  }
+};
+
+const statusBadgeClass = (status: string) => {
+  switch (status) {
+    case 'new': return 'bg-blue-500/20 text-blue-300 border-blue-500/40';
+    case 'in_progress': return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+    case 'closed': return 'bg-zinc-700 text-zinc-300 border-zinc-600';
+    default: return 'bg-zinc-700 text-zinc-300 border-zinc-600';
+  }
+};
 
 const AdminInquiries: React.FC = () => {
-  const [inquiries, setInquiries] = useState<Inquiry[]>(mockInquiries);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>(defaultOpportunities);
-  const [filter, setFilter] = useState<'all' | 'client' | 'management'>('all');
   const { toast } = useToast();
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filtered = filter === 'all' ? inquiries : inquiries.filter(i => i.type === filter);
-  const unreadCount = inquiries.filter(i => !i.read).length;
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [search, setSearch] = useState('');
+  const [fromDate, setFromDate] = useState<Date | undefined>();
+  const [toDate, setToDate] = useState<Date | undefined>();
 
-  const markRead = (id: string) => {
-    setInquiries(inquiries.map(i => i.id === id ? { ...i, read: true } : i));
+  const [selected, setSelected] = useState<Inquiry | null>(null);
+
+  const fetchInquiries = async () => {
+    setLoading(true);
+    setError(null);
+    const { data, error } = await supabase
+      .from('inquiries')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      setError(error.message);
+      toast({ title: 'Failed to load inquiries', description: error.message, variant: 'destructive' });
+    } else {
+      setInquiries((data ?? []) as Inquiry[]);
+    }
+    setLoading(false);
   };
 
-  const removeInquiry = (id: string) => {
-    setInquiries(inquiries.filter(i => i.id !== id));
-    toast({ title: 'Inquiry removed' });
+  useEffect(() => {
+    fetchInquiries();
+  }, []);
+
+  const filtered = useMemo(() => {
+    return inquiries.filter((i) => {
+      if (typeFilter !== 'all' && i.type !== typeFilter) return false;
+      if (fromDate && new Date(i.created_at) < fromDate) return false;
+      if (toDate) {
+        const end = new Date(toDate);
+        end.setHours(23, 59, 59, 999);
+        if (new Date(i.created_at) > end) return false;
+      }
+      if (search.trim()) {
+        const q = search.toLowerCase();
+        const hay = `${i.name} ${i.email} ${i.phone ?? ''} ${i.message ?? ''}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [inquiries, typeFilter, fromDate, toDate, search]);
+
+  const newCount = inquiries.filter((i) => i.status === 'new').length;
+  const hasActiveFilters = typeFilter !== 'all' || !!fromDate || !!toDate || !!search.trim();
+
+  const clearFilters = () => {
+    setTypeFilter('all');
+    setFromDate(undefined);
+    setToDate(undefined);
+    setSearch('');
   };
 
-  const toggleOpportunity = (id: string) => {
-    setOpportunities(opportunities.map(o => o.id === id ? { ...o, enabled: !o.enabled } : o));
+  const updateStatus = async (id: string, status: string) => {
+    const previous = inquiries;
+    setInquiries((prev) => prev.map((i) => (i.id === id ? { ...i, status } : i)));
+    if (selected?.id === id) setSelected({ ...selected, status });
+    const { error } = await supabase.from('inquiries').update({ status }).eq('id', id);
+    if (error) {
+      setInquiries(previous);
+      toast({ title: 'Update failed', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Status updated', description: `Marked as ${status.replace('_', ' ')}.` });
+    }
+  };
+
+  const deleteInquiry = async (id: string) => {
+    const previous = inquiries;
+    setInquiries((prev) => prev.filter((i) => i.id !== id));
+    if (selected?.id === id) setSelected(null);
+    const { error } = await supabase.from('inquiries').delete().eq('id', id);
+    if (error) {
+      setInquiries(previous);
+      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Inquiry deleted' });
+    }
   };
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Inquiries</h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Inquiries</h1>
+          <p className="text-sm text-zinc-400 mt-1">
+            {inquiries.length} total · {newCount} new
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={fetchInquiries}
+          disabled={loading}
+          className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white"
+        >
+          <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
+          Refresh
+        </Button>
+      </div>
 
-      {/* Inbox */}
+      {/* Filters */}
       <Card className="bg-zinc-900 border-zinc-800">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-white flex items-center gap-2">
-              <Mail className="w-5 h-5" />
-              Inbox
-              {unreadCount > 0 && (
-                <Badge variant="destructive" className="text-xs">{unreadCount} new</Badge>
-              )}
-            </CardTitle>
-            <div className="flex gap-1">
-              {(['all', 'client', 'management'] as const).map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  className={`px-3 py-1 rounded text-xs font-medium capitalize ${filter === f ? 'bg-primary text-primary-foreground' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
+        <CardContent className="p-4 grid gap-3 md:grid-cols-4">
+          <div className="md:col-span-2 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search name, email, phone, message…"
+              className="pl-9 bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+            />
           </div>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {filtered.length === 0 ? (
-            <p className="text-zinc-500 text-sm text-center py-4">No inquiries found.</p>
-          ) : (
-            filtered.map((inquiry) => (
-              <div
-                key={inquiry.id}
-                className={`p-4 rounded-lg border transition-colors ${inquiry.read ? 'bg-zinc-800/30 border-zinc-800' : 'bg-zinc-800 border-zinc-700'}`}
+
+          <Select value={typeFilter} onValueChange={setTypeFilter}>
+            <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent className="bg-zinc-900 border-zinc-700 text-white">
+              {TYPE_OPTIONS.map((t) => (
+                <SelectItem key={t} value={t} className="capitalize focus:bg-zinc-800">
+                  {t === 'all' ? 'All types' : t}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <div className="grid grid-cols-2 gap-2">
+            <DatePickerButton label="From" value={fromDate} onChange={setFromDate} />
+            <DatePickerButton label="To" value={toDate} onChange={setToDate} />
+          </div>
+
+          {hasActiveFilters && (
+            <div className="md:col-span-4 flex items-center justify-between text-xs text-zinc-400">
+              <span>Showing {filtered.length} of {inquiries.length}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-zinc-400 hover:text-white h-7"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      {!inquiry.read && <div className="w-2 h-2 rounded-full bg-blue-500" />}
-                      <span className="text-white font-medium text-sm">{inquiry.name}</span>
-                      <Badge variant="outline" className={`text-xs ${inquiry.type === 'client' ? 'border-green-600 text-green-400' : 'border-purple-600 text-purple-400'}`}>
-                        {inquiry.type}
-                      </Badge>
-                    </div>
-                    <p className="text-zinc-400 text-xs mb-1">{inquiry.email}</p>
-                    <p className="text-zinc-300 text-sm">{inquiry.message}</p>
-                    <p className="text-zinc-600 text-xs mt-2 flex items-center gap-1">
-                      <Calendar className="w-3 h-3" /> {inquiry.date}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1 ml-3">
-                    {!inquiry.read && (
-                      <button onClick={() => markRead(inquiry.id)} className="p-1.5 text-zinc-500 hover:text-white" title="Mark read">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                    )}
-                    <button onClick={() => removeInquiry(inquiry.id)} className="p-1.5 text-zinc-500 hover:text-red-400" title="Delete">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
+                <FilterX className="w-3 h-3 mr-1" /> Clear filters
+              </Button>
+            </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Opportunity Toggles */}
+      {/* List */}
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader>
-          <CardTitle className="text-white text-lg">Inquiry Opportunities</CardTitle>
-          <p className="text-zinc-400 text-sm">Toggle which job openings appear on the front-end.</p>
+          <CardTitle className="text-white flex items-center gap-2 text-base">
+            <Mail className="w-4 h-4" /> Inbox
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {opportunities.map((opp) => (
-            <div key={opp.id} className="flex items-center justify-between p-3 rounded-lg bg-zinc-800">
-              <div>
-                <p className="text-white text-sm font-medium">{opp.title}</p>
-                <p className="text-zinc-500 text-xs">{opp.type}</p>
+        <CardContent className="space-y-2">
+          {loading && (
+            <p className="text-zinc-500 text-sm text-center py-8">Loading inquiries…</p>
+          )}
+          {!loading && error && (
+            <p className="text-red-400 text-sm text-center py-8">{error}</p>
+          )}
+          {!loading && !error && filtered.length === 0 && (
+            <p className="text-zinc-500 text-sm text-center py-8">
+              {hasActiveFilters ? 'No inquiries match your filters.' : 'No inquiries yet.'}
+            </p>
+          )}
+          {!loading && !error && filtered.map((inquiry) => (
+            <button
+              key={inquiry.id}
+              onClick={() => setSelected(inquiry)}
+              className={cn(
+                'w-full text-left p-4 rounded-lg border transition-colors',
+                inquiry.status === 'new'
+                  ? 'bg-zinc-800 border-zinc-700 hover:border-zinc-600'
+                  : 'bg-zinc-800/30 border-zinc-800 hover:bg-zinc-800/60'
+              )}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    {inquiry.status === 'new' && (
+                      <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                    )}
+                    <span className="text-white font-medium text-sm truncate">{inquiry.name}</span>
+                    <Badge variant="outline" className={cn('text-xs capitalize', typeBadgeClass(inquiry.type))}>
+                      {inquiry.type}
+                    </Badge>
+                    <Badge variant="outline" className={cn('text-xs capitalize', statusBadgeClass(inquiry.status))}>
+                      {inquiry.status.replace('_', ' ')}
+                    </Badge>
+                  </div>
+                  <p className="text-zinc-400 text-xs mb-1 truncate">{inquiry.email}</p>
+                  <p className="text-zinc-300 text-sm line-clamp-2 whitespace-pre-line">
+                    {inquiry.message || <span className="text-zinc-600 italic">No message</span>}
+                  </p>
+                  <p className="text-zinc-600 text-xs mt-2 flex items-center gap-1">
+                    <CalendarIcon className="w-3 h-3" />
+                    {format(new Date(inquiry.created_at), 'PPp')}
+                  </p>
+                </div>
               </div>
-              <Switch checked={opp.enabled} onCheckedChange={() => toggleOpportunity(opp.id)} />
-            </div>
+            </button>
           ))}
         </CardContent>
       </Card>
+
+      {/* Detail sheet */}
+      <Sheet open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+        <SheetContent className="bg-zinc-950 border-zinc-800 text-white w-full sm:max-w-lg overflow-y-auto">
+          {selected && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="text-white text-xl">{selected.name}</SheetTitle>
+                <SheetDescription className="text-zinc-400 flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className={cn('text-xs capitalize', typeBadgeClass(selected.type))}>
+                    {selected.type}
+                  </Badge>
+                  <Badge variant="outline" className={cn('text-xs capitalize', statusBadgeClass(selected.status))}>
+                    {selected.status.replace('_', ' ')}
+                  </Badge>
+                </SheetDescription>
+              </SheetHeader>
+
+              <div className="mt-6 space-y-5">
+                <DetailRow icon={Mail} label="Email">
+                  <a href={`mailto:${selected.email}`} className="text-blue-400 hover:underline break-all">
+                    {selected.email}
+                  </a>
+                </DetailRow>
+                {selected.phone && (
+                  <DetailRow icon={Phone} label="Phone">
+                    <a href={`tel:${selected.phone}`} className="text-blue-400 hover:underline">
+                      {selected.phone}
+                    </a>
+                  </DetailRow>
+                )}
+                <DetailRow icon={Clock} label="Submitted">
+                  {format(new Date(selected.created_at), 'PPpp')}
+                </DetailRow>
+                <DetailRow icon={User} label="Status">
+                  <Select
+                    value={selected.status}
+                    onValueChange={(v) => updateStatus(selected.id, v)}
+                  >
+                    <SelectTrigger className="bg-zinc-900 border-zinc-700 text-white h-9 w-full max-w-[200px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-zinc-900 border-zinc-700 text-white">
+                      {STATUS_OPTIONS.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize focus:bg-zinc-800">
+                          {s.replace('_', ' ')}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </DetailRow>
+
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-zinc-500 mb-2">Message</p>
+                  <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-sm text-zinc-200 whitespace-pre-line">
+                    {selected.message || <span className="text-zinc-600 italic">No message</span>}
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-4 border-t border-zinc-800">
+                  <Button asChild variant="outline" className="flex-1 bg-zinc-900 border-zinc-700 text-white hover:text-white">
+                    <a href={`mailto:${selected.email}?subject=Re: Your inquiry`}>
+                      <Mail className="w-4 h-4 mr-2" /> Reply
+                    </a>
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="icon">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-zinc-900 border-zinc-800 text-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete inquiry?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-zinc-400">
+                          This will permanently remove the inquiry from {selected.name}. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700 hover:text-white">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => deleteInquiry(selected.id)}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
+
+const DetailRow: React.FC<{
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  children: React.ReactNode;
+}> = ({ icon: Icon, label, children }) => (
+  <div className="flex items-start gap-3">
+    <Icon className="w-4 h-4 text-zinc-500 mt-0.5 shrink-0" />
+    <div className="flex-1 min-w-0">
+      <p className="text-xs uppercase tracking-wide text-zinc-500 mb-1">{label}</p>
+      <div className="text-sm text-zinc-200">{children}</div>
+    </div>
+  </div>
+);
+
+const DatePickerButton: React.FC<{
+  label: string;
+  value: Date | undefined;
+  onChange: (d: Date | undefined) => void;
+}> = ({ label, value, onChange }) => (
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant="outline"
+        size="sm"
+        className={cn(
+          'justify-start text-left font-normal bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700 hover:text-white relative pr-7',
+          !value && 'text-zinc-500'
+        )}
+      >
+        <CalendarIcon className="w-3.5 h-3.5 mr-1.5 shrink-0" />
+        {value ? format(value, 'MMM d, yyyy') : label}
+        {value && (
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={(e) => { e.stopPropagation(); onChange(undefined); }}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); onChange(undefined); } }}
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-zinc-600 cursor-pointer"
+          >
+            <X className="w-3 h-3" />
+          </span>
+        )}
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-auto p-0 bg-zinc-900 border-zinc-700" align="start">
+      <Calendar
+        mode="single"
+        selected={value}
+        onSelect={onChange}
+        initialFocus
+        className={cn('p-3 pointer-events-auto')}
+      />
+    </PopoverContent>
+  </Popover>
+);
 
 export default AdminInquiries;
