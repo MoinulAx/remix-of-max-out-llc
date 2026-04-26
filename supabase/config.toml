@@ -1,1 +1,4 @@
 project_id = "kfwncmjacpxrjhqzvsyo"
+
+[functions.email-healthcheck]
+verify_jwt = false
