@@ -1,25 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminLogin: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // If already signed in as admin, jump straight to dashboard
+  useEffect(() => {
+    let active = true;
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session?.user || !active) return;
+      const { data: isAdmin } = await supabase.rpc('has_role', {
+        _user_id: session.user.id,
+        _role: 'admin',
+      });
+      if (active && isAdmin) navigate('/admin/dashboard', { replace: true });
+    });
+    return () => {
+      active = false;
+    };
+  }, [navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'password123') {
-      localStorage.setItem('maxout-admin-token', 'authenticated');
-      navigate('/admin/dashboard');
-    } else {
-      toast({ title: 'Invalid credentials', description: 'Please try again.', variant: 'destructive' });
+    setLoading(true);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error || !data.user) {
+      setLoading(false);
+      toast({
+        title: 'Sign-in failed',
+        description: error?.message ?? 'Please check your email and password.',
+        variant: 'destructive',
+      });
+      return;
     }
+
+    const { data: isAdmin, error: roleError } = await supabase.rpc('has_role', {
+      _user_id: data.user.id,
+      _role: 'admin',
+    });
+    setLoading(false);
+
+    if (roleError || !isAdmin) {
+      await supabase.auth.signOut();
+      toast({
+        title: 'Access denied',
+        description: 'This account is not an admin.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    navigate('/admin/dashboard');
   };
 
   return (
@@ -35,9 +75,12 @@ const AdminLogin: React.FC = () => {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <Input
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
               className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
             />
             <Input
@@ -45,9 +88,13 @@ const AdminLogin: React.FC = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
               className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
             />
-            <Button type="submit" className="w-full">Sign In</Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? 'Signing in…' : 'Sign In'}
+            </Button>
           </form>
         </CardContent>
       </Card>
