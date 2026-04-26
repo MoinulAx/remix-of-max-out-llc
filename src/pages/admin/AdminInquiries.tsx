@@ -332,46 +332,4 @@ const DetailRow: React.FC<{
   </div>
 );
 
-const DatePickerButton: React.FC<{
-  label: string;
-  value: Date | undefined;
-  onChange: (d: Date | undefined) => void;
-}> = ({ label, value, onChange }) => (
-  <Popover>
-    <PopoverTrigger asChild>
-      <Button
-        variant="outline"
-        size="sm"
-        className={cn(
-          'justify-start text-left font-normal bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700 hover:text-white relative pr-7',
-          !value && 'text-zinc-500'
-        )}
-      >
-        <CalendarIcon className="w-3.5 h-3.5 mr-1.5 shrink-0" />
-        {value ? format(value, 'MMM d, yyyy') : label}
-        {value && (
-          <span
-            role="button"
-            tabIndex={0}
-            onClick={(e) => { e.stopPropagation(); onChange(undefined); }}
-            onKeyDown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); onChange(undefined); } }}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-zinc-600 cursor-pointer"
-          >
-            <X className="w-3 h-3" />
-          </span>
-        )}
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-auto p-0 bg-zinc-900 border-zinc-700" align="start">
-      <Calendar
-        mode="single"
-        selected={value}
-        onSelect={onChange}
-        initialFocus
-        className={cn('p-3 pointer-events-auto')}
-      />
-    </PopoverContent>
-  </Popover>
-);
-
 export default AdminInquiries;
