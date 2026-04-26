@@ -85,7 +85,12 @@ export function useAdminInbox<T extends InboxTable>(
     setLoading(true);
     setError(null);
 
-    let query = supabase
+    // The generic <T> over union table names confuses the supabase-js
+    // column-name narrowing on `.eq('status', ...)`, so we step through `any`
+    // for the chained filter calls. The actual column names are guarded at
+    // the call site (only inbox tables are allowed) and through `Options`.
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    let query: any = (supabase as any)
       .from(table)
       .select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
@@ -115,6 +120,7 @@ export function useAdminInbox<T extends InboxTable>(
     }
 
     const { data, error: queryError, count } = await query;
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     // Drop the response if a newer fetch has started in the meantime.
     if (myGen !== generation.current) return;
