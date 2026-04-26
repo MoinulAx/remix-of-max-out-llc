@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Video, Users, Briefcase, Handshake, GraduationCap, Database, AlertTriangle,
+  Video, Users, Briefcase, Handshake, GraduationCap,
   ShieldCheck, RefreshCw,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useSyncExternalStore } from 'react';
-import { careersStore } from '@/lib/careersStore';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -23,14 +21,23 @@ type AdminStatus = {
   };
 };
 
+type Counts = {
+  videos: number;
+  roster: number;
+  activeJobs: number;
+  newInquiries: number;
+  partners: number;
+};
+
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const jobs = useSyncExternalStore(careersStore.subscribe, careersStore.getJobs);
-  const activeJobs = jobs.filter(j => j.is_active);
 
   const [status, setStatus] = useState<AdminStatus | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
   const [statusLoading, setStatusLoading] = useState(false);
+
+  const [counts, setCounts] = useState<Counts | null>(null);
+  const [countsLoading, setCountsLoading] = useState(false);
 
   const loadStatus = async () => {
     setStatusLoading(true);
@@ -43,36 +50,55 @@ const AdminDashboard: React.FC = () => {
     setStatusLoading(false);
   };
 
-  useEffect(() => { loadStatus(); }, []);
+  const loadCounts = async () => {
+    setCountsLoading(true);
+    const headFilter = { count: 'exact' as const, head: true };
+    const [videos, roster, jobs, inquiries, partners] = await Promise.all([
+      supabase.from('content_hub_posts').select('*', headFilter),
+      supabase.from('roster').select('*', headFilter),
+      supabase.from('careers').select('*', headFilter).eq('is_active', true),
+      supabase.from('inquiries').select('*', headFilter).eq('status', 'new'),
+      supabase.from('partners').select('*', headFilter),
+    ]);
+    setCounts({
+      videos: videos.count ?? 0,
+      roster: roster.count ?? 0,
+      activeJobs: jobs.count ?? 0,
+      newInquiries: inquiries.count ?? 0,
+      partners: partners.count ?? 0,
+    });
+    setCountsLoading(false);
+  };
 
+  useEffect(() => {
+    loadStatus();
+    loadCounts();
+  }, []);
+
+  const fmt = (n: number | undefined) => (n === undefined ? '—' : String(n));
   const stats = [
-    { label: 'Videos', value: '6', icon: Video, path: '/admin/content-hub' },
-    { label: 'Roster Members', value: '4', icon: Users, path: '/admin/roster' },
-    { label: 'Open Positions', value: String(activeJobs.length), icon: GraduationCap, path: '/admin/careers' },
-    { label: 'Inquiries', value: '12', icon: Briefcase, path: '/admin/inquiries' },
-    { label: 'Partners', value: '5', icon: Handshake, path: '/admin/partners' },
+    { label: 'Videos & Posts', value: fmt(counts?.videos), icon: Video, path: '/admin/content-hub' },
+    { label: 'Roster Members', value: fmt(counts?.roster), icon: Users, path: '/admin/roster' },
+    { label: 'Open Positions', value: fmt(counts?.activeJobs), icon: GraduationCap, path: '/admin/careers' },
+    { label: 'New Inquiries', value: fmt(counts?.newInquiries), icon: Briefcase, path: '/admin/inquiries' },
+    { label: 'Partners', value: fmt(counts?.partners), icon: Handshake, path: '/admin/partners' },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Mock Data Banner */}
-      <Card className="bg-amber-950/40 border-amber-700/50">
-        <CardContent className="py-4 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
-          <div className="flex-1">
-            <h3 className="text-amber-300 font-semibold text-sm">Mock Data Mode</h3>
-            <p className="text-amber-200/70 text-xs mt-1">
-              This admin panel is running on local mock data. Changes will reset on page reload.
-              Connect a database to persist data and sync with the live website.
-            </p>
-          </div>
-          <Database className="w-5 h-5 text-amber-500/50 flex-shrink-0" />
-        </CardContent>
-      </Card>
-
-      <div>
-        <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-        <p className="text-zinc-400 text-sm mt-1">Here's an overview of your website content.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
+          <p className="text-zinc-400 text-sm mt-1">Live overview of your website content.</p>
+        </div>
+        <Button
+          variant="outline" size="sm" onClick={() => { loadCounts(); loadStatus(); }}
+          disabled={countsLoading || statusLoading}
+          className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white"
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${countsLoading ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
