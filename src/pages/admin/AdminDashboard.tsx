@@ -1,14 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Video, Users, Briefcase, Handshake, GraduationCap, Database, AlertTriangle } from 'lucide-react';
+import {
+  Video, Users, Briefcase, Handshake, GraduationCap, Database, AlertTriangle,
+  ShieldCheck, RefreshCw,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSyncExternalStore } from 'react';
 import { careersStore } from '@/lib/careersStore';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+
+type AdminStatus = {
+  ok: boolean;
+  user: { id: string; email?: string };
+  role: string;
+  timestamp: string;
+  pending: {
+    inquiries: number;
+    applications: number;
+    job_applications: number;
+    quote_requests: number;
+  };
+};
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const jobs = useSyncExternalStore(careersStore.subscribe, careersStore.getJobs);
   const activeJobs = jobs.filter(j => j.is_active);
+
+  const [status, setStatus] = useState<AdminStatus | null>(null);
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const [statusLoading, setStatusLoading] = useState(false);
+
+  const loadStatus = async () => {
+    setStatusLoading(true);
+    setStatusError(null);
+    const { data, error } = await supabase.functions.invoke<AdminStatus>('admin-status', {
+      method: 'GET',
+    });
+    if (error) setStatusError(error.message);
+    else setStatus(data ?? null);
+    setStatusLoading(false);
+  };
+
+  useEffect(() => { loadStatus(); }, []);
 
   const stats = [
     { label: 'Videos', value: '6', icon: Video, path: '/admin/content-hub' },
@@ -57,6 +92,57 @@ const AdminDashboard: React.FC = () => {
           </Card>
         ))}
       </div>
+
+      {/* Server-verified admin status (calls /functions/v1/admin-status) */}
+      <Card className="bg-zinc-900 border-zinc-800">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
+          <CardTitle className="text-white text-base flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            Server-Verified Admin Status
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadStatus}
+            disabled={statusLoading}
+            className="bg-zinc-800 border-zinc-700 text-zinc-300 hover:text-white"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${statusLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {statusLoading && !status && (
+            <p className="text-zinc-500 text-sm">Verifying with edge function…</p>
+          )}
+          {statusError && (
+            <p className="text-red-400 text-sm">Error: {statusError}</p>
+          )}
+          {status && (
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-2 text-emerald-400">
+                <ShieldCheck className="w-4 h-4" />
+                Verified as <span className="font-mono">{status.user.email}</span>
+                <span className="text-zinc-500">·</span>
+                <span className="text-zinc-400">role: {status.role}</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {Object.entries(status.pending).map(([k, v]) => (
+                  <div key={k} className="rounded-md bg-zinc-800/60 border border-zinc-800 px-3 py-2">
+                    <p className="text-xs text-zinc-500 capitalize">
+                      {k.replace(/_/g, ' ')}
+                    </p>
+                    <p className="text-lg font-semibold text-white">{v}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-zinc-600">
+                Last checked {new Date(status.timestamp).toLocaleTimeString()}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader>
