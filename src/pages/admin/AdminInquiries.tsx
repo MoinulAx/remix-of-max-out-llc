@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
 import {
-  Mail, Calendar as CalendarIcon, Trash2, Search, RefreshCw, X,
-  Phone, User, Clock, FilterX,
+  Mail, Calendar as CalendarIcon, Trash2, RefreshCw,
+  Phone, User, Clock,
 } from 'lucide-react';
 
 import { supabase } from '@/integrations/supabase/client';
@@ -12,12 +12,9 @@ import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Calendar } from '@/components/ui/calendar';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
 } from '@/components/ui/sheet';
@@ -26,6 +23,10 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+
+import { useAdminInbox } from '@/hooks/useAdminInbox';
+import { InboxFilters } from '@/components/admin/InboxFilters';
+import { PaginationBar } from '@/components/admin/PaginationBar';
 
 type Inquiry = {
   id: string;
@@ -39,8 +40,20 @@ type Inquiry = {
   updated_at: string;
 };
 
-const TYPE_OPTIONS = ['all', 'contact', 'booking', 'management'] as const;
-const STATUS_OPTIONS = ['new', 'in_progress', 'closed'] as const;
+const TYPE_OPTIONS = [
+  { value: 'all', label: 'All types' },
+  { value: 'contact', label: 'Contact' },
+  { value: 'booking', label: 'Booking' },
+  { value: 'management', label: 'Management' },
+];
+const STATUS_OPTIONS_FILTER = [
+  { value: 'all', label: 'All statuses' },
+  { value: 'new', label: 'New' },
+  { value: 'in_progress', label: 'In progress' },
+  { value: 'closed', label: 'Closed' },
+  { value: 'archived', label: 'Archived' },
+];
+const STATUS_OPTIONS_DETAIL = ['new', 'in_progress', 'closed', 'archived'] as const;
 
 const typeBadgeClass = (type: string) => {
   switch (type) {
@@ -62,72 +75,23 @@ const statusBadgeClass = (status: string) => {
 
 const AdminInquiries: React.FC = () => {
   const { toast } = useToast();
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [search, setSearch] = useState('');
-  const [fromDate, setFromDate] = useState<Date | undefined>();
-  const [toDate, setToDate] = useState<Date | undefined>();
-
+  const {
+    rows, setRows, total, page, pageCount, pageSize, setPage,
+    loading, error, filters, setFilters, clearFilters, hasActiveFilters, refetch,
+  } = useAdminInbox('inquiries', {
+    searchColumns: ['name', 'email', 'phone', 'message'],
+    hasTypeColumn: true,
+  });
+  const inquiries = rows as Inquiry[];
   const [selected, setSelected] = useState<Inquiry | null>(null);
-
-  const fetchInquiries = async () => {
-    setLoading(true);
-    setError(null);
-    const { data, error } = await supabase
-      .from('inquiries')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) {
-      setError(error.message);
-      toast({ title: 'Failed to load inquiries', description: error.message, variant: 'destructive' });
-    } else {
-      setInquiries((data ?? []) as Inquiry[]);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchInquiries();
-  }, []);
-
-  const filtered = useMemo(() => {
-    return inquiries.filter((i) => {
-      if (typeFilter !== 'all' && i.type !== typeFilter) return false;
-      if (fromDate && new Date(i.created_at) < fromDate) return false;
-      if (toDate) {
-        const end = new Date(toDate);
-        end.setHours(23, 59, 59, 999);
-        if (new Date(i.created_at) > end) return false;
-      }
-      if (search.trim()) {
-        const q = search.toLowerCase();
-        const hay = `${i.name} ${i.email} ${i.phone ?? ''} ${i.message ?? ''}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-  }, [inquiries, typeFilter, fromDate, toDate, search]);
-
-  const newCount = inquiries.filter((i) => i.status === 'new').length;
-  const hasActiveFilters = typeFilter !== 'all' || !!fromDate || !!toDate || !!search.trim();
-
-  const clearFilters = () => {
-    setTypeFilter('all');
-    setFromDate(undefined);
-    setToDate(undefined);
-    setSearch('');
-  };
 
   const updateStatus = async (id: string, status: string) => {
     const previous = inquiries;
-    setInquiries((prev) => prev.map((i) => (i.id === id ? { ...i, status } : i)));
+    setRows((prev) => (prev as Inquiry[]).map((i) => (i.id === id ? { ...i, status } : i)) as typeof prev);
     if (selected?.id === id) setSelected({ ...selected, status });
     const { error } = await supabase.from('inquiries').update({ status }).eq('id', id);
     if (error) {
-      setInquiries(previous);
+      setRows(previous as typeof rows);
       toast({ title: 'Update failed', description: error.message, variant: 'destructive' });
     } else {
       toast({ title: 'Status updated', description: `Marked as ${status.replace('_', ' ')}.` });
@@ -136,14 +100,16 @@ const AdminInquiries: React.FC = () => {
 
   const deleteInquiry = async (id: string) => {
     const previous = inquiries;
-    setInquiries((prev) => prev.filter((i) => i.id !== id));
+    setRows((prev) => (prev as Inquiry[]).filter((i) => i.id !== id) as typeof prev);
     if (selected?.id === id) setSelected(null);
     const { error } = await supabase.from('inquiries').delete().eq('id', id);
     if (error) {
-      setInquiries(previous);
+      setRows(previous as typeof rows);
       toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
     } else {
       toast({ title: 'Inquiry deleted' });
+      // After deleting from the current page, refetch so the page stays full.
+      refetch();
     }
   };
 
@@ -153,13 +119,13 @@ const AdminInquiries: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold text-white">Inquiries</h1>
           <p className="text-sm text-zinc-400 mt-1">
-            {inquiries.length} total · {newCount} new
+            {total.toLocaleString()} total
           </p>
         </div>
         <Button
           variant="outline"
           size="sm"
-          onClick={fetchInquiries}
+          onClick={refetch}
           disabled={loading}
           className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white"
         >
@@ -170,48 +136,18 @@ const AdminInquiries: React.FC = () => {
 
       {/* Filters */}
       <Card className="bg-zinc-900 border-zinc-800">
-        <CardContent className="p-4 grid gap-3 md:grid-cols-4">
-          <div className="md:col-span-2 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search name, email, phone, message…"
-              className="pl-9 bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-            />
-          </div>
-
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent className="bg-zinc-900 border-zinc-700 text-white">
-              {TYPE_OPTIONS.map((t) => (
-                <SelectItem key={t} value={t} className="capitalize focus:bg-zinc-800">
-                  {t === 'all' ? 'All types' : t}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <div className="grid grid-cols-2 gap-2">
-            <DatePickerButton label="From" value={fromDate} onChange={setFromDate} />
-            <DatePickerButton label="To" value={toDate} onChange={setToDate} />
-          </div>
-
-          {hasActiveFilters && (
-            <div className="md:col-span-4 flex items-center justify-between text-xs text-zinc-400">
-              <span>Showing {filtered.length} of {inquiries.length}</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="text-zinc-400 hover:text-white h-7"
-              >
-                <FilterX className="w-3 h-3 mr-1" /> Clear filters
-              </Button>
-            </div>
-          )}
+        <CardContent className="p-4">
+          <InboxFilters
+            filters={filters}
+            onChange={setFilters}
+            onClear={clearFilters}
+            hasActive={hasActiveFilters}
+            statusOptions={STATUS_OPTIONS_FILTER}
+            typeOptions={TYPE_OPTIONS}
+            searchPlaceholder="Search name, email, phone, message…"
+            total={total}
+            showing={inquiries.length}
+          />
         </CardContent>
       </Card>
 
@@ -229,12 +165,12 @@ const AdminInquiries: React.FC = () => {
           {!loading && error && (
             <p className="text-red-400 text-sm text-center py-8">{error}</p>
           )}
-          {!loading && !error && filtered.length === 0 && (
+          {!loading && !error && inquiries.length === 0 && (
             <p className="text-zinc-500 text-sm text-center py-8">
               {hasActiveFilters ? 'No inquiries match your filters.' : 'No inquiries yet.'}
             </p>
           )}
-          {!loading && !error && filtered.map((inquiry) => (
+          {!loading && !error && inquiries.map((inquiry) => (
             <button
               key={inquiry.id}
               onClick={() => setSelected(inquiry)}
@@ -271,6 +207,14 @@ const AdminInquiries: React.FC = () => {
               </div>
             </button>
           ))}
+          <PaginationBar
+            page={page}
+            pageCount={pageCount}
+            pageSize={pageSize}
+            total={total}
+            onPageChange={setPage}
+            loading={loading}
+          />
         </CardContent>
       </Card>
 
@@ -316,7 +260,7 @@ const AdminInquiries: React.FC = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-zinc-900 border-zinc-700 text-white">
-                      {STATUS_OPTIONS.map((s) => (
+                      {STATUS_OPTIONS_DETAIL.map((s) => (
                         <SelectItem key={s} value={s} className="capitalize focus:bg-zinc-800">
                           {s.replace('_', ' ')}
                         </SelectItem>
