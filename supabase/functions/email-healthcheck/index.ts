@@ -1,7 +1,9 @@
 // Healthcheck for email edge functions.
-// - Confirms the Resend npm import resolves at runtime
+// - Confirms the Resend npm import resolves at module load
 // - Reports which email-related secrets are present vs missing
 // Public endpoint (verify_jwt = false) — does NOT leak secret values.
+
+import { Resend } from 'npm:resend@4.0.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -32,21 +34,11 @@ Deno.serve(async (req) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
-  // 1. Resend import resolution
-  let resendImport: { ok: boolean; version: string; error?: string };
-  try {
-    const mod = await import('npm:resend@4.0.1');
-    resendImport = {
-      ok: typeof mod.Resend === 'function',
-      version: '4.0.1',
-    };
-  } catch (err) {
-    resendImport = {
-      ok: false,
-      version: '4.0.1',
-      error: err instanceof Error ? err.message : String(err),
-    };
-  }
+  // 1. Resend import resolution (top-level import succeeded if we got here)
+  const resendImport = {
+    ok: typeof Resend === 'function',
+    version: '4.0.1',
+  };
 
   // 2. Secret presence (names only, never values)
   const required = checkSecrets(REQUIRED_SECRETS);
