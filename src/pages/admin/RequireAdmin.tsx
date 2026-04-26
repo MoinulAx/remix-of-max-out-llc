@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 type AuthState =
   | { status: 'checking' }
@@ -11,6 +12,7 @@ type AuthState =
 const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const [state, setState] = useState<AuthState>({ status: 'checking' });
+  const { toast } = useToast();
 
   useEffect(() => {
     let active = true;
@@ -29,7 +31,21 @@ const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setState({ status: 'forbidden' });
         return;
       }
-      setState({ status: data === true ? 'authorized' : 'forbidden' });
+      if (data === true) {
+        setState({ status: 'authorized' });
+      } else {
+        // Authenticated but not an admin — sign them out so they don't
+        // get bounced back here from /admin (which auto-forwards signed-in
+        // admins to the dashboard).
+        await supabase.auth.signOut();
+        if (!active) return;
+        toast({
+          title: 'Access denied',
+          description: 'This account does not have admin permissions.',
+          variant: 'destructive',
+        });
+        setState({ status: 'forbidden' });
+      }
     };
 
     // Set up listener BEFORE getSession (Supabase best practice)
@@ -46,7 +62,7 @@ const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       active = false;
       sub.subscription.unsubscribe();
     };
-  }, []);
+  }, [toast]);
 
   if (state.status === 'checking') {
     return (
