@@ -42,7 +42,7 @@ export function useSupabaseTable<T extends AdminTableName>(
         variant: 'destructive',
       });
     } else {
-      setRows((data ?? []) as RowOf<T>[]);
+      setRows((data ?? []) as unknown as RowOf<T>[]);
     }
     setLoading(false);
   }, [table, orderBy, ascending, toast]);
