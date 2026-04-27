@@ -112,34 +112,40 @@ export type Database = {
       content_hub_posts: {
         Row: {
           created_at: string
+          description: string | null
           id: string
           is_published: boolean
           media_type: string | null
           media_url: string | null
           platform: string | null
           sort_order: number
+          thumbnail_url: string | null
           title: string
           updated_at: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
           is_published?: boolean
           media_type?: string | null
           media_url?: string | null
           platform?: string | null
           sort_order?: number
+          thumbnail_url?: string | null
           title: string
           updated_at?: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
           is_published?: boolean
           media_type?: string | null
           media_url?: string | null
           platform?: string | null
           sort_order?: number
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
         }
@@ -238,6 +244,7 @@ export type Database = {
           id: string
           logo_url: string | null
           name: string
+          partner_type: string | null
           sort_order: number
           updated_at: string
           website: string | null
@@ -248,6 +255,7 @@ export type Database = {
           id?: string
           logo_url?: string | null
           name: string
+          partner_type?: string | null
           sort_order?: number
           updated_at?: string
           website?: string | null
@@ -258,6 +266,7 @@ export type Database = {
           id?: string
           logo_url?: string | null
           name?: string
+          partner_type?: string | null
           sort_order?: number
           updated_at?: string
           website?: string | null
