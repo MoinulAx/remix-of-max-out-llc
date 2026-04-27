@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 import { useSupabaseTable } from '@/hooks/useSupabaseTable';
+import ApplicationModal from '@/components/ApplicationModal';
 
 const ROSTER_CATEGORIES = ['Artists, Models & Actors', 'Content Creators', 'Producers'];
 
@@ -17,6 +18,7 @@ const getStatusColor = (status: string) => {
 
 const Roster = () => {
   const { rows, loading } = useSupabaseTable('roster', { orderBy: 'sort_order', ascending: true });
+  const [applyOpen, setApplyOpen] = useState(false);
 
   const talent = rows.filter(r => ROSTER_CATEGORIES.includes(r.category ?? ''));
 
@@ -120,10 +122,33 @@ const Roster = () => {
               </div>
             </div>
           </FadeIn>
+
+          {/* Roster application CTA */}
+          <FadeIn delay={700}>
+            <div className="mt-12 p-8 md:p-12 bg-primary text-primary-foreground rounded-2xl text-center">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">Want to Join Our Roster?</h2>
+              <p className="text-primary-foreground/80 mb-6 max-w-xl mx-auto">
+                We're always looking for talented artists, models, actors, content creators, and producers. Submit your application and we'll be in touch.
+              </p>
+              <button
+                type="button"
+                onClick={() => setApplyOpen(true)}
+                className="inline-block bg-primary-foreground text-primary font-bold px-8 py-3 rounded-lg hover:bg-primary-foreground/90 transition-colors shadow-[var(--shadow-sharp)]"
+              >
+                Apply Now
+              </button>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       <Footer />
+
+      <ApplicationModal
+        isOpen={applyOpen}
+        onClose={() => setApplyOpen(false)}
+        variant="roster"
+      />
     </main>
   );
 };
