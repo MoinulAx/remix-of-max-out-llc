@@ -75,6 +75,37 @@ const AdminDashboard: React.FC = () => {
     loadCounts();
   }, []);
 
+  // Live updates: refresh counts (and the server-verified status card) whenever
+  // a submission table changes. Debounced so a burst of inserts only triggers
+  // one refetch.
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRefresh = () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        loadCounts();
+        loadStatus();
+      }, 400);
+    };
+
+    const channel = supabase
+      .channel('admin-dashboard-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'inquiries' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'applications' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'job_applications' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'quote_requests' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'content_hub_posts' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'roster' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'careers' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'partners' }, scheduleRefresh)
+      .subscribe();
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
   const fmt = (n: number | undefined) => (n === undefined ? '—' : String(n));
   const stats = [
     { label: 'Videos & Posts', value: fmt(counts?.videos), icon: Video, path: '/admin/content-hub' },

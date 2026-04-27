@@ -143,6 +143,25 @@ export function useAdminInbox<T extends InboxTable>(
     fetchPage();
   }, [fetchPage]);
 
+  // Subscribe to realtime changes for this table. Any insert/update/delete
+  // triggers a refetch of the current page so admins see new submissions
+  // (and status changes) without manually refreshing.
+  useEffect(() => {
+    const channel = supabase
+      .channel(`admin-inbox-${table}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table },
+        () => {
+          fetchPage();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [table, fetchPage]);
+
   const setFilters = useCallback((patch: Partial<InboxFilters>) => {
     setFiltersState((prev) => ({ ...prev, ...patch }));
   }, []);
