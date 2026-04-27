@@ -45,6 +45,8 @@ const TYPE_OPTIONS = [
   { value: 'contact', label: 'Contact' },
   { value: 'booking', label: 'Booking' },
   { value: 'management', label: 'Management' },
+  { value: 'newsletter', label: 'Newsletter' },
+  { value: 'tmobile', label: 'T-Mobile' },
 ];
 const STATUS_OPTIONS_FILTER = [
   { value: 'all', label: 'All statuses' },
@@ -57,10 +59,12 @@ const STATUS_OPTIONS_DETAIL = ['new', 'in_progress', 'closed', 'archived'] as co
 
 const typeBadgeClass = (type: string) => {
   switch (type) {
-    case 'contact': return 'border-blue-600 text-blue-400';
-    case 'booking': return 'border-green-600 text-green-400';
+    case 'contact':    return 'border-blue-600 text-blue-400';
+    case 'booking':    return 'border-green-600 text-green-400';
     case 'management': return 'border-purple-600 text-purple-400';
-    default: return 'border-zinc-600 text-zinc-400';
+    case 'newsletter': return 'border-amber-600 text-amber-400';
+    case 'tmobile':    return 'border-pink-600 text-pink-400';
+    default:           return 'border-zinc-600 text-zinc-400';
   }
 };
 

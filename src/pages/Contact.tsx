@@ -75,7 +75,8 @@ const Contact = () => {
     } catch (err) {
       const e = err as { code?: string; message?: string };
       const friendly =
-        e?.code === '42501' ? "Permission denied — please try again or email us directly."
+        e?.code === 'P0001'  ? 'Too many submissions — please wait before trying again.'
+        : e?.code === '42501' ? 'Permission denied — please try again or email us directly.'
         : e?.code === '23502' ? 'Please fill out all required fields and try again.'
         : 'Failed to send message. Please try again.';
       toast({ title: 'Error', description: friendly, variant: 'destructive' });

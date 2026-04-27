@@ -17,10 +17,10 @@ const AdminLogin: React.FC = () => {
   // If already signed in as admin, jump straight to dashboard
   useEffect(() => {
     let active = true;
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session?.user || !active) return;
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user || !active) return;
       const { data: isAdmin } = await supabase.rpc('has_role', {
-        _user_id: session.user.id,
+        _user_id: user.id,
         _role: 'admin',
       });
       if (active && isAdmin) navigate('/admin/dashboard', { replace: true });

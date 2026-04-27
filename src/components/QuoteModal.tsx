@@ -73,7 +73,11 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, serviceType = 
       reset();
       onClose();
     } catch (err) {
-      toast({ title: 'Error', description: 'Failed to send quote request. Please try again.', variant: 'destructive' });
+      const e = err as { code?: string };
+      const msg = e?.code === 'P0001'
+        ? 'Too many submissions — please wait before trying again.'
+        : 'Failed to send quote request. Please try again.';
+      toast({ title: 'Error', description: msg, variant: 'destructive' });
     }
   };
 

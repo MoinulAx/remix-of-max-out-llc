@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const schema = z.object({
   firstName: z.string().min(2, 'First name is required'),
@@ -37,10 +38,32 @@ const TMobile = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    const mailtoLink = `mailto:epcstudiosny@gmail.com?subject=T-Mobile Business Inquiry - ${data.company}&body=First Name: ${data.firstName}%0D%0ALast Name: ${data.lastName}%0D%0APhone: ${data.phone}%0D%0AEmail: ${data.email}%0D%0ACompany: ${data.company}%0D%0AZIP Code: ${data.zipCode}%0D%0A%0D%0AConsent to contact: Yes`;
-    window.location.href = mailtoLink;
-    toast({ title: 'Opening email client...', description: 'Your business inquiry will be sent.' });
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    const composed = [
+      `Company: ${data.company}`,
+      `Phone: ${data.phone}`,
+      `ZIP: ${data.zipCode}`,
+      `Consent to contact: Yes`,
+    ].join('\n');
+
+    const { error } = await supabase.from('inquiries').insert({
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      phone: data.phone,
+      message: composed,
+      type: 'tmobile',
+    });
+
+    if (error) {
+      const msg = error.code === 'P0001'
+        ? 'Too many submissions — please wait before trying again.'
+        : 'Failed to submit. Please try again.';
+      toast({ title: 'Error', description: msg, variant: 'destructive' });
+      return;
+    }
+
+    toast({ title: 'Inquiry Submitted!', description: "A T-Mobile Business Expert will be in touch shortly." });
+    form.reset();
   };
 
   return (
@@ -133,8 +156,12 @@ const TMobile = () => {
                       </FormItem>
                     )} />
 
-                    <Button type="submit" className="w-full bg-[#E20074] hover:bg-[#E20074]/90">
-                      Submit Inquiry
+                    <Button
+                      type="submit"
+                      disabled={form.formState.isSubmitting}
+                      className="w-full bg-[#E20074] hover:bg-[#E20074]/90"
+                    >
+                      {form.formState.isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                     </Button>
                   </form>
                 </Form>

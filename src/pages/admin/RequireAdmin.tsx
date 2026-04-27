@@ -17,16 +17,23 @@ const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   useEffect(() => {
     let active = true;
 
-    const verify = async (userId: string | undefined) => {
-      if (!userId) {
-        if (active) setState({ status: 'unauthenticated' });
+    const verify = async () => {
+      // getUser() validates the JWT with the Supabase Auth server —
+      // unlike getSession() it does not trust localStorage alone.
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (!active) return;
+
+      if (userError || !user) {
+        setState({ status: 'unauthenticated' });
         return;
       }
+
       const { data, error } = await supabase.rpc('has_role', {
-        _user_id: userId,
+        _user_id: user.id,
         _role: 'admin',
       });
       if (!active) return;
+
       if (error) {
         setState({ status: 'forbidden' });
         return;
@@ -34,9 +41,6 @@ const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       if (data === true) {
         setState({ status: 'authorized' });
       } else {
-        // Authenticated but not an admin — sign them out so they don't
-        // get bounced back here from /admin (which auto-forwards signed-in
-        // admins to the dashboard).
         await supabase.auth.signOut();
         if (!active) return;
         toast({
@@ -48,15 +52,17 @@ const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       }
     };
 
-    // Set up listener BEFORE getSession (Supabase best practice)
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      // Defer Supabase calls out of the listener to avoid deadlocks
-      setTimeout(() => verify(session?.user?.id), 0);
+    // Re-verify on every auth state change (token refresh, sign-out, etc.)
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') {
+        if (active) setState({ status: 'unauthenticated' });
+        return;
+      }
+      // Defer to avoid Supabase client deadlock inside the listener
+      setTimeout(() => verify(), 0);
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      verify(session?.user?.id);
-    });
+    verify();
 
     return () => {
       active = false;
