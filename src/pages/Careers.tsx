@@ -1,4 +1,4 @@
-import React, { useState, useSyncExternalStore } from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
@@ -8,13 +8,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { sendApplicationEmail } from '@/lib/emailjs';
 import { Briefcase, MapPin, Clock, DollarSign, Users, Building, Upload, ArrowRight } from 'lucide-react';
-import { careersStore } from '@/lib/careersStore';
+import { useSupabaseTable } from '@/hooks/useSupabaseTable';
 import { Link } from 'react-router-dom';
 
 interface Job {
@@ -29,9 +29,8 @@ interface Job {
 }
 
 const Careers = () => {
-  // Read active jobs from the shared mock store (reactive to admin changes)
-  const activeJobs = useSyncExternalStore(careersStore.subscribe, careersStore.getActiveJobs);
-  const allJobs: Job[] = activeJobs;
+  const { rows, loading: jobsLoading } = useSupabaseTable('careers', { orderBy: 'display_order', ascending: true });
+  const allJobs: Job[] = rows.filter(j => j.is_active) as unknown as Job[];
 
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -364,7 +363,11 @@ const Careers = () => {
             </FadeIn>
 
             <FadeIn delay={150} className="max-w-6xl mx-auto">
-              {jobs.length === 0 ? (
+              {jobsLoading ? (
+                <div className="flex justify-center py-20">
+                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : jobs.length === 0 ? (
                 <Card>
                   <CardContent className="py-12 text-center">
                     <p className="text-lg text-muted-foreground">

@@ -1,4 +1,4 @@
-import React, { useSyncExternalStore, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,16 +6,45 @@ import FadeIn from '@/components/animations/FadeIn';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { careersStore } from '@/lib/careersStore';
+import { supabase } from '@/integrations/supabase/client';
 import ApplicationModal from '@/components/ApplicationModal';
 import { ArrowLeft, Briefcase, Building, MapPin, Clock, DollarSign, CheckCircle2, Mail } from 'lucide-react';
+import type { Database } from '@/integrations/supabase/types';
+
+type Job = Database['public']['Tables']['careers']['Row'];
 
 const JobDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const activeJobs = useSyncExternalStore(careersStore.subscribe, careersStore.getActiveJobs);
-  const job = activeJobs.find(j => j.id === id);
+  const [job, setJob] = useState<Job | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isApplyOpen, setIsApplyOpen] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    supabase
+      .from('careers')
+      .select('*')
+      .eq('id', id)
+      .eq('is_active', true)
+      .single()
+      .then(({ data }) => {
+        setJob(data);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="flex justify-center items-center py-32">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!job) {
     return (
@@ -133,8 +162,8 @@ const JobDetail = () => {
         isOpen={isApplyOpen}
         onClose={() => setIsApplyOpen(false)}
         jobTitle={job.title}
-        jobType={job.type}
-        jobLocation={job.location}
+        jobType={job.type ?? ''}
+        jobLocation={job.location ?? ''}
       />
     </div>
   );
