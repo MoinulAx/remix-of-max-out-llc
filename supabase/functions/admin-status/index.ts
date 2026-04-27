@@ -1,13 +1,8 @@
-// Admin-only status endpoint.
-// Validates the caller's JWT and confirms the `admin` role via the
-// `has_role` SECURITY DEFINER RPC before returning any data.
-
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers':
-    'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
 };
 
@@ -29,7 +24,6 @@ Deno.serve(async (req) => {
   if (!authHeader?.startsWith('Bearer ')) {
     return json({ error: 'Unauthorized', reason: 'missing_token' }, 401);
   }
-  const token = authHeader.slice('Bearer '.length);
 
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL')!,
@@ -37,19 +31,16 @@ Deno.serve(async (req) => {
     { global: { headers: { Authorization: authHeader } } },
   );
 
-  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
-  if (claimsError || !claimsData?.claims) {
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) {
     return json({ error: 'Unauthorized', reason: 'invalid_token' }, 401);
   }
-  const userId = claimsData.claims.sub as string;
-  const email = claimsData.claims.email as string | undefined;
 
   const { data: isAdmin, error: roleError } = await supabase.rpc('has_role', {
-    _user_id: userId,
+    _user_id: user.id,
     _role: 'admin',
   });
   if (roleError) {
-    console.error('has_role RPC failed:', roleError);
     return json({ error: 'Role check failed', detail: roleError.message }, 500);
   }
   if (isAdmin !== true) {
@@ -65,7 +56,7 @@ Deno.serve(async (req) => {
 
   return json({
     ok: true,
-    user: { id: userId, email },
+    user: { id: user.id, email: user.email },
     role: 'admin',
     timestamp: new Date().toISOString(),
     pending: {
