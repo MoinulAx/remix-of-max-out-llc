@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { cn } from '@/lib/utils';
 import FadeIn from '@/components/animations/FadeIn';
 import Header from '@/components/Header';
@@ -9,102 +12,74 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { sendContactEmail } from '@/lib/emailjs';
 
+const schema = z.object({
+  name:     z.string().min(2, 'Name must be at least 2 characters'),
+  email:    z.string().email('Enter a valid email address'),
+  phone:    z.string().optional(),
+  service:  z.string().min(1, 'Please select a service'),
+  budget:   z.string().optional(),
+  timeline: z.string().optional(),
+  message:  z.string().min(10, 'Please tell us about your project (at least 10 characters)'),
+});
+
+type FormValues = z.infer<typeof schema>;
+
+const FieldError = ({ message }: { message?: string }) =>
+  message ? <p className="text-destructive text-xs mt-1">{message}</p> : null;
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    budget: '',
-    message: '',
-    timeline: ''
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const { toast } = useToast();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
+  const onSubmit = async (values: FormValues) => {
     try {
-      // Build a single message that captures all fields for the inquiries table
       const composedMessage = [
-        formData.service && `Service: ${formData.service}`,
-        formData.budget && `Budget: ${formData.budget}`,
-        formData.timeline && `Timeline: ${formData.timeline}`,
-        formData.message && `\n${formData.message}`,
-      ]
-        .filter(Boolean)
-        .join('\n');
+        `Service: ${values.service}`,
+        values.budget   && `Budget: ${values.budget}`,
+        values.timeline && `Timeline: ${values.timeline}`,
+        `\n${values.message}`,
+      ].filter(Boolean).join('\n');
 
       const { error } = await supabase
         .from('inquiries')
         .insert({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
+          name:    values.name,
+          email:   values.email,
+          phone:   values.phone || null,
           message: composedMessage,
-          type: 'contact',
+          type:    'contact',
         });
 
       if (error) throw error;
 
-      // Send confirmation email via EmailJS
       await sendContactEmail({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        service: formData.service,
-        budget: formData.budget,
-        timeline: formData.timeline,
-        message: formData.message
+        name:     values.name,
+        email:    values.email,
+        phone:    values.phone,
+        service:  values.service,
+        budget:   values.budget,
+        timeline: values.timeline,
+        message:  values.message,
       });
 
       toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. Check your email for confirmation - we'll get back to you within 24 hours.",
+        title: 'Message Sent!',
+        description: "Thank you for reaching out. Check your email for confirmation — we'll get back to you within 24 hours.",
       });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        service: '',
-        budget: '',
-        message: '',
-        timeline: ''
-      });
-    } catch (error) {
-      console.error('Error submitting contact form:', error);
-      // Surface a useful message instead of a generic "Failed to send".
-      // Common Supabase errors: 23502 (not-null), 23514 (check), 42501 (RLS).
-      const supaErr = error as { message?: string; code?: string; details?: string };
+      reset();
+    } catch (err) {
+      const e = err as { code?: string; message?: string };
       const friendly =
-        supaErr?.code === '42501'
-          ? "Permission denied. We're investigating — please try again or email us directly."
-          : supaErr?.code === '23502'
-          ? 'Please fill out all required fields and try again.'
-          : supaErr?.message
-          ? `Couldn't send your message: ${supaErr.message}`
-          : 'Failed to send message. Please try again.';
-      toast({
-        title: 'Error',
-        description: friendly,
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+        e?.code === '42501' ? "Permission denied — please try again or email us directly."
+        : e?.code === '23502' ? 'Please fill out all required fields and try again.'
+        : 'Failed to send message. Please try again.';
+      toast({ title: 'Error', description: friendly, variant: 'destructive' });
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
   };
 
   const contactMethods = [
@@ -174,31 +149,26 @@ const Contact = () => {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold mb-2">Name *</label>
                         <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
+                          {...register('name')}
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                           placeholder="Your full name"
                         />
+                        <FieldError message={errors.name?.message} />
                       </div>
                       <div>
                         <label className="block text-sm font-semibold mb-2">Email *</label>
                         <input
                           type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
+                          {...register('email')}
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                           placeholder="your@email.com"
                         />
+                        <FieldError message={errors.email?.message} />
                       </div>
                     </div>
 
@@ -207,9 +177,7 @@ const Contact = () => {
                         <label className="block text-sm font-semibold mb-2">Phone</label>
                         <input
                           type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
+                          {...register('phone')}
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                           placeholder="(555) 123-4567"
                         />
@@ -217,10 +185,7 @@ const Contact = () => {
                       <div>
                         <label className="block text-sm font-semibold mb-2">Service Needed *</label>
                         <select
-                          name="service"
-                          value={formData.service}
-                          onChange={handleChange}
-                          required
+                          {...register('service')}
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                         >
                           <option value="">Select a service</option>
@@ -230,6 +195,7 @@ const Contact = () => {
                           <option value="branding">Branding & Design</option>
                           <option value="package">Multiple Services</option>
                         </select>
+                        <FieldError message={errors.service?.message} />
                       </div>
                     </div>
 
@@ -237,9 +203,7 @@ const Contact = () => {
                       <div>
                         <label className="block text-sm font-semibold mb-2">Budget Range</label>
                         <select
-                          name="budget"
-                          value={formData.budget}
-                          onChange={handleChange}
+                          {...register('budget')}
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                         >
                           <option value="">Select budget range</option>
@@ -255,9 +219,7 @@ const Contact = () => {
                       <div>
                         <label className="block text-sm font-semibold mb-2">Timeline</label>
                         <select
-                          name="timeline"
-                          value={formData.timeline}
-                          onChange={handleChange}
+                          {...register('timeline')}
                           className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                         >
                           <option value="">Select timeline</option>
@@ -273,14 +235,12 @@ const Contact = () => {
                     <div>
                       <label className="block text-sm font-semibold mb-2">Project Details *</label>
                       <textarea
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
+                        {...register('message')}
                         rows={6}
                         className="w-full px-4 py-3 border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                         placeholder="Tell me about your project, goals, and any specific requirements..."
                       />
+                      <FieldError message={errors.message?.message} />
                     </div>
 
                     <button
@@ -293,7 +253,7 @@ const Contact = () => {
                           : "bg-primary text-primary-foreground hover:bg-primary/90"
                       )}
                     >
-                      {isSubmitting ? "Sending..." : "Send Message"}
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
                   </form>
                 </CardContent>
