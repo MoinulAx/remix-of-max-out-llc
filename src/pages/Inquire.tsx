@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import ApplicationModal from '@/components/ApplicationModal';
+import { supabase } from '@/integrations/supabase/client';
 
 const bookingSchema = z.object({
   yourName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -29,17 +29,8 @@ const managementSchema = z.object({
   inquiry: z.string().min(10, 'Please provide more details'),
 });
 
-interface JobListing {
-  title: string;
-  type: string;
-  location: string;
-  note: string;
-}
-
 const Inquire = () => {
   const { toast } = useToast();
-  const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const bookingForm = useForm({
     resolver: zodResolver(bookingSchema),
@@ -51,36 +42,52 @@ const Inquire = () => {
     defaultValues: { name: '', email: '', company: '', inquiry: '' },
   });
 
-  const onBookingSubmit = (data: z.infer<typeof bookingSchema>) => {
-    const mailtoLink = `mailto:epcstudiosny@gmail.com?subject=Booking Inquiry - ${data.talentName}&body=Your Name: ${data.yourName}%0D%0AEmail: ${data.email}%0D%0AInquiring About: ${data.talentName}%0D%0AServices Needed: ${data.services}%0D%0ABudget: ${data.budget}%0D%0ATimeline: ${data.timeline}%0D%0A%0D%0AMessage:%0D%0A${data.message}`;
-    window.location.href = mailtoLink;
-    toast({ title: 'Opening email client...', description: 'Your booking inquiry will be sent to our team.' });
+  const onBookingSubmit = async (data: z.infer<typeof bookingSchema>) => {
+    const composed = [
+      `Inquiring about: ${data.talentName}`,
+      `Services: ${data.services}`,
+      `Budget: ${data.budget}`,
+      `Timeline: ${data.timeline}`,
+      `\n${data.message}`,
+    ].join('\n');
+
+    const { error } = await supabase.from('inquiries').insert({
+      name: data.yourName,
+      email: data.email,
+      message: composed,
+      type: 'booking',
+    });
+
+    if (error) {
+      toast({ title: 'Error', description: 'Failed to send inquiry. Please try again.', variant: 'destructive' });
+      return;
+    }
+
+    toast({ title: 'Booking Inquiry Sent!', description: "We'll get back to you within 24 hours." });
+    bookingForm.reset();
   };
 
-  const onManagementSubmit = (data: z.infer<typeof managementSchema>) => {
-    const mailtoLink = `mailto:epcstudiosny@gmail.com?subject=Management Inquiry&body=Name: ${data.name}%0D%0AEmail: ${data.email}%0D%0ACompany: ${data.company || 'N/A'}%0D%0A%0D%0AInquiry:%0D%0A${data.inquiry}`;
-    window.location.href = mailtoLink;
-    toast({ title: 'Opening email client...', description: 'Your management inquiry will be sent to our team.' });
+  const onManagementSubmit = async (data: z.infer<typeof managementSchema>) => {
+    const composed = [
+      data.company && `Company: ${data.company}`,
+      `\n${data.inquiry}`,
+    ].filter(Boolean).join('\n');
+
+    const { error } = await supabase.from('inquiries').insert({
+      name: data.name,
+      email: data.email,
+      message: composed,
+      type: 'management',
+    });
+
+    if (error) {
+      toast({ title: 'Error', description: 'Failed to send inquiry. Please try again.', variant: 'destructive' });
+      return;
+    }
+
+    toast({ title: 'Inquiry Sent!', description: "We'll get back to you within 24 hours." });
+    managementForm.reset();
   };
-
-  const handleApply = (job: JobListing) => {
-    setSelectedJob(job);
-    setIsModalOpen(true);
-  };
-
-  const internships: JobListing[] = [
-    { title: 'Social Media Marketing Intern', type: 'Part-time', location: 'Remote', note: 'Unpaid Internship (College Credit Available)' },
-    { title: 'Artist Management Intern', type: 'Part-time', location: 'Hybrid', note: 'Unpaid Internship' },
-    { title: 'A&R Scout Intern', type: 'Part-time', location: 'Remote', note: 'Unpaid Internship' },
-    { title: 'Graphic Design / Content Intern', type: 'Part-time', location: 'Remote', note: 'Unpaid Internship' },
-  ];
-
-  const commissionJobs: JobListing[] = [
-    { title: 'Talent Manager', type: 'Full-time', location: 'Hybrid', note: 'Commission Only (% of Client Earnings)' },
-    { title: 'Booking Agent', type: 'Contract', location: 'Remote', note: 'Commission Based (Per Booking)' },
-    { title: 'Brand Partnership Specialist', type: 'Contract', location: 'Remote', note: 'Commission on Sponsorship Deals' },
-    { title: 'Sales Representative', type: 'Contract', location: 'Remote', note: '100% Commission' },
-  ];
 
   return (
     <main className="relative min-h-screen">
@@ -165,7 +172,9 @@ const Inquire = () => {
                       </FormItem>
                     )} />
                     
-                    <Button type="submit" className="w-full h-11 mt-2">Submit Booking</Button>
+                    <Button type="submit" disabled={bookingForm.formState.isSubmitting} className="w-full h-11 mt-2">
+                      {bookingForm.formState.isSubmitting ? 'Sending...' : 'Submit Booking'}
+                    </Button>
                   </form>
                 </Form>
               </div>
@@ -213,7 +222,9 @@ const Inquire = () => {
                       </FormItem>
                     )} />
                     
-                    <Button type="submit" className="w-full h-11 mt-2">Submit Inquiry</Button>
+                    <Button type="submit" disabled={managementForm.formState.isSubmitting} className="w-full h-11 mt-2">
+                      {managementForm.formState.isSubmitting ? 'Sending...' : 'Submit Inquiry'}
+                    </Button>
                   </form>
                 </Form>
               </div>
@@ -222,17 +233,6 @@ const Inquire = () => {
 
         </div>
       </section>
-
-      {/* Application Modal */}
-      {selectedJob && (
-        <ApplicationModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          jobTitle={selectedJob.title}
-          jobType={selectedJob.type}
-          jobLocation={selectedJob.location}
-        />
-      )}
 
       <Footer />
     </main>
