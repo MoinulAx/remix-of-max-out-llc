@@ -51,7 +51,7 @@ type ActivityEntry = {
 
 const ACTIVITY_CONFIG: { table: ActivityTable; label: string; path: string }[] = [
   { table: 'inquiries',        label: 'Inquiries',        path: '/admin/inquiries' },
-  { table: 'applications',     label: 'Applications',     path: '/admin/applications' },
+  { table: 'applications',     label: 'Roster Applications', path: '/admin/applications' },
   { table: 'job_applications', label: 'Job Applications', path: '/admin/job-applications' },
   { table: 'quote_requests',   label: 'Quote Requests',   path: '/admin/quote-requests' },
   { table: 'careers',          label: 'Careers',          path: '/admin/careers' },
