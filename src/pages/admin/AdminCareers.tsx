@@ -184,7 +184,7 @@ const AdminCareers: React.FC = () => {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {form.requirements.map((req, i) => (
-                  <Badge key={i} variant="secondary" className="gap-1 pr-1">
+                  <Badge key={i} variant="secondary" className="gap-1 pr-1 bg-zinc-700 text-zinc-200 border-zinc-600">
                     {req}
                     <button onClick={() => removeRequirement(i)} className="ml-1 hover:text-red-400"><X className="w-3 h-3" /></button>
                   </Badge>
@@ -210,12 +210,12 @@ const AdminCareers: React.FC = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-white font-medium text-sm">{job.title}</span>
-                    {job.type && <Badge variant="outline" className="text-xs">{job.type}</Badge>}
-                    {job.location && <Badge variant="outline" className="text-xs">{job.location}</Badge>}
+                    {job.type && <Badge variant="outline" className="text-xs text-zinc-300 border-zinc-600">{job.type}</Badge>}
+                    {job.location && <Badge variant="outline" className="text-xs text-zinc-300 border-zinc-600">{job.location}</Badge>}
                     {!job.is_active && <Badge variant="destructive" className="text-xs">Inactive</Badge>}
                   </div>
                   <p className="text-zinc-400 text-xs">{job.department ?? '—'} · {job.salary_range ?? '—'}</p>
-                  <p className="text-zinc-500 text-xs mt-1 truncate">{job.description}</p>
+                  <p className="text-zinc-500 text-xs mt-1 line-clamp-2">{job.description}</p>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <Switch checked={job.is_active} onCheckedChange={() => toggleActive(job)} />
