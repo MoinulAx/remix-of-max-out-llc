@@ -120,14 +120,14 @@ const AdminRoster: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Leadership & Roster</h1>
-          <p className="text-zinc-400 text-sm mt-1">{leadership.length} leadership · {talent.length} talent</p>
+          <p className="text-zinc-300 text-sm mt-1">{leadership.length} leadership · {talent.length} talent</p>
         </div>
         <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
 
-      {loading && all.length === 0 && <p className="text-zinc-500 text-sm text-center py-6">Loading roster…</p>}
+      {loading && all.length === 0 && <p className="text-zinc-300 text-sm text-center py-6">Loading roster…</p>}
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
       <Tabs defaultValue="leadership" className="space-y-4">
@@ -188,7 +188,7 @@ const AdminRoster: React.FC = () => {
           </div>
 
           {categories.length === 0 && !loading && (
-            <p className="text-zinc-500 text-sm text-center py-4">No talent yet. Use the menu above to add a member to a category.</p>
+            <p className="text-zinc-300 text-sm text-center py-4">No talent yet. Use the menu above to add a member to a category.</p>
           )}
 
           {categories.map((cat) => (

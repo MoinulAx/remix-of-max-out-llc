@@ -156,14 +156,14 @@ const AdminContentHub: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Content Hub</h1>
-          <p className="text-zinc-400 text-sm mt-1">{posts.length} total posts</p>
+          <p className="text-zinc-300 text-sm mt-1">{posts.length} total posts</p>
         </div>
         <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
 
-      {loading && posts.length === 0 && <p className="text-zinc-500 text-sm text-center py-6">Loading content…</p>}
+      {loading && posts.length === 0 && <p className="text-zinc-300 text-sm text-center py-6">Loading content…</p>}
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
       <Tabs defaultValue="youtube" className="space-y-4">
@@ -182,7 +182,7 @@ const AdminContentHub: React.FC = () => {
             </Button>
             {(grouped[t.value] ?? []).map((p) => renderRow(p, t.value === 'video' || t.value === 'image'))}
             {!loading && (grouped[t.value]?.length ?? 0) === 0 && (
-              <p className="text-zinc-500 text-sm text-center py-4">No {t.label.toLowerCase()} posts yet.</p>
+              <p className="text-zinc-300 text-sm text-center py-4">No {t.label.toLowerCase()} posts yet.</p>
             )}
           </TabsContent>
         ))}

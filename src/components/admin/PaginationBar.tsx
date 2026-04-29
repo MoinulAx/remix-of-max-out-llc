@@ -22,7 +22,7 @@ export const PaginationBar: React.FC<Props> = ({
 
   return (
     <div className="flex items-center justify-between gap-3 pt-3 border-t border-zinc-800">
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-300">
         {start.toLocaleString()}–{end.toLocaleString()} of {total.toLocaleString()}
       </p>
       <div className="flex items-center gap-1">
@@ -32,7 +32,7 @@ export const PaginationBar: React.FC<Props> = ({
         <NavBtn disabled={!canPrev} onClick={() => onPageChange(page - 1)} aria-label="Previous page">
           <ChevronLeft className="w-4 h-4" />
         </NavBtn>
-        <span className="px-2 text-xs text-zinc-400 tabular-nums">
+        <span className="px-2 text-xs text-zinc-300 tabular-nums">
           Page {page + 1} of {pageCount}
         </span>
         <NavBtn disabled={!canNext} onClick={() => onPageChange(page + 1)} aria-label="Next page">

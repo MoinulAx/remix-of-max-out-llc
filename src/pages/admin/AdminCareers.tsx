@@ -139,7 +139,7 @@ const AdminCareers: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Careers Management</h1>
-          <p className="text-zinc-400 text-sm mt-1">{activeCount} active · {jobs.length} total</p>
+          <p className="text-zinc-300 text-sm mt-1">{activeCount} active · {jobs.length} total</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
@@ -149,7 +149,7 @@ const AdminCareers: React.FC = () => {
         </div>
       </div>
 
-      {loading && jobs.length === 0 && <p className="text-zinc-500 text-sm text-center py-6">Loading positions…</p>}
+      {loading && jobs.length === 0 && <p className="text-zinc-300 text-sm text-center py-6">Loading positions…</p>}
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
       {isAdding && (
@@ -203,7 +203,7 @@ const AdminCareers: React.FC = () => {
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader><CardTitle className="text-white flex items-center gap-2"><Briefcase className="w-5 h-5" /> All Positions</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {!loading && jobs.length === 0 && <p className="text-zinc-500 text-sm text-center py-4">No positions added yet.</p>}
+          {!loading && jobs.length === 0 && <p className="text-zinc-300 text-sm text-center py-4">No positions added yet.</p>}
           {jobs.map((job) => (
             <div key={job.id} className={`p-4 rounded-lg border transition-colors ${job.is_active ? 'bg-zinc-800 border-zinc-700' : 'bg-zinc-800/30 border-zinc-800 opacity-60'}`}>
               <div className="flex items-start justify-between gap-3">
@@ -214,8 +214,8 @@ const AdminCareers: React.FC = () => {
                     {job.location && <Badge variant="outline" className="text-xs text-zinc-300 border-zinc-600">{job.location}</Badge>}
                     {!job.is_active && <Badge variant="destructive" className="text-xs">Inactive</Badge>}
                   </div>
-                  <p className="text-zinc-400 text-xs">{job.department ?? '—'} · {job.salary_range ?? '—'}</p>
-                  <p className="text-zinc-500 text-xs mt-1 line-clamp-2">{job.description}</p>
+                  <p className="text-zinc-300 text-xs">{job.department ?? '—'} · {job.salary_range ?? '—'}</p>
+                  <p className="text-zinc-300 text-xs mt-1 line-clamp-2">{job.description}</p>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <Switch checked={job.is_active} onCheckedChange={() => toggleActive(job)} />

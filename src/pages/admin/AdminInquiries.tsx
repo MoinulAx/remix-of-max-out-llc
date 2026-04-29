@@ -126,7 +126,7 @@ const AdminInquiries: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Inquiries</h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-sm text-zinc-300 mt-1">
             {total.toLocaleString()} total
           </p>
         </div>
@@ -168,13 +168,13 @@ const AdminInquiries: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-2">
           {loading && (
-            <p className="text-zinc-500 text-sm text-center py-8">Loading inquiries…</p>
+            <p className="text-zinc-300 text-sm text-center py-8">Loading inquiries…</p>
           )}
           {!loading && error && (
             <p className="text-red-400 text-sm text-center py-8">{error}</p>
           )}
           {!loading && !error && inquiries.length === 0 && (
-            <p className="text-zinc-500 text-sm text-center py-8">
+            <p className="text-zinc-300 text-sm text-center py-8">
               {hasActiveFilters ? 'No inquiries match your filters.' : 'No inquiries yet.'}
             </p>
           )}
@@ -203,11 +203,11 @@ const AdminInquiries: React.FC = () => {
                       {inquiry.status.replace('_', ' ')}
                     </Badge>
                   </div>
-                  <p className="text-zinc-400 text-xs mb-1 truncate">{inquiry.email}</p>
+                  <p className="text-zinc-300 text-xs mb-1 truncate">{inquiry.email}</p>
                   <p className="text-zinc-300 text-sm line-clamp-2 whitespace-pre-line">
-                    {inquiry.message || <span className="text-zinc-600 italic">No message</span>}
+                    {inquiry.message || <span className="text-zinc-500 italic">No message</span>}
                   </p>
-                  <p className="text-zinc-600 text-xs mt-2 flex items-center gap-1">
+                  <p className="text-zinc-400 text-xs mt-2 flex items-center gap-1">
                     <CalendarIcon className="w-3 h-3" />
                     {format(new Date(inquiry.created_at), 'PPp')}
                   </p>
@@ -278,9 +278,9 @@ const AdminInquiries: React.FC = () => {
                 </DetailRow>
 
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-zinc-500 mb-2">Message</p>
+                  <p className="text-xs uppercase tracking-wide text-zinc-400 mb-2">Message</p>
                   <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-sm text-zinc-200 whitespace-pre-line">
-                    {selected.message || <span className="text-zinc-600 italic">No message</span>}
+                    {selected.message || <span className="text-zinc-500 italic">No message</span>}
                   </div>
                 </div>
 
@@ -334,7 +334,7 @@ const DetailRow: React.FC<{
   <div className="flex items-start gap-3">
     <Icon className="w-4 h-4 text-zinc-500 mt-0.5 shrink-0" />
     <div className="flex-1 min-w-0">
-      <p className="text-xs uppercase tracking-wide text-zinc-500 mb-1">{label}</p>
+      <p className="text-xs uppercase tracking-wide text-zinc-400 mb-1">{label}</p>
       <div className="text-sm text-zinc-200">{children}</div>
     </div>
   </div>
