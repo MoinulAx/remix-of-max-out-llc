@@ -4,6 +4,19 @@ import Footer from '@/components/Footer';
 import FadeIn from '@/components/animations/FadeIn';
 import { useSupabaseTable } from '@/hooks/useSupabaseTable';
 
+function toEmbedUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  // Already an embed URL
+  if (url.includes('/embed/')) return url;
+  // youtu.be/ID
+  const short = url.match(/youtu\.be\/([^?&]+)/);
+  if (short) return `https://www.youtube.com/embed/${short[1]}`;
+  // youtube.com/watch?v=ID
+  const watch = url.match(/[?&]v=([^&]+)/);
+  if (watch) return `https://www.youtube.com/embed/${watch[1]}`;
+  return url;
+}
+
 const ContentHub = () => {
   const { rows, loading } = useSupabaseTable('content_hub_posts', { orderBy: 'sort_order', ascending: true });
 
@@ -39,7 +52,7 @@ const ContentHub = () => {
                     <h2 className="text-2xl font-bold mb-4">Featured: EV09 Loso</h2>
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                       <iframe
-                        src={featured.media_url ?? ''}
+                        src={toEmbedUrl(featured.media_url)}
                         title={featured.title}
                         className="w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -101,7 +114,7 @@ const ContentHub = () => {
                           style={{ animationDelay: `${index * 100}ms` }}
                         >
                           <iframe
-                            src={video.media_url ?? ''}
+                            src={toEmbedUrl(video.media_url)}
                             title={video.title}
                             className="w-full h-full"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
