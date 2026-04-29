@@ -107,7 +107,7 @@ const AdminApplications: React.FC = () => {
             loading={loading}
             error={error}
             hasActiveFilters={hasActiveFilters}
-            emptyLabel="No applications yet."
+            emptyLabel="No roster applications yet."
             statusOptions={STATUS_OPTIONS_ROW}
             onUpdateStatus={updateStatus}
             onDelete={deleteApp}
