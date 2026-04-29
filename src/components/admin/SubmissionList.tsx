@@ -57,14 +57,14 @@ export const SubmissionList: React.FC<Props> = ({
   const [selected, setSelected] = useState<SubmissionRow | null>(null);
 
   if (loading && rows.length === 0) {
-    return <p className="text-zinc-500 text-sm text-center py-8">Loading…</p>;
+    return <p className="text-zinc-300 text-sm text-center py-8">Loading…</p>;
   }
   if (error) {
     return <p className="text-red-400 text-sm text-center py-8">{error}</p>;
   }
   if (rows.length === 0) {
     return (
-      <p className="text-zinc-500 text-sm text-center py-8">
+      <p className="text-zinc-300 text-sm text-center py-8">
         {hasActiveFilters ? 'No results match your filters.' : emptyLabel}
       </p>
     );
@@ -94,7 +94,7 @@ export const SubmissionList: React.FC<Props> = ({
                     {row.status.replace('_', ' ')}
                   </Badge>
                 </div>
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-400 mb-2">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-300 mb-2">
                   <a href={`mailto:${row.email}`} className="flex items-center gap-1 hover:text-blue-400">
                     <Mail className="w-3 h-3" /> {row.email}
                   </a>
@@ -112,7 +112,7 @@ export const SubmissionList: React.FC<Props> = ({
                 {row.body && (
                   <p className="text-zinc-300 text-sm line-clamp-2 whitespace-pre-line">{row.body}</p>
                 )}
-                <p className="text-zinc-600 text-xs mt-2 flex items-center gap-1">
+                <p className="text-zinc-400 text-xs mt-2 flex items-center gap-1">
                   <CalendarIcon className="w-3 h-3" />
                   {format(new Date(row.created_at), 'PPp')}
                 </p>
@@ -212,7 +212,7 @@ export const SubmissionList: React.FC<Props> = ({
                 )}
 
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-zinc-500 mb-2">Status</p>
+                  <p className="text-xs uppercase tracking-wide text-zinc-400 mb-2">Status</p>
                   <Select
                     value={selected.status}
                     onValueChange={(v) => {
@@ -235,7 +235,7 @@ export const SubmissionList: React.FC<Props> = ({
 
                 {selected.body && (
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-zinc-500 mb-2">Message</p>
+                    <p className="text-xs uppercase tracking-wide text-zinc-400 mb-2">Message</p>
                     <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-sm text-zinc-200 whitespace-pre-line">
                       {selected.body}
                     </div>
@@ -290,9 +290,9 @@ const DetailRow: React.FC<{
   children: React.ReactNode;
 }> = ({ icon: Icon, label, children }) => (
   <div className="flex items-start gap-3">
-    <Icon className="w-4 h-4 text-zinc-500 mt-0.5 shrink-0" />
+    <Icon className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0" />
     <div className="flex-1 min-w-0">
-      <p className="text-xs uppercase tracking-wide text-zinc-500 mb-1">{label}</p>
+      <p className="text-xs uppercase tracking-wide text-zinc-400 mb-1">{label}</p>
       <div className="text-sm text-zinc-200">{children}</div>
     </div>
   </div>

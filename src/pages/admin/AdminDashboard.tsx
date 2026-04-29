@@ -226,7 +226,7 @@ const AdminDashboard: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-zinc-400 text-sm mt-1">Live overview of your website content.</p>
+          <p className="text-zinc-300 text-sm mt-1">Live overview of your website content.</p>
         </div>
         <Button
           variant="outline" size="sm" onClick={() => { loadCounts(); loadStatus(); loadActivity(); }}
@@ -246,8 +246,8 @@ const AdminDashboard: React.FC = () => {
             onClick={() => navigate(s.path)}
           >
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-zinc-400">{s.label}</CardTitle>
-              <s.icon className="w-4 h-4 text-zinc-500" />
+              <CardTitle className="text-sm font-medium text-zinc-300">{s.label}</CardTitle>
+              <s.icon className="w-4 h-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{s.value}</div>
@@ -276,7 +276,7 @@ const AdminDashboard: React.FC = () => {
         </CardHeader>
         <CardContent>
           {!activity && activityLoading && (
-            <p className="text-zinc-500 text-sm">Loading activity…</p>
+            <p className="text-zinc-300 text-sm">Loading activity…</p>
           )}
           {activity && (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
@@ -296,13 +296,13 @@ const AdminDashboard: React.FC = () => {
                         <p className="text-sm font-medium text-white">{entry.label}</p>
                         <p className="text-2xl font-bold text-white mt-1">{entry.total}</p>
                       </div>
-                      <div className="flex items-center gap-1 text-xs text-zinc-500">
+                      <div className="flex items-center gap-1 text-xs text-zinc-400">
                         <Clock className="w-3 h-3" />
                         {timeAgo(entry.lastActivityAt)}
                       </div>
                     </button>
                     {statuses.length === 0 ? (
-                      <p className="text-xs text-zinc-500">No records yet.</p>
+                      <p className="text-xs text-zinc-400">No records yet.</p>
                     ) : (
                       <div className="flex flex-wrap gap-1.5">
                         {statuses.map(([statusKey, count]) => {
@@ -358,7 +358,7 @@ const AdminDashboard: React.FC = () => {
         </CardHeader>
         <CardContent>
           {statusLoading && !status && (
-            <p className="text-zinc-500 text-sm">Verifying with edge function…</p>
+            <p className="text-zinc-300 text-sm">Verifying with edge function…</p>
           )}
           {statusError && (
             <p className="text-red-400 text-sm">Error: {statusError}</p>
@@ -368,20 +368,20 @@ const AdminDashboard: React.FC = () => {
               <div className="flex items-center gap-2 text-emerald-400">
                 <ShieldCheck className="w-4 h-4" />
                 Verified as <span className="font-mono">{status.user.email}</span>
-                <span className="text-zinc-500">·</span>
-                <span className="text-zinc-400">role: {status.role}</span>
+                <span className="text-zinc-400">·</span>
+                <span className="text-zinc-300">role: {status.role}</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {Object.entries(status.pending).map(([k, v]) => (
                   <div key={k} className="rounded-md bg-zinc-800/60 border border-zinc-800 px-3 py-2">
-                    <p className="text-xs text-zinc-500 capitalize">
+                    <p className="text-xs text-zinc-400 capitalize">
                       {k.replace(/_/g, ' ')}
                     </p>
                     <p className="text-lg font-semibold text-white">{v}</p>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-zinc-600">
+              <p className="text-xs text-zinc-400">
                 Last checked {new Date(status.timestamp).toLocaleTimeString()}
               </p>
             </div>
@@ -396,23 +396,23 @@ const AdminDashboard: React.FC = () => {
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button onClick={() => navigate('/admin/content-hub')} className="text-left p-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
             <p className="text-white font-medium text-sm">Manage Content Hub</p>
-            <p className="text-zinc-400 text-xs mt-1">Add videos, articles, and social posts</p>
+            <p className="text-zinc-300 text-xs mt-1">Add videos, articles, and social posts</p>
           </button>
           <button onClick={() => navigate('/admin/roster')} className="text-left p-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
             <p className="text-white font-medium text-sm">Manage Roster</p>
-            <p className="text-zinc-400 text-xs mt-1">Update talent and leadership</p>
+            <p className="text-zinc-300 text-xs mt-1">Update talent and leadership</p>
           </button>
           <button onClick={() => navigate('/admin/careers')} className="text-left p-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
             <p className="text-white font-medium text-sm">Manage Careers</p>
-            <p className="text-zinc-400 text-xs mt-1">Add or toggle job listings</p>
+            <p className="text-zinc-300 text-xs mt-1">Add or toggle job listings</p>
           </button>
           <button onClick={() => navigate('/admin/inquiries')} className="text-left p-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
             <p className="text-white font-medium text-sm">View Inquiries</p>
-            <p className="text-zinc-400 text-xs mt-1">Check new submissions</p>
+            <p className="text-zinc-300 text-xs mt-1">Check new submissions</p>
           </button>
           <button onClick={() => navigate('/admin/partners')} className="text-left p-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
             <p className="text-white font-medium text-sm">Manage Partners</p>
-            <p className="text-zinc-400 text-xs mt-1">Add or remove partner logos</p>
+            <p className="text-zinc-300 text-xs mt-1">Add or remove partner logos</p>
           </button>
         </CardContent>
       </Card>

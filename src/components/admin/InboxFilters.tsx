@@ -88,7 +88,7 @@ export const InboxFilters: React.FC<Props> = ({
       </div>
 
       {hasActive && (
-        <div className="md:col-span-12 flex items-center justify-between text-xs text-zinc-400">
+        <div className="md:col-span-12 flex items-center justify-between text-xs text-zinc-300">
           <span>Showing {showing} of {total.toLocaleString()}</span>
           <Button variant="ghost" size="sm" onClick={onClear} className="text-zinc-400 hover:text-white h-7">
             <FilterX className="w-3 h-3 mr-1" /> Clear filters

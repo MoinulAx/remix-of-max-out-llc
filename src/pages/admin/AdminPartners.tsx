@@ -85,7 +85,7 @@ const AdminPartners: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Partners</h1>
-          <p className="text-zinc-400 text-sm mt-1">
+          <p className="text-zinc-300 text-sm mt-1">
             {query
               ? `${filteredPartners.length} of ${partners.length} match`
               : `${partners.length} partner${partners.length === 1 ? '' : 's'}`}
@@ -103,7 +103,7 @@ const AdminPartners: React.FC = () => {
       </div>
 
       {loading && partners.length === 0 && (
-        <p className="text-zinc-500 text-sm text-center py-8">Loading partners…</p>
+        <p className="text-zinc-300 text-sm text-center py-8">Loading partners…</p>
       )}
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
@@ -121,10 +121,10 @@ const AdminPartners: React.FC = () => {
                     {p.logo_url ? (
                       <img src={p.logo_url} alt={p.name} className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all" />
                     ) : (
-                      <span className="text-zinc-500 text-xs text-center">{p.name || 'Logo'}</span>
+                      <span className="text-zinc-300 text-xs text-center">{p.name || 'Logo'}</span>
                     )}
                   </div>
-                  <span className="text-zinc-400 text-xs text-center truncate w-full">{p.name}</span>
+                  <span className="text-zinc-300 text-xs text-center truncate w-full">{p.name}</span>
                 </div>
               ))}
             </div>
@@ -142,7 +142,7 @@ const AdminPartners: React.FC = () => {
                   {partner.logo_url ? (
                     <img src={partner.logo_url} alt={partner.name} className="w-full h-full object-contain" />
                   ) : (
-                    <span className="text-zinc-600 text-[10px]">No logo</span>
+                    <span className="text-zinc-400 text-[10px]">No logo</span>
                   )}
                 </div>
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -200,10 +200,10 @@ const AdminPartners: React.FC = () => {
       </div>
 
       {!loading && partners.length === 0 && (
-        <p className="text-zinc-500 text-sm text-center py-8">No partners yet. Click "Add Partner" to create one.</p>
+        <p className="text-zinc-300 text-sm text-center py-8">No partners yet. Click "Add Partner" to create one.</p>
       )}
       {!loading && partners.length > 0 && filteredPartners.length === 0 && (
-        <p className="text-zinc-500 text-sm text-center py-4">No partners match "{query}".</p>
+        <p className="text-zinc-300 text-sm text-center py-4">No partners match "{query}".</p>
       )}
     </div>
   );
