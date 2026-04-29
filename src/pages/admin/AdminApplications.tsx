@@ -51,7 +51,7 @@ const AdminApplications: React.FC = () => {
       setRows(previous as typeof rows);
       toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Application deleted' });
+      toast({ title: 'Roster application deleted' });
       refetch();
     }
   };
@@ -79,7 +79,7 @@ const AdminApplications: React.FC = () => {
             onClear={clearFilters}
             hasActive={hasActiveFilters}
             statusOptions={STATUS_OPTIONS_FILTER}
-            searchPlaceholder="Search name, email, phone, interests…"
+            searchPlaceholder="Search roster applications by name, email, phone, interests…"
             total={total}
             showing={apps.length}
           />
@@ -89,7 +89,7 @@ const AdminApplications: React.FC = () => {
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2 text-base">
-            <ClipboardList className="w-4 h-4" /> Submissions
+            <ClipboardList className="w-4 h-4" /> Roster Application Submissions
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -107,7 +107,7 @@ const AdminApplications: React.FC = () => {
             loading={loading}
             error={error}
             hasActiveFilters={hasActiveFilters}
-            emptyLabel="No applications yet."
+            emptyLabel="No roster applications yet."
             statusOptions={STATUS_OPTIONS_ROW}
             onUpdateStatus={updateStatus}
             onDelete={deleteApp}
