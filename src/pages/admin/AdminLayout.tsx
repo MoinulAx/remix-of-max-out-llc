@@ -13,7 +13,7 @@ const navItems = [
   { label: 'Leadership & Roster', path: '/admin/roster', icon: Users },
   { label: 'Careers', path: '/admin/careers', icon: GraduationCap },
   { label: 'Inquiries', path: '/admin/inquiries', icon: Mail },
-  { label: 'Applications', path: '/admin/applications', icon: ClipboardList },
+  { label: 'Roster Applications', path: '/admin/applications', icon: ClipboardList },
   { label: 'Job Applications', path: '/admin/job-applications', icon: BriefcaseBusiness },
   { label: 'Quote Requests', path: '/admin/quote-requests', icon: FileText },
   { label: 'Partners', path: '/admin/partners', icon: Handshake },
