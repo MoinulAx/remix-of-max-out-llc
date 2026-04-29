@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Video, Users, Briefcase, Handshake, GraduationCap,
-  ShieldCheck, RefreshCw,
+  ShieldCheck, RefreshCw, Activity, Clock,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,58 @@ type Counts = {
   partners: number;
 };
 
+/**
+ * Per-table breakdown of submissions by status, plus the most recent
+ * created_at across rows. Powers the Activity widget.
+ */
+type ActivityTable =
+  | 'inquiries'
+  | 'applications'
+  | 'job_applications'
+  | 'quote_requests'
+  | 'careers';
+
+type ActivityEntry = {
+  table: ActivityTable;
+  label: string;
+  total: number;
+  byStatus: Record<string, number>;
+  lastActivityAt: string | null;
+  path: string;
+};
+
+const ACTIVITY_CONFIG: { table: ActivityTable; label: string; path: string }[] = [
+  { table: 'inquiries',        label: 'Inquiries',        path: '/admin/inquiries' },
+  { table: 'applications',     label: 'Applications',     path: '/admin/applications' },
+  { table: 'job_applications', label: 'Job Applications', path: '/admin/job-applications' },
+  { table: 'quote_requests',   label: 'Quote Requests',   path: '/admin/quote-requests' },
+  { table: 'careers',          label: 'Careers',          path: '/admin/careers' },
+];
+
+const STATUS_BADGE_CLASS: Record<string, string> = {
+  new:         'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  in_progress: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  closed:      'bg-zinc-500/15 text-zinc-300 border-zinc-500/30',
+  archived:    'bg-zinc-500/10 text-zinc-400 border-zinc-600/30',
+  active:      'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  inactive:    'bg-zinc-500/10 text-zinc-400 border-zinc-600/30',
+};
+
+function timeAgo(iso: string | null): string {
+  if (!iso) return 'No activity yet';
+  const diff = Date.now() - new Date(iso).getTime();
+  if (diff < 0) return 'just now';
+  const sec = Math.floor(diff / 1000);
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  if (day < 30) return `${day}d ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
 
@@ -38,6 +90,9 @@ const AdminDashboard: React.FC = () => {
 
   const [counts, setCounts] = useState<Counts | null>(null);
   const [countsLoading, setCountsLoading] = useState(false);
+
+  const [activity, setActivity] = useState<ActivityEntry[] | null>(null);
+  const [activityLoading, setActivityLoading] = useState(false);
 
   const loadStatus = async () => {
     setStatusLoading(true);
@@ -70,9 +125,59 @@ const AdminDashboard: React.FC = () => {
     setCountsLoading(false);
   };
 
+  /**
+   * Fetch every row's status + created_at for each activity table and
+   * aggregate client-side. The dataset is small (admin-only), and this avoids
+   * needing a custom RPC just to group counts.
+   */
+  const loadActivity = async () => {
+    setActivityLoading(true);
+    const results = await Promise.all(
+      ACTIVITY_CONFIG.map(async ({ table, label, path }) => {
+        // careers uses is_active instead of a free-form status column
+        if (table === 'careers') {
+          const { data } = await supabase
+            .from('careers')
+            .select('is_active, updated_at, created_at')
+            .order('updated_at', { ascending: false });
+          const rows = data ?? [];
+          const byStatus: Record<string, number> = { active: 0, inactive: 0 };
+          let last: string | null = null;
+          for (const r of rows) {
+            byStatus[r.is_active ? 'active' : 'inactive']++;
+            const ts = r.updated_at ?? r.created_at;
+            if (ts && (!last || ts > last)) last = ts;
+          }
+          return { table, label, path, total: rows.length, byStatus, lastActivityAt: last } as ActivityEntry;
+        }
+        const { data } = await supabase
+          .from(table)
+          .select('status, created_at')
+          .order('created_at', { ascending: false });
+        const rows = (data ?? []) as { status: string | null; created_at: string }[];
+        const byStatus: Record<string, number> = {};
+        for (const r of rows) {
+          const key = r.status ?? 'unknown';
+          byStatus[key] = (byStatus[key] ?? 0) + 1;
+        }
+        return {
+          table,
+          label,
+          path,
+          total: rows.length,
+          byStatus,
+          lastActivityAt: rows[0]?.created_at ?? null,
+        } as ActivityEntry;
+      })
+    );
+    setActivity(results);
+    setActivityLoading(false);
+  };
+
   useEffect(() => {
     loadStatus();
     loadCounts();
+    loadActivity();
   }, []);
 
   // Live updates: refresh counts (and the server-verified status card) whenever
@@ -85,6 +190,7 @@ const AdminDashboard: React.FC = () => {
       timeout = setTimeout(() => {
         loadCounts();
         loadStatus();
+        loadActivity();
       }, 400);
     };
 
@@ -123,11 +229,11 @@ const AdminDashboard: React.FC = () => {
           <p className="text-zinc-400 text-sm mt-1">Live overview of your website content.</p>
         </div>
         <Button
-          variant="outline" size="sm" onClick={() => { loadCounts(); loadStatus(); }}
-          disabled={countsLoading || statusLoading}
+          variant="outline" size="sm" onClick={() => { loadCounts(); loadStatus(); loadActivity(); }}
+          disabled={countsLoading || statusLoading || activityLoading}
           className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white"
         >
-          <RefreshCw className={`w-4 h-4 mr-2 ${countsLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 mr-2 ${(countsLoading || activityLoading) ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
       </div>
@@ -149,6 +255,73 @@ const AdminDashboard: React.FC = () => {
           </Card>
         ))}
       </div>
+
+      {/* Status breakdown + recent activity per submission table */}
+      <Card className="bg-zinc-900 border-zinc-800">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
+          <CardTitle className="text-white text-base flex items-center gap-2">
+            <Activity className="w-4 h-4 text-primary" />
+            Submissions Activity
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadActivity}
+            disabled={activityLoading}
+            className="bg-zinc-800 border-zinc-700 text-zinc-300 hover:text-white"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${activityLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {!activity && activityLoading && (
+            <p className="text-zinc-500 text-sm">Loading activity…</p>
+          )}
+          {activity && (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+              {activity.map((entry) => {
+                const statuses = Object.entries(entry.byStatus).sort((a, b) => b[1] - a[1]);
+                return (
+                  <button
+                    key={entry.table}
+                    onClick={() => navigate(entry.path)}
+                    className="text-left rounded-lg bg-zinc-800/60 border border-zinc-800 hover:border-zinc-600 transition-colors p-4 space-y-3"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="text-sm font-medium text-white">{entry.label}</p>
+                        <p className="text-2xl font-bold text-white mt-1">{entry.total}</p>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <Clock className="w-3 h-3" />
+                        {timeAgo(entry.lastActivityAt)}
+                      </div>
+                    </div>
+                    {statuses.length === 0 ? (
+                      <p className="text-xs text-zinc-500">No records yet.</p>
+                    ) : (
+                      <div className="flex flex-wrap gap-1.5">
+                        {statuses.map(([statusKey, count]) => (
+                          <span
+                            key={statusKey}
+                            className={`text-xs px-2 py-0.5 rounded border ${
+                              STATUS_BADGE_CLASS[statusKey] ??
+                              'bg-zinc-700/40 text-zinc-300 border-zinc-600/40'
+                            }`}
+                          >
+                            {statusKey.replace(/_/g, ' ')} · {count}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Server-verified admin status (calls /functions/v1/admin-status) */}
       <Card className="bg-zinc-900 border-zinc-800">
