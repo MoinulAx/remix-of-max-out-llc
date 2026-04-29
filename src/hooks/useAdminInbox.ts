@@ -55,6 +55,15 @@ export function useAdminInbox<T extends InboxTable>(
   const { searchColumns, hasTypeColumn = false, pageSize = DEFAULT_PAGE_SIZE } = options;
   const { toast } = useToast();
 
+  // Stabilise the searchColumns array reference — callers often pass an
+  // inline literal which is a new array on every render, causing fetchPage
+  // to recreate and the fetch effect to fire in an infinite loop.
+  const searchColumnsKey = searchColumns.join(',');
+
+  // Keep toast in a ref so it never appears in fetchPage's dep array.
+  const toastRef = useRef(toast);
+  toastRef.current = toast;
+
   const [rows, setRows] = useState<RowOf<T>[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
@@ -112,9 +121,8 @@ export function useAdminInbox<T extends InboxTable>(
       // Escape PostgREST OR delimiters so user-typed commas/parens don't break the filter.
       const safe = debouncedSearch.replace(/[(),%]/g, ' ').trim();
       if (safe) {
-        const orExpr = searchColumns
-          .map((col) => `${col}.ilike.%${safe}%`)
-          .join(',');
+        const cols = searchColumnsKey.split(',');
+        const orExpr = cols.map((col) => `${col}.ilike.%${safe}%`).join(',');
         query = query.or(orExpr);
       }
     }
@@ -127,7 +135,7 @@ export function useAdminInbox<T extends InboxTable>(
 
     if (queryError) {
       setError(queryError.message);
-      toast({
+      toastRef.current({
         title: `Failed to load ${table.replace('_', ' ')}`,
         description: queryError.message,
         variant: 'destructive',
@@ -137,7 +145,7 @@ export function useAdminInbox<T extends InboxTable>(
       setTotal(count ?? 0);
     }
     setLoading(false);
-  }, [table, page, pageSize, filters.status, filters.type, filters.fromDate, filters.toDate, debouncedSearch, hasTypeColumn, searchColumns, toast]);
+  }, [table, page, pageSize, filters.status, filters.type, filters.fromDate, filters.toDate, debouncedSearch, hasTypeColumn, searchColumnsKey]);
 
   useEffect(() => {
     fetchPage();
