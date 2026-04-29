@@ -34,6 +34,11 @@ type Options<T extends InboxTable> = {
   /** Whether the table has a `type` column the UI can filter on. */
   hasTypeColumn?: boolean;
   pageSize?: number;
+  /**
+   * Optional initial filter values — used when the page is opened with
+   * query-string filters (e.g. linked from the dashboard activity widget).
+   */
+  initialFilters?: Partial<InboxFilters>;
 };
 
 const DEFAULT_PAGE_SIZE = 25;
@@ -52,7 +57,7 @@ export function useAdminInbox<T extends InboxTable>(
   table: T,
   options: Options<T>
 ) {
-  const { searchColumns, hasTypeColumn = false, pageSize = DEFAULT_PAGE_SIZE } = options;
+  const { searchColumns, hasTypeColumn = false, pageSize = DEFAULT_PAGE_SIZE, initialFilters } = options;
   const { toast } = useToast();
 
   // Stabilise the searchColumns array reference — callers often pass an
@@ -73,6 +78,7 @@ export function useAdminInbox<T extends InboxTable>(
     status: 'all',
     type: hasTypeColumn ? 'all' : undefined,
     search: '',
+    ...initialFilters,
   });
 
   // Debounce the search string so each keystroke doesn't fire a query.
