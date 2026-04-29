@@ -24,6 +24,29 @@ const STATUS_OPTIONS_FILTER = [
 ];
 const STATUS_OPTIONS_ROW = STATUS_OPTIONS_FILTER.filter((s) => s.value !== 'all');
 
+/**
+ * Inline reference card showing what each status badge means. Mirrors the
+ * colors used by SubmissionList's per-row status badges so admins can
+ * skim the list without guessing.
+ */
+const STATUS_LEGEND: { value: string; label: string; description: string; className: string }[] = [
+  { value: 'new',         label: 'New',         description: 'Just submitted, not reviewed yet',   className: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
+  { value: 'in_progress', label: 'In progress', description: 'Currently being reviewed or contacted', className: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
+  { value: 'closed',      label: 'Closed',      description: 'Decision made — applicant notified',  className: 'bg-zinc-500/15 text-zinc-300 border-zinc-500/30' },
+  { value: 'archived',    label: 'Archived',    description: 'Hidden from the active queue',        className: 'bg-zinc-500/10 text-zinc-400 border-zinc-600/30' },
+];
+
+const StatusLegend: React.FC = () => (
+  <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-zinc-400">
+    {STATUS_LEGEND.map((s) => (
+      <div key={s.value} className="flex items-center gap-2">
+        <span className={`px-2 py-0.5 rounded border ${s.className}`}>{s.label}</span>
+        <span>{s.description}</span>
+      </div>
+    ))}
+  </div>
+);
+
 const AdminApplications: React.FC = () => {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
@@ -95,6 +118,7 @@ const AdminApplications: React.FC = () => {
           <CardTitle className="text-white flex items-center gap-2 text-base">
             <ClipboardList className="w-4 h-4" /> Roster Application Submissions
           </CardTitle>
+          <StatusLegend />
         </CardHeader>
         <CardContent className="space-y-3">
           <SubmissionList
