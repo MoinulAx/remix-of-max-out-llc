@@ -89,7 +89,7 @@ const AdminApplications: React.FC = () => {
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2 text-base">
-            <ClipboardList className="w-4 h-4" /> Submissions
+            <ClipboardList className="w-4 h-4" /> Roster Application Submissions
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
