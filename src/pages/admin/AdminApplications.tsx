@@ -51,7 +51,7 @@ const AdminApplications: React.FC = () => {
       setRows(previous as typeof rows);
       toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Application deleted' });
+      toast({ title: 'Roster application deleted' });
       refetch();
     }
   };
