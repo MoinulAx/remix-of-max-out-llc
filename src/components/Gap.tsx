@@ -22,7 +22,7 @@ const Gap: React.FC<GapProps> = ({ className }) => {
     try {
       const { error } = await supabase
         .from('inquiries')
-        .insert({ email, message: 'Newsletter subscription', type: 'newsletter' });
+        .insert({ name: 'Newsletter Subscriber', email, message: 'Newsletter subscription', type: 'newsletter' });
       if (error) throw error;
       toast({ title: 'Subscribed!', description: "You're on the list. We'll keep you updated." });
       setEmail('');
