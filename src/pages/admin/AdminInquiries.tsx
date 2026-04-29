@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   Mail, Calendar as CalendarIcon, Trash2, RefreshCw,
@@ -79,12 +80,15 @@ const statusBadgeClass = (status: string) => {
 
 const AdminInquiries: React.FC = () => {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const initialStatus = searchParams.get('status') ?? undefined;
   const {
     rows, setRows, total, page, pageCount, pageSize, setPage,
     loading, error, filters, setFilters, clearFilters, hasActiveFilters, refetch,
   } = useAdminInbox('inquiries', {
     searchColumns: ['name', 'email', 'phone', 'message'],
     hasTypeColumn: true,
+    initialFilters: initialStatus ? { status: initialStatus } : undefined,
   });
   const inquiries = rows as Inquiry[];
   const [selected, setSelected] = useState<Inquiry | null>(null);

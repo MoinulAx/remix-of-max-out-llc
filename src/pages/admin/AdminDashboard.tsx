@@ -283,12 +283,15 @@ const AdminDashboard: React.FC = () => {
               {activity.map((entry) => {
                 const statuses = Object.entries(entry.byStatus).sort((a, b) => b[1] - a[1]);
                 return (
-                  <button
+                  <div
                     key={entry.table}
-                    onClick={() => navigate(entry.path)}
-                    className="text-left rounded-lg bg-zinc-800/60 border border-zinc-800 hover:border-zinc-600 transition-colors p-4 space-y-3"
+                    className="rounded-lg bg-zinc-800/60 border border-zinc-800 hover:border-zinc-600 transition-colors p-4 space-y-3"
                   >
-                    <div className="flex items-start justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={() => navigate(entry.path)}
+                      className="text-left w-full flex items-start justify-between gap-2"
+                    >
                       <div>
                         <p className="text-sm font-medium text-white">{entry.label}</p>
                         <p className="text-2xl font-bold text-white mt-1">{entry.total}</p>
@@ -297,25 +300,37 @@ const AdminDashboard: React.FC = () => {
                         <Clock className="w-3 h-3" />
                         {timeAgo(entry.lastActivityAt)}
                       </div>
-                    </div>
+                    </button>
                     {statuses.length === 0 ? (
                       <p className="text-xs text-zinc-500">No records yet.</p>
                     ) : (
                       <div className="flex flex-wrap gap-1.5">
-                        {statuses.map(([statusKey, count]) => (
-                          <span
-                            key={statusKey}
-                            className={`text-xs px-2 py-0.5 rounded border ${
-                              STATUS_BADGE_CLASS[statusKey] ??
-                              'bg-zinc-700/40 text-zinc-300 border-zinc-600/40'
-                            }`}
-                          >
-                            {statusKey.replace(/_/g, ' ')} · {count}
-                          </span>
-                        ))}
+                        {statuses.map(([statusKey, count]) => {
+                          // careers uses is_active not a status column — skip filter linking there
+                          const filterable = entry.table !== 'careers';
+                          const className = `text-xs px-2 py-0.5 rounded border transition-colors ${
+                            STATUS_BADGE_CLASS[statusKey] ??
+                            'bg-zinc-700/40 text-zinc-300 border-zinc-600/40'
+                          } ${filterable ? 'hover:opacity-80 cursor-pointer' : ''}`;
+                          const label = `${statusKey.replace(/_/g, ' ')} · ${count}`;
+                          if (!filterable) {
+                            return <span key={statusKey} className={className}>{label}</span>;
+                          }
+                          return (
+                            <button
+                              key={statusKey}
+                              type="button"
+                              onClick={() => navigate(`${entry.path}?status=${encodeURIComponent(statusKey)}`)}
+                              className={className}
+                              title={`View ${statusKey.replace(/_/g, ' ')} ${entry.label.toLowerCase()}`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
                       </div>
                     )}
-                  </button>
+                  </div>
                 );
               })}
             </div>
