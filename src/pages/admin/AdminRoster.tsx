@@ -156,7 +156,7 @@ const AdminRoster: React.FC = () => {
                       )}
                     </div>
                     <div className="flex-1 space-y-3">
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <Input placeholder="Name" defaultValue={person.name} onBlur={(e) => e.target.value !== person.name && updateMember(person.id, { name: e.target.value })} className="bg-zinc-800 border-zinc-700 text-white" />
                         <Input placeholder="Title (e.g. CEO & Founder)" defaultValue={social.title ?? ''} onBlur={(e) => updateSocial(person, 'title', e.target.value)} className="bg-zinc-800 border-zinc-700 text-white" />
                       </div>
@@ -267,7 +267,7 @@ const CategoryAdder: React.FC<{ existing: string[]; onAdd: (cat: string) => void
         placeholder="New category name"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="bg-zinc-800 border-zinc-700 text-white h-8 w-56 text-sm"
+        className="bg-zinc-800 border-zinc-700 text-white h-8 w-full sm:w-56 text-sm"
       />
       <Button size="sm" onClick={() => { if (value.trim()) { onAdd(value.trim()); setValue(''); } }}>
         <Plus className="w-4 h-4 mr-1" /> Create category

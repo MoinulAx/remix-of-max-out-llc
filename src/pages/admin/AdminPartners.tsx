@@ -114,7 +114,7 @@ const AdminPartners: React.FC = () => {
             <CardTitle className="text-white text-sm">Preview — Partner Grid</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
               {partners.map((p) => (
                 <div key={p.id} className="flex flex-col items-center gap-2 p-3 rounded-lg bg-zinc-800">
                   <div className="w-16 h-16 rounded-lg bg-zinc-700 flex items-center justify-center overflow-hidden">
@@ -137,14 +137,48 @@ const AdminPartners: React.FC = () => {
         {filteredPartners.map((partner) => (
           <Card key={partner.id} className="bg-zinc-900 border-zinc-800">
             <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded bg-zinc-800 overflow-hidden flex items-center justify-center flex-shrink-0">
-                  {partner.logo_url ? (
-                    <img src={partner.logo_url} alt={partner.name} className="w-full h-full object-contain" />
-                  ) : (
-                    <span className="text-zinc-600 text-[10px]">No logo</span>
-                  )}
+              <input
+                ref={(el) => { fileInputs.current[partner.id] = el; }}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) handleFile(partner.id, f);
+                  e.target.value = '';
+                }}
+              />
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                {/* Logo + action buttons (always in one row) */}
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded bg-zinc-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+                    {partner.logo_url ? (
+                      <img src={partner.logo_url} alt={partner.name} className="w-full h-full object-contain" />
+                    ) : (
+                      <span className="text-zinc-600 text-[10px]">No logo</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 sm:hidden ml-auto">
+                    <Button
+                      variant="outline" size="sm"
+                      onClick={() => fileInputs.current[partner.id]?.click()}
+                      disabled={uploadingId === partner.id}
+                      className="border-zinc-700 text-zinc-300"
+                    >
+                      {uploadingId === partner.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                    </Button>
+                    {partner.website && (
+                      <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white">
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                    <button onClick={() => removePartner(partner.id)} className="text-zinc-500 hover:text-red-400">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
+
+                {/* Input fields */}
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
                   <Input
                     placeholder="Partner name"
@@ -165,34 +199,26 @@ const AdminPartners: React.FC = () => {
                     className="bg-zinc-800 border-zinc-700 text-white"
                   />
                 </div>
-                <input
-                  ref={(el) => { fileInputs.current[partner.id] = el; }}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const f = e.target.files?.[0];
-                    if (f) handleFile(partner.id, f);
-                    e.target.value = '';
-                  }}
-                />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fileInputs.current[partner.id]?.click()}
-                  disabled={uploadingId === partner.id}
-                  className="border-zinc-700 text-zinc-300"
-                >
-                  {uploadingId === partner.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                </Button>
-                {partner.website && (
-                  <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white">
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-                <button onClick={() => removePartner(partner.id)} className="text-zinc-500 hover:text-red-400">
-                  <Trash2 className="w-4 h-4" />
-                </button>
+
+                {/* Action buttons — desktop only (mobile shows them above) */}
+                <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+                  <Button
+                    variant="outline" size="sm"
+                    onClick={() => fileInputs.current[partner.id]?.click()}
+                    disabled={uploadingId === partner.id}
+                    className="border-zinc-700 text-zinc-300"
+                  >
+                    {uploadingId === partner.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                  </Button>
+                  {partner.website && (
+                    <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white">
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+                  <button onClick={() => removePartner(partner.id)} className="text-zinc-500 hover:text-red-400">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -128,18 +128,21 @@ export const SubmissionList: React.FC<Props> = ({
                 >
                   <Eye className="w-4 h-4" />
                 </Button>
-                <Select value={row.status} onValueChange={(v) => onUpdateStatus(row.id, v)}>
-                  <SelectTrigger className="bg-zinc-900 border-zinc-700 text-white h-8 w-[140px] text-xs">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-zinc-900 border-zinc-700 text-white">
-                    {statusOptions.map((s) => (
-                      <SelectItem key={s.value} value={s.value} className="capitalize focus:bg-zinc-800">
-                        {s.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {/* Hide inline status select on mobile — use the detail sheet instead */}
+                <div className="hidden sm:block">
+                  <Select value={row.status} onValueChange={(v) => onUpdateStatus(row.id, v)}>
+                    <SelectTrigger className="bg-zinc-900 border-zinc-700 text-white h-8 w-[140px] text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-zinc-900 border-zinc-700 text-white">
+                      {statusOptions.map((s) => (
+                        <SelectItem key={s.value} value={s.value} className="capitalize focus:bg-zinc-800">
+                          {s.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="ghost" size="icon" className="text-zinc-500 hover:text-red-400 h-8 w-8">

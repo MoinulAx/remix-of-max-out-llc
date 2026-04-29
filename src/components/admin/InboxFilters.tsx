@@ -74,7 +74,7 @@ export const InboxFilters: React.FC<Props> = ({
         </Select>
       )}
 
-      <div className={cn('grid grid-cols-2 gap-2', typeOptions ? 'md:col-span-3' : 'md:col-span-4')}>
+      <div className={cn('grid grid-cols-1 sm:grid-cols-2 gap-2', typeOptions ? 'md:col-span-3' : 'md:col-span-4')}>
         <DatePickerButton
           label="From"
           value={fromDate}
