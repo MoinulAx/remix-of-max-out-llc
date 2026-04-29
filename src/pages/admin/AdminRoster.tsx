@@ -5,6 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Trash2, Plus, User, Crown, Upload, Loader2, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -54,6 +59,18 @@ const AdminRoster: React.FC = () => {
     if (error) {
       setRows(previous as typeof rows);
       toast({ title: 'Update failed', description: error.message, variant: 'destructive' });
+    }
+  };
+
+  const deleteCategory = async (cat: string) => {
+    const previous = all;
+    setRows((prev) => (prev as RosterRow[]).filter((m) => m.category !== cat) as typeof prev);
+    const { error } = await supabase.from('roster').delete().eq('category', cat);
+    if (error) {
+      setRows(previous as typeof rows);
+      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: `Category "${cat}" and all members deleted` });
     }
   };
 
@@ -195,9 +212,30 @@ const AdminRoster: React.FC = () => {
             <div key={cat} className="space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-white text-sm font-semibold">{cat}</h3>
-                <Button size="sm" variant="ghost" onClick={() => addMember(cat)} className="text-zinc-400 hover:text-white h-7">
-                  <Plus className="w-3 h-3 mr-1" /> Add
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => addMember(cat)} className="text-zinc-400 hover:text-white h-7">
+                    <Plus className="w-3 h-3 mr-1" /> Add
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="ghost" className="text-zinc-500 hover:text-red-400 h-7 px-2">
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-zinc-900 border-zinc-800 text-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete "{cat}" category?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-zinc-400">
+                          This will permanently delete all {talent.filter((m) => m.category === cat).length} members in this category. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700 hover:text-white">Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => deleteCategory(cat)} className="bg-red-600 hover:bg-red-700">Delete Category</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {talent.filter((m) => m.category === cat).map((member) => {
