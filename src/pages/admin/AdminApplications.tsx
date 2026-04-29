@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, ClipboardList } from 'lucide-react';
@@ -25,11 +26,14 @@ const STATUS_OPTIONS_ROW = STATUS_OPTIONS_FILTER.filter((s) => s.value !== 'all'
 
 const AdminApplications: React.FC = () => {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const initialStatus = searchParams.get('status') ?? undefined;
   const {
     rows, setRows, total, page, pageCount, pageSize, setPage,
     loading, error, filters, setFilters, clearFilters, hasActiveFilters, refetch,
   } = useAdminInbox('applications', {
     searchColumns: ['name', 'email', 'phone', 'why_interested', 'experience'],
+    initialFilters: initialStatus ? { status: initialStatus } : undefined,
   });
   const apps = rows as Application[];
 
