@@ -95,6 +95,7 @@ const AdminApplications: React.FC = () => {
           <CardTitle className="text-white flex items-center gap-2 text-base">
             <ClipboardList className="w-4 h-4" /> Roster Application Submissions
           </CardTitle>
+          <StatusLegend />
         </CardHeader>
         <CardContent className="space-y-3">
           <SubmissionList
