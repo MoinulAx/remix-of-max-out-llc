@@ -80,7 +80,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       
       <div 
         className={cn(
-          "fixed inset-0 bg-white z-40 flex flex-col pt-24 px-6 transition-transform duration-500 ease-in-out transform md:hidden",
+          "fixed inset-0 bg-white z-40 flex flex-col pt-24 px-6 overflow-y-auto transition-transform duration-500 ease-in-out transform md:hidden",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -141,14 +141,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               </NavLink>
             </div>
           </div>
-          <NavLink 
-            to="/partners"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Partners
-          </NavLink>
-          <NavLink 
+          <NavLink
             to="/partners"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}

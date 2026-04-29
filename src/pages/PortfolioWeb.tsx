@@ -22,9 +22,9 @@ const PortfolioWeb = () => {
       <Header />
       <div className="pt-24 pb-20 md:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight">Web Projects</h1>
-            <Link to="/portfolio" className="px-4 py-2 bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">
+            <Link to="/portfolio" className="px-4 py-2 text-sm bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity whitespace-nowrap">
               ← Back to Portfolio
             </Link>
           </div>
