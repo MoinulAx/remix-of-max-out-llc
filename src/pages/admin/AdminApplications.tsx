@@ -79,7 +79,7 @@ const AdminApplications: React.FC = () => {
             onClear={clearFilters}
             hasActive={hasActiveFilters}
             statusOptions={STATUS_OPTIONS_FILTER}
-            searchPlaceholder="Search name, email, phone, interests…"
+            searchPlaceholder="Search roster applications by name, email, phone, interests…"
             total={total}
             showing={apps.length}
           />
