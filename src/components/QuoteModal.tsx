@@ -53,8 +53,8 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, serviceType = 
       const { error } = await supabase
         .from('quote_requests')
         .insert({
-          name: values.name,
-          email: values.email,
+          name: values.name!,
+          email: values.email!,
           phone: values.phone,
           budget_range: values.budget_range,
           project_timeline: values.project_timeline,
