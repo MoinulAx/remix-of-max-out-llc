@@ -139,7 +139,7 @@ const AdminRoster: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Leadership & Roster</h1>
           <p className="text-zinc-300 text-sm mt-1">{leadership.length} leadership · {talent.length} talent</p>
         </div>
-        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
+        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
@@ -149,13 +149,13 @@ const AdminRoster: React.FC = () => {
 
       <Tabs defaultValue="leadership" className="space-y-4">
         <TabsList className="bg-zinc-800">
-          <TabsTrigger value="leadership" className="data-[state=active]:bg-zinc-700">Leadership ({leadership.length})</TabsTrigger>
-          <TabsTrigger value="talent" className="data-[state=active]:bg-zinc-700">Talent ({talent.length})</TabsTrigger>
+          <TabsTrigger value="leadership" className="text-zinc-400 data-[state=active]:bg-primary data-[state=active]:text-white">Leadership ({leadership.length})</TabsTrigger>
+          <TabsTrigger value="talent" className="text-zinc-400 data-[state=active]:bg-primary data-[state=active]:text-white">Talent ({talent.length})</TabsTrigger>
         </TabsList>
 
         {/* LEADERSHIP */}
         <TabsContent value="leadership" className="space-y-4">
-          <Button size="sm" variant="outline" onClick={() => addMember(LEADERSHIP_CATEGORY)} className="border-zinc-700 text-zinc-300">
+          <Button size="sm" onClick={() => addMember(LEADERSHIP_CATEGORY)} className="bg-primary hover:bg-primary/90 text-white">
             <Plus className="w-4 h-4 mr-1" /> Add Leadership Member
           </Button>
 
@@ -296,7 +296,7 @@ const CategoryAdder: React.FC<{ existing: string[]; onAdd: (cat: string) => void
           >
             {existing.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <Button size="sm" variant="outline" onClick={() => picked && onAdd(picked)} className="border-zinc-700 text-zinc-300">
+          <Button size="sm" variant="outline" onClick={() => picked && onAdd(picked)} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
             <Plus className="w-4 h-4 mr-1" /> Add to category
           </Button>
         </>
