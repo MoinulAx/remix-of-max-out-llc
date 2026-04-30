@@ -158,7 +158,7 @@ const AdminContentHub: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Content Hub</h1>
           <p className="text-zinc-300 text-sm mt-1">{posts.length} total posts</p>
         </div>
-        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
+        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
