@@ -125,7 +125,7 @@ const AdminRoster: React.FC = () => {
         variant="outline" size="sm"
         onClick={() => fileInputs.current[id]?.click()}
         disabled={uploadingId === id}
-        className="border-zinc-700 text-zinc-300"
+        className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
       >
         {uploadingId === id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
       </Button>
@@ -139,7 +139,7 @@ const AdminRoster: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Leadership & Roster</h1>
           <p className="text-zinc-300 text-sm mt-1">{leadership.length} leadership · {talent.length} talent</p>
         </div>
-        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
+        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="bg-zinc-900 border-zinc-600 text-zinc-200 hover:bg-zinc-800 hover:text-white hover:border-zinc-400">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
@@ -296,7 +296,7 @@ const CategoryAdder: React.FC<{ existing: string[]; onAdd: (cat: string) => void
           >
             {existing.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <Button size="sm" variant="outline" onClick={() => picked && onAdd(picked)} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
+          <Button size="sm" variant="outline" onClick={() => picked && onAdd(picked)} className="bg-zinc-900 border-zinc-600 text-zinc-200 hover:bg-zinc-800 hover:text-white hover:border-zinc-400">
             <Plus className="w-4 h-4 mr-1" /> Add to category
           </Button>
         </>
