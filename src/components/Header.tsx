@@ -149,13 +149,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             Partners
           </NavLink>
           <NavLink 
-            to="/partners"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Partners
-          </NavLink>
-          <NavLink 
             to="/tmobile"
             className="text-left bg-[#E20074] text-white px-4 py-2 rounded font-bold hover:bg-[#E20074]/90 transition-colors inline-block"
             onClick={() => setIsMobileMenuOpen(false)}
