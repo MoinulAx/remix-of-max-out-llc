@@ -231,7 +231,7 @@ const AdminDashboard: React.FC = () => {
         <Button
           variant="outline" size="sm" onClick={() => { loadCounts(); loadStatus(); loadActivity(); }}
           disabled={countsLoading || statusLoading || activityLoading}
-          className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white"
+          className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400"
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${(countsLoading || activityLoading) ? 'animate-spin' : ''}`} />
           Refresh
@@ -268,7 +268,7 @@ const AdminDashboard: React.FC = () => {
             size="sm"
             onClick={loadActivity}
             disabled={activityLoading}
-            className="bg-zinc-800 border-zinc-700 text-zinc-300 hover:text-white"
+            className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400"
           >
             <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${activityLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -350,7 +350,7 @@ const AdminDashboard: React.FC = () => {
             size="sm"
             onClick={loadStatus}
             disabled={statusLoading}
-            className="bg-zinc-800 border-zinc-700 text-zinc-300 hover:text-white"
+            className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400"
           >
             <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${statusLoading ? 'animate-spin' : ''}`} />
             Refresh

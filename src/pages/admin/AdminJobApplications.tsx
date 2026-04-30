@@ -69,7 +69,7 @@ const AdminJobApplications: React.FC = () => {
         </div>
         <Button
           variant="outline" size="sm" onClick={refetch} disabled={loading}
-          className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white"
+          className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400"
         >
           <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} /> Refresh
         </Button>
