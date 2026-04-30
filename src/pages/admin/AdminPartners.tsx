@@ -93,7 +93,7 @@ const AdminPartners: React.FC = () => {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ListSearchBox value={query} onChange={setQuery} placeholder="Filter partners…" />
-          <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
+          <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white">
             <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </Button>
           <Button size="sm" onClick={addPartner}>
@@ -181,7 +181,7 @@ const AdminPartners: React.FC = () => {
                   size="sm"
                   onClick={() => fileInputs.current[partner.id]?.click()}
                   disabled={uploadingId === partner.id}
-                  className="border-zinc-700 text-zinc-300"
+                  className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                 >
                   {uploadingId === partner.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                 </Button>

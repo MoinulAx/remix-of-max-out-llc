@@ -130,7 +130,7 @@ const AdminContentHub: React.FC = () => {
                     variant="outline" size="sm"
                     onClick={() => fileInputs.current[post.id]?.click()}
                     disabled={uploadingId === post.id}
-                    className="border-zinc-700 text-zinc-300"
+                    className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                   >
                     {uploadingId === post.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                   </Button>
@@ -158,7 +158,7 @@ const AdminContentHub: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Content Hub</h1>
           <p className="text-zinc-300 text-sm mt-1">{posts.length} total posts</p>
         </div>
-        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
+        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="bg-zinc-900 border-zinc-600 text-zinc-200 hover:bg-zinc-800 hover:text-white hover:border-zinc-400">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
@@ -177,7 +177,7 @@ const AdminContentHub: React.FC = () => {
 
         {TABS.map((t) => (
           <TabsContent key={t.value} value={t.value} className="space-y-3">
-            <Button size="sm" variant="outline" onClick={() => addPost(t.value, t.defaultPlatform)} className="border-zinc-700 text-zinc-300">
+            <Button size="sm" variant="outline" onClick={() => addPost(t.value, t.defaultPlatform)} className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white">
               <Plus className="w-4 h-4 mr-1" /> Add {t.label}
             </Button>
             {(grouped[t.value] ?? []).map((p) => renderRow(p, t.value === 'video' || t.value === 'image'))}

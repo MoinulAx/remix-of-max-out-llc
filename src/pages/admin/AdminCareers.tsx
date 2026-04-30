@@ -142,7 +142,7 @@ const AdminCareers: React.FC = () => {
           <p className="text-zinc-300 text-sm mt-1">{activeCount} active · {jobs.length} total</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
+          <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white">
             <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </Button>
           <Button onClick={startAdd} size="sm" className="gap-2"><Plus className="w-4 h-4" /> Add Position</Button>
