@@ -5,6 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Trash2, Plus, User, Crown, Upload, Loader2, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -54,6 +59,18 @@ const AdminRoster: React.FC = () => {
     if (error) {
       setRows(previous as typeof rows);
       toast({ title: 'Update failed', description: error.message, variant: 'destructive' });
+    }
+  };
+
+  const deleteCategory = async (cat: string) => {
+    const previous = all;
+    setRows((prev) => (prev as RosterRow[]).filter((m) => m.category !== cat) as typeof prev);
+    const { error } = await supabase.from('roster').delete().eq('category', cat);
+    if (error) {
+      setRows(previous as typeof rows);
+      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: `Category "${cat}" and all members deleted` });
     }
   };
 
@@ -122,7 +139,7 @@ const AdminRoster: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Leadership & Roster</h1>
           <p className="text-zinc-300 text-sm mt-1">{leadership.length} leadership · {talent.length} talent</p>
         </div>
-        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-700 text-zinc-300">
+        <Button variant="outline" size="sm" onClick={refetch} disabled={loading} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
           <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
@@ -132,13 +149,13 @@ const AdminRoster: React.FC = () => {
 
       <Tabs defaultValue="leadership" className="space-y-4">
         <TabsList className="bg-zinc-800">
-          <TabsTrigger value="leadership" className="data-[state=active]:bg-zinc-700">Leadership ({leadership.length})</TabsTrigger>
-          <TabsTrigger value="talent" className="data-[state=active]:bg-zinc-700">Talent ({talent.length})</TabsTrigger>
+          <TabsTrigger value="leadership" className="text-zinc-400 data-[state=active]:bg-primary data-[state=active]:text-white">Leadership ({leadership.length})</TabsTrigger>
+          <TabsTrigger value="talent" className="text-zinc-400 data-[state=active]:bg-primary data-[state=active]:text-white">Talent ({talent.length})</TabsTrigger>
         </TabsList>
 
         {/* LEADERSHIP */}
         <TabsContent value="leadership" className="space-y-4">
-          <Button size="sm" variant="outline" onClick={() => addMember(LEADERSHIP_CATEGORY)} className="border-zinc-700 text-zinc-300">
+          <Button size="sm" onClick={() => addMember(LEADERSHIP_CATEGORY)} className="bg-primary hover:bg-primary/90 text-white">
             <Plus className="w-4 h-4 mr-1" /> Add Leadership Member
           </Button>
 
@@ -195,9 +212,30 @@ const AdminRoster: React.FC = () => {
             <div key={cat} className="space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-white text-sm font-semibold">{cat}</h3>
-                <Button size="sm" variant="ghost" onClick={() => addMember(cat)} className="text-zinc-400 hover:text-white h-7">
-                  <Plus className="w-3 h-3 mr-1" /> Add
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => addMember(cat)} className="text-zinc-400 hover:text-white h-7">
+                    <Plus className="w-3 h-3 mr-1" /> Add
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="ghost" className="text-zinc-500 hover:text-red-400 h-7 px-2">
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-zinc-900 border-zinc-800 text-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete "{cat}" category?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-zinc-400">
+                          This will permanently delete all {talent.filter((m) => m.category === cat).length} members in this category. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700 hover:text-white">Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => deleteCategory(cat)} className="bg-red-600 hover:bg-red-700">Delete Category</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {talent.filter((m) => m.category === cat).map((member) => {
@@ -258,7 +296,7 @@ const CategoryAdder: React.FC<{ existing: string[]; onAdd: (cat: string) => void
           >
             {existing.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <Button size="sm" variant="outline" onClick={() => picked && onAdd(picked)} className="border-zinc-700 text-zinc-300">
+          <Button size="sm" variant="outline" onClick={() => picked && onAdd(picked)} className="border-zinc-600 text-zinc-200 hover:text-white hover:border-zinc-400">
             <Plus className="w-4 h-4 mr-1" /> Add to category
           </Button>
         </>
