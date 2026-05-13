@@ -75,6 +75,9 @@ const AdminLayout: React.FC = () => {
             <LogOut className="w-4 h-4" />
             Sign Out
           </button>
+          <p className="mt-3 text-[9px] uppercase tracking-[0.18em] text-zinc-600 text-center select-none">
+            Powered by RummSpace
+          </p>
         </div>
       </aside>
 
