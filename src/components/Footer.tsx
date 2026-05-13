@@ -126,6 +126,11 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             </div>
           </div>
         </div>
+        <div className="mt-6 pt-4 border-t border-border/40 flex justify-center">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 select-none">
+            Powered & Built by RummSpace · Lead Software Architecture
+          </span>
+        </div>
       </div>
     </footer>
   );
