@@ -111,6 +111,9 @@ const AdminLogin: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      <p className="absolute bottom-4 left-0 right-0 text-center text-[9px] uppercase tracking-[0.2em] text-zinc-700 select-none">
+        Powered by RummSpace
+      </p>
     </div>
   );
 };
