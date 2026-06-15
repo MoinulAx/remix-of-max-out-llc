@@ -133,10 +133,22 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </button>
         
         <nav className="flex flex-col space-y-6 text-lg">
-          <MobileNavLink to="/roster" onClick={() => setIsMobileMenuOpen(false)}>Roster</MobileNavLink>
-          <MobileNavLink to="/max-out-method" onClick={() => setIsMobileMenuOpen(false)}>Max Out Method</MobileNavLink>
+          <div>
+            <p className="text-sm font-semibold text-muted-foreground mb-2">Maxout Hub</p>
+            <div className="flex flex-col space-y-4 pl-2">
+              <MobileNavLink to="/roster" onClick={() => setIsMobileMenuOpen(false)}>Maxout Management</MobileNavLink>
+              <span className="text-left text-muted-foreground">Maxout Agency (Coming Soon)</span>
+              <MobileNavLink to="/max-out-method" onClick={() => setIsMobileMenuOpen(false)}>Maxout Method</MobileNavLink>
+            </div>
+          </div>
           <MobileNavLink to="/content-hub" onClick={() => setIsMobileMenuOpen(false)}>Content Hub</MobileNavLink>
-          <MobileNavLink to="/leadership" onClick={() => setIsMobileMenuOpen(false)}>Leadership</MobileNavLink>
+          <div>
+            <p className="text-sm font-semibold text-muted-foreground mb-2">Our Team</p>
+            <div className="flex flex-col space-y-4 pl-2">
+              <MobileNavLink to="/leadership" onClick={() => setIsMobileMenuOpen(false)}>Leadership</MobileNavLink>
+              <MobileNavLink to="/partners" onClick={() => setIsMobileMenuOpen(false)}>Partners</MobileNavLink>
+            </div>
+          </div>
           <div className="pt-2">
             <p className="text-sm font-semibold text-muted-foreground mb-2">Get Involved</p>
             <div className="flex flex-col space-y-4 pl-2">
@@ -144,7 +156,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <MobileNavLink to="/careers" onClick={() => setIsMobileMenuOpen(false)}>Careers</MobileNavLink>
             </div>
           </div>
-          <MobileNavLink to="/partners" onClick={() => setIsMobileMenuOpen(false)}>Partners</MobileNavLink>
           <NavLink
             to="/tmobile"
             className={({ isActive }) => cn(
@@ -190,25 +201,8 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
-    <NavLink 
-      to="/roster"
-      className={({ isActive }) => cn(
-        "relative text-sm font-medium hover:text-primary transition-colors pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded",
-        isActive && "text-[#E20074] font-semibold after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-0.5 after:bg-[#E20074] after:rounded-full"
-      )}
-    >
-      Roster
-    </NavLink>
-    <NavLink 
-      to="/max-out-method"
-      className={({ isActive }) => cn(
-        "relative text-sm font-medium hover:text-primary transition-colors pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded",
-        isActive && "text-[#E20074] font-semibold after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-0.5 after:bg-[#E20074] after:rounded-full"
-      )}
-    >
-      Max Out Method
-    </NavLink>
-    <NavLink 
+    <MaxoutHubDropdown />
+    <NavLink
       to="/content-hub"
       className={({ isActive }) => cn(
         "relative text-sm font-medium hover:text-primary transition-colors pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded",
@@ -217,26 +211,9 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     >
       Content Hub
     </NavLink>
-    <NavLink 
-      to="/leadership"
-      className={({ isActive }) => cn(
-        "relative text-sm font-medium hover:text-primary transition-colors pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded",
-        isActive && "text-[#E20074] font-semibold after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-0.5 after:bg-[#E20074] after:rounded-full"
-      )}
-    >
-      Leadership
-    </NavLink>
+    <OurTeamDropdown />
     <GetInvolvedDropdown />
-    <NavLink 
-      to="/partners"
-      className={({ isActive }) => cn(
-        "relative text-sm font-medium hover:text-primary transition-colors pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded",
-        isActive && "text-[#E20074] font-semibold after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-0.5 after:bg-[#E20074] after:rounded-full"
-      )}
-    >
-      Partners
-    </NavLink>
-    <NavLink 
+    <NavLink
       to="/tmobile"
       className={({ isActive }) => cn(
         "text-sm font-bold px-4 py-2 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E20074] focus-visible:ring-offset-2",
@@ -247,6 +224,71 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     </NavLink>
   </>
 );
+
+const MaxoutHubDropdown: React.FC = () => {
+  const location = useLocation();
+  const isActive = location.pathname === '/roster' || location.pathname === '/max-out-method';
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "relative flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors outline-none pb-1 rounded focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+          isActive && "text-[#E20074] font-semibold after:content-[''] after:absolute after:left-0 after:right-5 after:-bottom-0.5 after:h-0.5 after:bg-[#E20074] after:rounded-full"
+        )}
+      >
+        Maxout Hub
+        <ChevronDown className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-background z-50">
+        <DropdownMenuItem asChild>
+          <NavLink to="/roster" className="cursor-pointer w-full">
+            Maxout Management
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled className="text-muted-foreground">
+          Maxout Agency (Coming Soon)
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/max-out-method" className="cursor-pointer w-full">
+            Maxout Method
+          </NavLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const OurTeamDropdown: React.FC = () => {
+  const location = useLocation();
+  const isActive = location.pathname === '/leadership' || location.pathname === '/partners';
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "relative flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors outline-none pb-1 rounded focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+          isActive && "text-[#E20074] font-semibold after:content-[''] after:absolute after:left-0 after:right-5 after:-bottom-0.5 after:h-0.5 after:bg-[#E20074] after:rounded-full"
+        )}
+      >
+        Our Team
+        <ChevronDown className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-background z-50">
+        <DropdownMenuItem asChild>
+          <NavLink to="/leadership" className="cursor-pointer w-full">
+            Leadership
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/partners" className="cursor-pointer w-full">
+            Partners
+          </NavLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const GetInvolvedDropdown: React.FC = () => {
   const location = useLocation();

@@ -10,8 +10,17 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const PartnerCard = ({ partner, linkLabel }: { partner: { name: string; description: string | null; website: string | null }; linkLabel: string }) => (
+const PartnerCard = ({ partner, linkLabel }: { partner: { name: string; description: string | null; website: string | null; logo_url: string | null }; linkLabel: string }) => (
   <div className="p-6 border rounded-xl hover:shadow-lg hover:border-primary/50 transition-all bg-card">
+    {partner.logo_url && (
+      <div className="mb-4 h-20 flex items-center justify-start">
+        <img
+          src={partner.logo_url}
+          alt={partner.name}
+          className="max-h-20 max-w-[160px] object-contain"
+        />
+      </div>
+    )}
     <h3 className="text-xl font-bold mb-2">{partner.name}</h3>
     <p className="text-muted-foreground mb-4">{partner.description}</p>
     {partner.website && (
