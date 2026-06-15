@@ -94,34 +94,54 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </button>
         
         <nav className="flex flex-col space-y-6 text-lg">
-          <NavLink 
-            to="/roster"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Roster
-          </NavLink>
-          <NavLink 
-            to="/max-out-method"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Max Out Method
-          </NavLink>
-          <NavLink 
+          <div>
+            <p className="text-sm font-semibold text-muted-foreground mb-2">Maxout Hub</p>
+            <div className="flex flex-col space-y-4 pl-2">
+              <NavLink
+                to="/roster"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Maxout Management
+              </NavLink>
+              <span className="text-left text-muted-foreground">
+                Maxout Agency (Coming Soon)
+              </span>
+              <NavLink
+                to="/max-out-method"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Maxout Method
+              </NavLink>
+            </div>
+          </div>
+          <NavLink
             to="/content-hub"
             className="text-left hover:text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Content Hub
           </NavLink>
-          <NavLink 
-            to="/leadership"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Leadership
-          </NavLink>
+          <div>
+            <p className="text-sm font-semibold text-muted-foreground mb-2">Our Team</p>
+            <div className="flex flex-col space-y-4 pl-2">
+              <NavLink
+                to="/leadership"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Leadership
+              </NavLink>
+              <NavLink
+                to="/partners"
+                className="text-left hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Partners
+              </NavLink>
+            </div>
+          </div>
           <div className="pt-2">
             <p className="text-sm font-semibold text-muted-foreground mb-2">Get Involved</p>
             <div className="flex flex-col space-y-4 pl-2">
@@ -141,21 +161,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               </NavLink>
             </div>
           </div>
-          <NavLink 
-            to="/partners"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Partners
-          </NavLink>
-          <NavLink 
-            to="/partners"
-            className="text-left hover:text-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Partners
-          </NavLink>
-          <NavLink 
+          <NavLink
             to="/tmobile"
             className="text-left bg-[#E20074] text-white px-4 py-2 rounded font-bold hover:bg-[#E20074]/90 transition-colors inline-block"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -174,25 +180,8 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
   <>
-    <NavLink 
-      to="/roster"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Roster
-    </NavLink>
-    <NavLink 
-      to="/max-out-method"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Max Out Method
-    </NavLink>
-    <NavLink 
+    <MaxoutHubDropdown />
+    <NavLink
       to="/content-hub"
       className={({ isActive }) => cn(
         "text-sm font-medium hover:text-primary transition-colors",
@@ -201,26 +190,9 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     >
       Content Hub
     </NavLink>
-    <NavLink 
-      to="/leadership"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Leadership
-    </NavLink>
+    <OurTeamDropdown />
     <GetInvolvedDropdown />
-    <NavLink 
-      to="/partners"
-      className={({ isActive }) => cn(
-        "text-sm font-medium hover:text-primary transition-colors",
-        isActive && "text-primary"
-      )}
-    >
-      Partners
-    </NavLink>
-    <NavLink 
+    <NavLink
       to="/tmobile"
       className={({ isActive }) => cn(
         "text-sm font-bold px-4 py-2 rounded transition-colors",
@@ -231,6 +203,71 @@ const NavLinks: React.FC<NavLinksProps> = ({ scrollToSection }) => (
     </NavLink>
   </>
 );
+
+const MaxoutHubDropdown: React.FC = () => {
+  const location = useLocation();
+  const isActive = location.pathname === '/roster' || location.pathname === '/max-out-method';
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors outline-none",
+          isActive && "text-primary"
+        )}
+      >
+        Maxout Hub
+        <ChevronDown className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-background z-50">
+        <DropdownMenuItem asChild>
+          <NavLink to="/roster" className="cursor-pointer w-full">
+            Maxout Management
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled className="text-muted-foreground">
+          Maxout Agency (Coming Soon)
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/max-out-method" className="cursor-pointer w-full">
+            Maxout Method
+          </NavLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const OurTeamDropdown: React.FC = () => {
+  const location = useLocation();
+  const isActive = location.pathname === '/leadership' || location.pathname === '/partners';
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors outline-none",
+          isActive && "text-primary"
+        )}
+      >
+        Our Team
+        <ChevronDown className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-background z-50">
+        <DropdownMenuItem asChild>
+          <NavLink to="/leadership" className="cursor-pointer w-full">
+            Leadership
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/partners" className="cursor-pointer w-full">
+            Partners
+          </NavLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const GetInvolvedDropdown: React.FC = () => {
   const location = useLocation();

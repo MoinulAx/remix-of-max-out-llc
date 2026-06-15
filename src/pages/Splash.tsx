@@ -8,7 +8,7 @@ const Splash = () => {
   const handleEnter = () => {
     setIsTransitioning(true);
     setTimeout(() => {
-      navigate('/home');
+      navigate('/max-out-method');
     }, 1800);
   };
 
@@ -69,7 +69,7 @@ const Splash = () => {
           disabled={isTransitioning}
           className="inline-block bg-white text-black px-12 py-5 text-lg font-bold hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-2xl disabled:opacity-50"
         >
-          ENTER MANAGEMENT HUB
+          ENTER MAXOUT HUB
         </button>
       </div>
 

@@ -2,9 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Splash from "./pages/Splash";
-import Home from "./pages/Home";
 import Roster from "./pages/Roster";
 import MaxOutMethod from "./pages/MaxOutMethod";
 import ContentHub from "./pages/ContentHub";
@@ -40,7 +39,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Splash />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Navigate to="/max-out-method" replace />} />
           <Route path="/roster" element={<Roster />} />
           <Route path="/max-out-method" element={<MaxOutMethod />} />
           <Route path="/content-hub" element={<ContentHub />} />
