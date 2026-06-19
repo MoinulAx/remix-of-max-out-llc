@@ -49,7 +49,7 @@ const ContentHub = () => {
               {featured && (
                 <FadeIn delay={100}>
                   <div className="mb-16">
-                    <h2 className="text-2xl font-bold mb-4">Featured: EV09 Loso</h2>
+                    <h2 className="text-2xl font-bold mb-4">Featured:  EV09 Loso</h2>
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                       <iframe
                         src={toEmbedUrl(featured.media_url)}

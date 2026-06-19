@@ -63,7 +63,7 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="relative min-h-screen bg-black flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-zinc-900 border-zinc-800">
         <CardHeader className="text-center space-y-2">
           <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
@@ -111,6 +111,9 @@ const AdminLogin: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      <p className="absolute bottom-4 left-0 right-0 text-center text-[9px] uppercase tracking-[0.2em] text-zinc-700 select-none">
+        Powered by RummSpace
+      </p>
     </div>
   );
 };
