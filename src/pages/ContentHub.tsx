@@ -6,23 +6,53 @@ import { useSupabaseTable } from '@/hooks/useSupabaseTable';
 
 function toEmbedUrl(url: string | null | undefined): string {
   if (!url) return '';
+  const u = url.trim();
   // Already an embed URL
-  if (url.includes('/embed/')) return url;
+  if (u.includes('/embed/')) return u;
   // youtu.be/ID
-  const short = url.match(/youtu\.be\/([^?&]+)/);
-  if (short) return `https://www.youtube.com/embed/${short[1]}`;
+  let m = u.match(/youtu\.be\/([A-Za-z0-9_-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}`;
   // youtube.com/watch?v=ID
-  const watch = url.match(/[?&]v=([^&]+)/);
-  if (watch) return `https://www.youtube.com/embed/${watch[1]}`;
-  return url;
+  m = u.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}`;
+  // youtube.com/shorts/ID
+  m = u.match(/\/shorts\/([A-Za-z0-9_-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}`;
+  // youtube.com/live/ID
+  m = u.match(/\/live\/([A-Za-z0-9_-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}`;
+  // bare 11-char video ID
+  if (/^[A-Za-z0-9_-]{11}$/.test(u)) return `https://www.youtube.com/embed/${u}`;
+  // Unrecognized — return empty so callers can skip it instead of rendering a blank iframe
+  return '';
 }
+
+// Renders an Instagram-style avatar with a graceful fallback when the image is missing or fails to load.
+const StoryAvatar = ({ src, alt }: { src: string | null | undefined; alt: string }) => {
+  const [errored, setErrored] = React.useState(false);
+  if (!src || errored) {
+    return (
+      <div className="w-full h-full rounded-full bg-muted flex items-center justify-center">
+        <span className="text-xs text-muted-foreground">IG</span>
+      </div>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="w-full h-full rounded-full object-cover"
+      onError={() => setErrored(true)}
+    />
+  );
+};
 
 const ContentHub = () => {
   const { rows, loading } = useSupabaseTable('content_hub_posts', { orderBy: 'sort_order', ascending: true });
 
   const published = rows.filter(p => p.is_published);
-  const featured = published.find(p => p.media_type === 'youtube' && p.sort_order === 1);
-  const youtubeVideos = published.filter(p => p.media_type === 'youtube' && p !== featured);
+  const featured = published.find(p => p.media_type === 'youtube' && p.sort_order === 1 && toEmbedUrl(p.media_url));
+  const youtubeVideos = published.filter(p => p.media_type === 'youtube' && p !== featured && toEmbedUrl(p.media_url));
   const storyBubbles = published.filter(p => p.media_type === 'social');
   const pressItems = published.filter(p => p.media_type === 'press');
 
@@ -80,17 +110,7 @@ const ContentHub = () => {
                         >
                           <div className="w-20 h-20 md:w-24 md:h-24 rounded-full p-[3px] bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 group-hover:scale-110 transition-transform duration-300">
                             <div className="w-full h-full rounded-full bg-background p-[2px]">
-                              {story.thumbnail_url ? (
-                                <img
-                                  src={story.thumbnail_url}
-                                  alt={story.title}
-                                  className="w-full h-full rounded-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full rounded-full bg-muted flex items-center justify-center">
-                                  <span className="text-xs text-muted-foreground">IG</span>
-                                </div>
-                              )}
+                              <StoryAvatar src={story.thumbnail_url} alt={story.title} />
                             </div>
                           </div>
                           <span className="text-sm font-medium text-center max-w-[80px] truncate">{story.title}</span>
